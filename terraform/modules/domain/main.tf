@@ -15,6 +15,18 @@ resource "libvirt_domain" "okd_bootstrap" {
     mode = "host-passthrough"
   }
 
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
+
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
+
   network_interface {
     network_id     = var.network_id
     hostname       = var.bootstrap.name
@@ -39,6 +51,18 @@ resource "libvirt_domain" "okd_controlplane_1" {
 
   cpu {
     mode = "host-passthrough"
+  }
+
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
+
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = "0"
   }
 
   network_interface {
@@ -66,6 +90,17 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mode = "host-passthrough"
   }
 
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
+
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
+
   network_interface {
     network_id     = var.network_id
     hostname       = var.controlplane_2.name
@@ -90,6 +125,19 @@ resource "libvirt_domain" "okd_controlplane_3" {
   cpu {
     mode = "host-passthrough"
   }
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
+
+  console {
+    type        = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
+
+
 
   network_interface {
     network_id     = var.network_id
