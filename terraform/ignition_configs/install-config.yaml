@@ -1,9 +1,9 @@
 apiVersion: v1
-baseDomain: okd.lab
+baseDomain: cefaslocalserver.com
 compute:
   - hyperthreading: Enabled
     name: worker
-    replicas: 0
+    replicas: 3
 controlPlane:
   hyperthreading: Enabled
   name: master
@@ -14,7 +14,7 @@ networking:
   clusterNetwork:
     - cidr: 10.100.0.0/14
       hostPrefix: 23
-  networkType: OpenShiftSDN
+  networkType: OVNKubernetes
   serviceNetwork:
     - 172.30.0.0/16
 platform:
