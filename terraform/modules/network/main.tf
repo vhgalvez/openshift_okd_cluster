@@ -2,7 +2,7 @@ resource "libvirt_network" "kube_network_02" {
   name      = "kube_network_02"
   mode      = "nat"
   domain    = "okd.lab"
-  addresses = ["192.168.150.0/24"]
+  addresses = ["10.17.3.12/24"]
   autostart = true
 
   dns {
