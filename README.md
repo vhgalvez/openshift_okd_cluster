@@ -165,6 +165,8 @@ oc get nodes
 
 export KUBECONFIG=/var/home/core/.kube/config
 
+cp ~/.kube/auth/kubeconfig ~/.kube/config
+
 
 sudo setenforce 0
 sudo systemctl restart libvirtd
