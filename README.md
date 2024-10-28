@@ -25,10 +25,10 @@ Do these steps before opening the project in a devcontainer.
 - Download openshift-install and extract it into `./.devcontainer/tools`[^3][^4] (create the folder if it doesn't exist)
 - Setup dnsmasq so everything can be resolved
     ```bash
-    address=/okd.lab/192.168.150.3    # bootstrap
-    address=/okd.lab/192.168.150.10   # controlplane 1 
-    address=/okd.lab/192.168.150.11   # controlplane 2
-    address=/okd.lab/192.168.150.12   # controlplane 3
+    address=/okd.lab/10.17.3.1   # bootstrap
+    address=/okd.lab/10.17.3.10   # controlplane 1 
+    address=/okd.lab/10.17.3.11   # controlplane 2
+    address=/okd.lab/110.17.3.12   # controlplane 3
     ```
 - RedHat pull secret[^5]
 - Copy [install-config.yaml.template](install-config.yaml.template) to [install-config.yaml](install-config.yaml) and fill in the required values. The install-config.yaml file is used to generate the ignition files[^6].
