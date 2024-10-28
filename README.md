@@ -78,15 +78,3 @@ Following steps can be done within the devcontainer.
 
 
 
-
-
-
-# Cambiar el propietario y grupo de todos los archivos en el directorio /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
-sudo chown -R victory:victory /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
-sudo chmod -R 775 /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
-
-# Asegurar permisos de escritura en los archivos dentro del directorio ignition_configs
-sudo chmod -R u+w /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
-
-
-openshift-install create ignition-configs --dir=/home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs --log-level=debug
