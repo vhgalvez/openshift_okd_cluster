@@ -3,13 +3,13 @@ baseDomain: okd.lab
 compute:
 - hyperthreading: Enabled
   name: worker
-  replicas: 0 # set to 0 to disable worker nodes
+  replicas: 0
 controlPlane:
   hyperthreading: Enabled
   name: master
-  replicas: 3 # set to 1 to enable single node cluster
+  replicas: 3
 metadata:
-  name: local # cluster name
+  name: local
 networking:
   clusterNetwork:
   - cidr: 10.100.0.0/14
