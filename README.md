@@ -78,3 +78,12 @@ Following steps can be done within the devcontainer.
 
 
 
+
+  sudo cat /etc/dnsmasq.conf
+  sudo systemctl restart dnsmasq
+  clear
+ sudo systemctl status dnsmasq
+ cleaer
+
+sudo setenforce 0
+sudo systemctl restart libvirtd
