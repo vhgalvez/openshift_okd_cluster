@@ -158,9 +158,12 @@ export KUBECONFIG=~/.kube/config
 mkdir -p ~/.kube
 
 mv /var/home/core/.kube/kubeconfig /var/home/core/.kube/config
+mv /var/home/core/.kube/ /var/home/core/.kube/config
 
 export KUBECONFIG=/var/home/core/.kube
 oc get nodes
+
+export KUBECONFIG=/var/home/core/.kube/config
 
 
 sudo setenforce 0
