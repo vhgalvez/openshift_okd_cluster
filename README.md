@@ -153,6 +153,11 @@ openshift-install create ignition-configs --dir=/home/$USER/openshift_okd_cluste
 
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
 
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.3:/var/home/core/.kube
+
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
+
 export KUBECONFIG=~/.kube/config
 
 mkdir -p ~/.kube
