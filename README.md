@@ -90,18 +90,17 @@ sudo systemctl restart libvirtd
 
 
 # Cambiar el propietario y grupo de todos los archivos en el directorio /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
-sudo chown -R victory:victory /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
-sudo chmod -R 775 /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
+sudo chown -R $user:$user /home/$user/openshift_okd_cluster/terraform/ignition_configs
+sudo chmod -R 775 /home/$user/openshift_okd_cluster/terraform/ignition_configs
 
 # Asegurar permisos de escritura en los archivos dentro del directorio ignition_configs
-sudo chmod -R u+w /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
+sudo chmod -R u+w /home/$user/openshift_okd_cluster/terraform/ignition_configs
 
 
-openshift-install create ignition-configs --dir=/home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs --log-level=debug
+openshift-install create ignition-configs --dir=/home/victory/openshift_okd_cluster/terraform/ignition_configs --log-level=debug
 
 
 
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
 
 export KUBECONFIG=~/.kube/config
 
@@ -122,3 +121,14 @@ sudo nano /etc/resolv.conf
 search okd.lab
 nameserver 192.168.0.18
 nameserver 10.17.3.1
+
+
+/home/victory/openshift_okd_cluster/terraform/ignition_configs
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/victory/openshift_okd_cluster/terraform/ignition_configs core@192.168.150.10:/var/home/core/.kube
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/victory/openshift_okd_cluster/terraform/ignition_configs core@192.168.150.11:/var/home/core/.kube
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/victory/openshift_okd_cluster/terraform/ignition_configs core@192.168.150.12:/var/home/core/.kube
+
+ sudo virsh list
