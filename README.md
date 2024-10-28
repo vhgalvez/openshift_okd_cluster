@@ -147,11 +147,11 @@ sudo chmod -R 775 /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_netw
 sudo chmod -R u+w /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs
 
 
-openshift-install create ignition-configs --dir=/home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs --log-level=debug
+openshift-install create ignition-configs --dir=/home/$USER/openshift_okd_cluster/terraform/ignition_configs --log-level=debug
 
 
 
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
 
 export KUBECONFIG=~/.kube/config
 
