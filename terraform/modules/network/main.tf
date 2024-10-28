@@ -1,5 +1,5 @@
-resource "libvirt_network" "cluster_okd_network" {
-  name      = "cluster_okd_network"
+resource "libvirt_network" "kube_network_02" {
+  name      = "kube_network_02"
   mode      = "nat"
   domain    = "okd.lab"
   addresses = ["192.168.150.0/24"]
