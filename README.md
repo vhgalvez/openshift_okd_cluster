@@ -105,7 +105,7 @@ openshift-install create ignition-configs --dir=/home/victory/openshift_okd_clus
 export KUBECONFIG=~/.kube/config
 
 mkdir -p ~/.kube
-
+sudo chown -R core:core /var/home/core/.kube
 mv /var/home/core/.kube/auth/kubeconfig /var/home/core/.kube/config
 
 export KUBECONFIG=/var/home/core/.kube/config
@@ -125,10 +125,13 @@ nameserver 10.17.3.1
 
 
 
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@192.168.150.3:/var/home/core/.kube
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@192.168.150.10:/var/home/core/.kube
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@192.168.150.11:/var/home/core/.kube
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@192.168.150.12:/var/home/core/.kube
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@10.17.3.3:/var/home/core/.kube
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@10.17.3.10:/var/home/core/.kube
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@10.17.3.11:/var/home/core/.kube
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth core@10.17.3.12:/var/home/core/.kube
 
 
 
