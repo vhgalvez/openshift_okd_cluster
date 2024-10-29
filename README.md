@@ -150,29 +150,6 @@ sudo chmod -R u+w /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_netw
 openshift-install create ignition-configs --dir=/home/$USER/openshift_okd_cluster/terraform/ignition_configs --log-level=debug
 
 
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube
-
-
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.10:/var/home/core/.kube
-
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.11:/var/home/core/.kube
-
-
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.12:/var/home/core/.kube
-
-export KUBECONFIG=~/.kube/config
-
-mkdir -p ~/.kube
-
-mv /var/home/core/.kube/kubeconfig /var/home/core/.kube/config
-mv /var/home/core/.kube/ /var/home/core/.kube/config
-
-export KUBECONFIG=/var/home/core/.kube
-oc get nodes
-
-export KUBECONFIG=/var/home/core/.kube/config
-
-cp ~/.kube/auth/kubeconfig ~/.kube/config
 
 
 sudo setenforce 0
@@ -214,15 +191,23 @@ address=/okd.lab/192.168.150.12   # controlplane 3
 
 
 
-
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.10:/var/home/core/.kube/config
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.11:/var/home/core/.kube/config
+
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.12:/var/home/core/.kube/config
 
 mkdir -p /var/home/core/.kube
 
 
-
+sudo timedatectl set-timezone Europe/Madrid
 
 
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.3:/var/home/core/.kube/config
 
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube/config
+
+
