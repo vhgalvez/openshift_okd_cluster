@@ -1,3 +1,4 @@
+# terraform\modules\domain\main.tf
 resource "libvirt_domain" "okd_bootstrap" {
   name            = var.bootstrap.name
   description     = var.bootstrap.description
