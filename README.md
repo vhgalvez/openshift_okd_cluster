@@ -150,13 +150,15 @@ sudo chmod -R u+w /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_netw
 openshift-install create ignition-configs --dir=/home/$USER/openshift_okd_cluster/terraform/ignition_configs --log-level=debug
 
 
-
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
-
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.3:/var/home/core/.kube
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube
 
 
-sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.10:/var/home/core/.kube
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.11:/var/home/core/.kube
+
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.12:/var/home/core/.kube
 
 export KUBECONFIG=~/.kube/config
 
@@ -203,3 +205,16 @@ sudo virsh start okd-controlplane-2
 sudo virsh start okd-controlplane-3
 sudo virsh start okd-bootstrap
 sudo virsh net-start kube_network_02
+
+
+address=/okd.lab/192.168.150.3    # bootstrap
+address=/okd.lab/192.168.150.10   # controlplane 1 
+address=/okd.lab/192.168.150.11   # controlplane 2
+address=/okd.lab/192.168.150.12   # controlplane 3
+
+
+
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
+
+mkdir -p /var/home/core/.kube
