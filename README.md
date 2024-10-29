@@ -218,3 +218,11 @@ address=/okd.lab/192.168.150.12   # controlplane 3
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
 
 mkdir -p /var/home/core/.kube
+
+
+
+
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.3:/var/home/core/.kube/config
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube/config
