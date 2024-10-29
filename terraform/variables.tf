@@ -37,7 +37,7 @@ variable "controlplane_2" {
     description = "okd controlplane 2 vm"
     vcpu        = 3
     memory      = 3  # GiB
-    volume_size = 30 # GiB
+    volume_size = 20 # GiB
     address     = "192.168.150.11"
     mac         = "AA:BB:CC:20:00:01"
   }
@@ -50,7 +50,7 @@ variable "controlplane_3" {
     description = "okd controlplane 3 vm"
     vcpu        = 3
     memory      = 3  # GiB
-    volume_size = 30 # GiB
+    volume_size = 20 # GiB
     address     = "192.168.150.12"
     mac         = "AA:BB:CC:20:00:02"
   }
