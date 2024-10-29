@@ -3,7 +3,7 @@ resource "libvirt_network" "okd_network" {
   mode      = "nat"
   domain    = "okd.lab"
   addresses = ["192.168.150.0/24"]
-  autostart = false
+  autostart = true
 
   dns {
     enabled    = true
