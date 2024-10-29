@@ -21,7 +21,7 @@ module "ignition" {
 
 module "domain" {
   source     = "./modules/domain"
-  network_id = module.network.kube_network_02.id
+  network_id = module.network.okd_network.id
 
   bootstrap_volume_id   = module.volumes.bootstrap_volume.id
   bootstrap_ignition_id = module.ignition.bootstrap_ignition.id
