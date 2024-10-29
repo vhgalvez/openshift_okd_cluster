@@ -24,7 +24,7 @@ variable "controlplane_1" {
     description = "okd controlplane 1 vm"
     vcpu        = 6
     memory      = 16  # GiB
-    volume_size = 90 # GiB
+    volume_size = 120 # GiB
     address     = "192.168.150.10"
     mac         = "AA:BB:CC:20:00:00"
   }
