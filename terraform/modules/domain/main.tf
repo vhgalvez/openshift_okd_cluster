@@ -1,4 +1,11 @@
 # terraform\modules\domain\main.tf
+
+# Configura la zona horaria a "Europe/Madrid"
+resource "clock" "madrid" {
+  timezone = "Europe/Madrid"
+}
+
+# Definición del dominio okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name            = var.bootstrap.name
   description     = var.bootstrap.description
@@ -15,7 +22,6 @@ resource "libvirt_domain" "okd_bootstrap" {
   cpu {
     mode = "host-passthrough"
   }
-
 
   graphics {
     type     = "vnc"
@@ -37,6 +43,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 }
 
+# Definición del dominio okd_controlplane_1
 resource "libvirt_domain" "okd_controlplane_1" {
   name            = var.controlplane_1.name
   description     = var.controlplane_1.description
@@ -53,7 +60,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
   cpu {
     mode = "host-passthrough"
   }
-
 
   graphics {
     type     = "vnc"
@@ -74,6 +80,8 @@ resource "libvirt_domain" "okd_controlplane_1" {
     wait_for_lease = true
   }
 }
+
+# Definición del dominio okd_controlplane_2
 resource "libvirt_domain" "okd_controlplane_2" {
   name            = var.controlplane_2.name
   description     = var.controlplane_2.description
@@ -110,6 +118,8 @@ resource "libvirt_domain" "okd_controlplane_2" {
     wait_for_lease = true
   }
 }
+
+# Definición del dominio okd_controlplane_3
 resource "libvirt_domain" "okd_controlplane_3" {
   name            = var.controlplane_3.name
   description     = var.controlplane_3.description
@@ -137,8 +147,6 @@ resource "libvirt_domain" "okd_controlplane_3" {
     target_type = "serial"
     target_port = "0"
   }
-
-
 
   network_interface {
     network_id     = var.network_id
