@@ -40,7 +40,14 @@ resource "libvirt_domain" "okd_bootstrap" {
     inline = [
       "sudo timedatectl set-timezone Europe/Madrid",
       "sudo timedatectl set-ntp true",
-      "sudo systemctl restart systemd-timesyncd"
+      "sudo systemctl disable systemd-timesyncd --now",
+      "sudo yum install -y chrony",
+      "echo 'server 0.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 1.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 2.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 3.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "sudo systemctl restart chronyd",
+      "sudo systemctl enable chronyd"
     ]
     connection {
       type        = "ssh"
@@ -91,7 +98,14 @@ resource "libvirt_domain" "okd_controlplane_1" {
     inline = [
       "sudo timedatectl set-timezone Europe/Madrid",
       "sudo timedatectl set-ntp true",
-      "sudo systemctl restart systemd-timesyncd"
+      "sudo systemctl disable systemd-timesyncd --now",
+      "sudo yum install -y chrony",
+      "echo 'server 0.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 1.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 2.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 3.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "sudo systemctl restart chronyd",
+      "sudo systemctl enable chronyd"
     ]
     connection {
       type        = "ssh"
@@ -142,7 +156,14 @@ resource "libvirt_domain" "okd_controlplane_2" {
     inline = [
       "sudo timedatectl set-timezone Europe/Madrid",
       "sudo timedatectl set-ntp true",
-      "sudo systemctl restart systemd-timesyncd"
+      "sudo systemctl disable systemd-timesyncd --now",
+      "sudo yum install -y chrony",
+      "echo 'server 0.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 1.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 2.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 3.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "sudo systemctl restart chronyd",
+      "sudo systemctl enable chronyd"
     ]
     connection {
       type        = "ssh"
@@ -193,7 +214,14 @@ resource "libvirt_domain" "okd_controlplane_3" {
     inline = [
       "sudo timedatectl set-timezone Europe/Madrid",
       "sudo timedatectl set-ntp true",
-      "sudo systemctl restart systemd-timesyncd"
+      "sudo systemctl disable systemd-timesyncd --now",
+      "sudo yum install -y chrony",
+      "echo 'server 0.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 1.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 2.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "echo 'server 3.pool.ntp.org iburst' | sudo tee -a /etc/chrony.conf",
+      "sudo systemctl restart chronyd",
+      "sudo systemctl enable chronyd"
     ]
     connection {
       type        = "ssh"
