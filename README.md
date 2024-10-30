@@ -215,3 +215,6 @@ sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluste
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/okd_cluster_openshift_fedora_coreos_kvm/nat_network_02/ignition_configs/auth/kubeconfig core@10.17.3.10:/var/home/core/.kube/config
 
 
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/openshift-okd/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
+
