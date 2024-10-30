@@ -202,6 +202,7 @@ sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluste
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.12:/var/home/core/.kube/config
 
 mkdir -p /var/home/core/.kube
+export KUBECONFIG=/var/home/core/.kube/config
 
 sudo timedatectl set-ntp true
 timedatectl status
