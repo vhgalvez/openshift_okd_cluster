@@ -190,7 +190,7 @@ address=/okd.lab/192.168.150.10   # controlplane 1
 address=/okd.lab/192.168.150.11   # controlplane 2
 address=/okd.lab/192.168.150.12   # controlplane 3
 
-
+sudo ssh -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift core@192.168.150.10  -p 22
 
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
 
