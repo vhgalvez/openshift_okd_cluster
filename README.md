@@ -122,6 +122,30 @@ search okd.lab
 nameserver 192.168.0.18
 nameserver 10.17.3.1
 
+sudo nano /etc/sysconfig/network-scripts/ifcfg-enp4s0f1
+  GNU nano 5.6.1 /etc/sysconfig/network-scripts/ifcfg-enp4s0f1  Modificado
+DEVICE=enp4s0f1
+BOOTPROTO=dhcp
+ONBOOT=yes
+
+
+
+  GNU nano 5.6.1 /etc/sysconfig/network-scripts/ifcfg-enp4s0f1  Modificado
+BOOTPROTO=none
+IPADDR=192.168.0.50     # IP deseada
+NETMASK=255.255.255.0   # Máscara de subred
+GATEWAY=192.168.0.1     # Puerta de enlace predeterminada
+DNS1=8.8.8.8            # Servidor DNS primario
+DNS2=8.8.4.4            # Servidor DNS secundario (opcional)
+
+
+[victory@physical1 ~]$ sudo nmcli device disconnect enp4s0f1
+El dispositivo «enp4s0f1» ha sido desconectado correctamente.
+[victory@physical1 ~]$ sudo nmcli device connect enp4s0f1
+El dispositivo «enp4s0f1» se activó correctamente con «5f22d25b-6f79-4be7-b25a-94f1de0eb1aa».
+[victory@physical1 ~]$
+
+sudo systemctl restart NetworkManager
 
 
 
@@ -218,3 +242,4 @@ sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluste
 
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/openshift-okd/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
 
+sudo systemctl status libvirtd
