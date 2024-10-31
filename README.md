@@ -130,7 +130,7 @@ ONBOOT=yes
 
 
 
-  GNU nano 5.6.1 /etc/sysconfig/network-scripts/ifcfg-enp4s0f1  Modificado
+GNU nano 5.6.1 /etc/sysconfig/network-scripts/ifcfg-enp4s0f1  Modificado
 BOOTPROTO=none
 IPADDR=192.168.0.50     # IP deseada
 NETMASK=255.255.255.0   # Máscara de subred
