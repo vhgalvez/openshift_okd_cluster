@@ -245,3 +245,8 @@ sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluste
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift  /home/victory/openshift-okd/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
 
 sudo systemctl status libvirtd
+
+
+sudo systemctl stop systemd-resolved
+sudo systemctl disable systemd-resolved
+sudo systemctl status systemd-resolved
