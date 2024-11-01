@@ -4,7 +4,7 @@ terraform {
   required_providers {
     ct = {
       source  = "poseidon/ct"
-      version = "~> 0.13.0"  # Versión estable del proveedor `ct`
+      version = "~> 0.13.0"
     }
     libvirt = {
       source  = "dmacvicar/libvirt"
@@ -13,6 +13,10 @@ terraform {
     template = {
       source  = "hashicorp/template"
       version = "~> 2.2.0"
+    }
+    ignition = {
+      source  = "terraform-providers/ignition"
+      version = "~> 0.6.3"
     }
   }
 }
