@@ -292,3 +292,7 @@ sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluste
 
 sudo timedatectl set-ntp true
 timedatectl status
+
+sudo timedatectl set-ntp true
+timedatectl status
+date
