@@ -294,5 +294,5 @@ sudo timedatectl set-ntp true
 timedatectl status
 
 sudo timedatectl set-ntp true
-timedatectl status
+sudo timedatectl status
 date
