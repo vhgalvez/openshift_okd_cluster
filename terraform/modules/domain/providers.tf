@@ -1,10 +1,14 @@
 terraform {
-  required_version = "~>1.5"
+  required_version = "= 1.9.6"
 
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "0.8.1"
+      version = "0.8.0"
+    }
+    template = {
+      source  = "hashicorp/template"
+      version = "~> 2.2.0"
     }
   }
 }
@@ -12,4 +16,3 @@ terraform {
 provider "libvirt" {
   uri = "qemu:///system"
 }
-
