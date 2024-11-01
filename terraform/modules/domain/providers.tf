@@ -15,12 +15,8 @@ terraform {
       version = "~> 2.2.0"
     }
     ignition = {
-      source  = "bflad/ignition"
+      source  = "terraform-ignition/ignition"
       version = "~> 2.1.0"
     }
   }
-}
-
-provider "libvirt" {
-  uri = "qemu:///system"
 }
