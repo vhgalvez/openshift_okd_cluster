@@ -2,13 +2,13 @@ terraform {
   required_version = "= 1.9.8"
 
   required_providers {
-    ignition = {
-      source  = "terraform-providers/ignition"
-      version = "~> 0.6.3" # Utiliza una versión estable de la serie 0.6.x
+    ct = {
+      source  = "poseidon/ct"
+      version = "~> 0.13.0"  # Versión estable del proveedor `ct`
     }
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = ">= 0.8.0, < 0.9.0"
+      version = ">= 0.8.1, < 0.9.0"
     }
     template = {
       source  = "hashicorp/template"
