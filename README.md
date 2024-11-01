@@ -214,6 +214,13 @@ address=/okd.lab/192.168.150.10   # controlplane 1
 address=/okd.lab/192.168.150.11   # controlplane 2
 address=/okd.lab/192.168.150.12   # controlplane 3
 
+
+sudo systemctl status dnsmasq
+sudo systemctl restart dnsmasq
+
+
+
+
 sudo ssh -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift core@192.168.150.10  -p 22
 
 sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/$USER/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.3:/var/home/core/.kube/config
@@ -250,3 +257,22 @@ sudo systemctl status libvirtd
 sudo systemctl stop systemd-resolved
 sudo systemctl disable systemd-resolved
 sudo systemctl status systemd-resolved
+__
+
+4. Check libvirt Configuration Files
+Ensure that /etc/libvirt/libvirtd.conf allows TCP connections to qemu:///system. Open the configuration file:
+
+bash
+Copiar código
+sudo nano /etc/libvirt/libvirtd.conf
+Look for the following lines and ensure they’re set correctly:
+
+plaintext
+Copiar código
+unix_sock_group = "libvirt"
+unix_sock_rw_perms = "0770"
+After updating, restart the service:
+
+bash
+Copiar código
+sudo systemctl restart libvirtd
