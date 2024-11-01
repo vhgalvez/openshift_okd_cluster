@@ -1,4 +1,19 @@
 # terraform\modules\domain\main.tf
+
+# Configuración de los archivos de Ignition para montar el directorio e iniciar el servicio del agente de QEMU.
+data "ignition_systemd_unit" "docker_images_mount" {
+  name    = "docker-images.mount"
+  content = file("${path.module}/../docker-images-mount/docker-images.mount")
+  enabled = true
+}
+
+data "ignition_systemd_unit" "qemu_agent_service" {
+  name    = "qemu-agent.service"
+  content = file("${path.module}/../docker-images-mount/qemu-agent.service")
+  enabled = true
+}
+
+# Definición de la VM okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name            = var.bootstrap.name
   description     = var.bootstrap.description
@@ -15,7 +30,6 @@ resource "libvirt_domain" "okd_bootstrap" {
   cpu {
     mode = "host-passthrough"
   }
-
 
   graphics {
     type     = "vnc"
@@ -35,8 +49,16 @@ resource "libvirt_domain" "okd_bootstrap" {
     mac            = var.bootstrap.mac
     wait_for_lease = true
   }
+
+  ignition {
+    systemd = [
+      data.ignition_systemd_unit.docker_images_mount.id,
+      data.ignition_systemd_unit.qemu_agent_service.id
+    ]
+  }
 }
 
+# Definición de la VM okd_controlplane_1
 resource "libvirt_domain" "okd_controlplane_1" {
   name            = var.controlplane_1.name
   description     = var.controlplane_1.description
@@ -53,7 +75,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
   cpu {
     mode = "host-passthrough"
   }
-
 
   graphics {
     type     = "vnc"
@@ -73,7 +94,16 @@ resource "libvirt_domain" "okd_controlplane_1" {
     mac            = var.controlplane_1.mac
     wait_for_lease = true
   }
+
+  ignition {
+    systemd = [
+      data.ignition_systemd_unit.docker_images_mount.id,
+      data.ignition_systemd_unit.qemu_agent_service.id
+    ]
+  }
 }
+
+# Definición de la VM okd_controlplane_2
 resource "libvirt_domain" "okd_controlplane_2" {
   name            = var.controlplane_2.name
   description     = var.controlplane_2.description
@@ -109,7 +139,16 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mac            = var.controlplane_2.mac
     wait_for_lease = true
   }
+
+  ignition {
+    systemd = [
+      data.ignition_systemd_unit.docker_images_mount.id,
+      data.ignition_systemd_unit.qemu_agent_service.id
+    ]
+  }
 }
+
+# Definición de la VM okd_controlplane_3
 resource "libvirt_domain" "okd_controlplane_3" {
   name            = var.controlplane_3.name
   description     = var.controlplane_3.description
@@ -138,13 +177,18 @@ resource "libvirt_domain" "okd_controlplane_3" {
     target_port = "0"
   }
 
-
-
   network_interface {
     network_id     = var.network_id
     hostname       = var.controlplane_3.name
     addresses      = [var.controlplane_3.address]
     mac            = var.controlplane_3.mac
     wait_for_lease = true
+  }
+
+  ignition {
+    systemd = [
+      data.ignition_systemd_unit.docker_images_mount.id,
+      data.ignition_systemd_unit.qemu_agent_service.id
+    ]
   }
 }
