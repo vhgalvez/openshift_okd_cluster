@@ -132,16 +132,16 @@ ONBOOT=yes
 
 GNU nano 5.6.1 /etc/sysconfig/network-scripts/ifcfg-enp4s0f1  Modificado
 BOOTPROTO=none
-IPADDR=192.168.0.50     # IP deseada
+IPADDR=192.168.0.25     # IP deseada
 NETMASK=255.255.255.0   # Máscara de subred
 GATEWAY=192.168.0.1     # Puerta de enlace predeterminada
 DNS1=8.8.8.8            # Servidor DNS primario
 DNS2=8.8.4.4            # Servidor DNS secundario (opcional)
 
 
-[victory@physical1 ~]$ sudo nmcli device disconnect enp4s0f1
+sudo nmcli device disconnect enp4s0f1
 El dispositivo «enp4s0f1» ha sido desconectado correctamente.
-[victory@physical1 ~]$ sudo nmcli device connect enp4s0f1
+sudo nmcli device connect enp4s0f1
 El dispositivo «enp4s0f1» se activó correctamente con «5f22d25b-6f79-4be7-b25a-94f1de0eb1aa».
 [victory@physical1 ~]$
 
@@ -276,3 +276,19 @@ After updating, restart the service:
 bash
 Copiar código
 sudo systemctl restart libvirtd
+
+
+sudo ssh -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift core@192.168.150.10  -p 22
+
+
+mkdir -p /var/home/core/.kube
+export KUBECONFIG=/var/home/core/.kube/config
+
+
+
+
+sudo scp -i /root/.ssh/cluster_openshift/key_cluster_openshift/id_rsa_key_cluster_openshift /home/victory/openshift_okd_cluster/terraform/ignition_configs/auth/kubeconfig core@192.168.150.10:/var/home/core/.kube/config
+
+
+sudo timedatectl set-ntp true
+timedatectl status
