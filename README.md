@@ -4,6 +4,7 @@
 This project provisions a single node OpenShift OKD cluster on KVM/QEMU VM's. Infrastructure is provisioned using terraform and the cluster is created using the User-provisioned infrastructure (UPI) method.
 
 # Important
+
 When using okd, make sure to download the openshift tools for okd. The redhat provided tools will not work on fedora coreos[^1].
 
 # Setup
