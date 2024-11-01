@@ -15,7 +15,7 @@ terraform {
       version = "~> 2.2.0"
     }
     ignition = {
-      source  = "community/ignition"
+      source  = "bflad/ignition"
       version = "~> 2.1.0"
     }
   }
