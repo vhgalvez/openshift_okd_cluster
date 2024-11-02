@@ -12,9 +12,6 @@ terraform {
       source  = "hashicorp/template"
       version = "~> 2.2.0"
     }
-    ignition = {
-      source  = "terraform-providers/ignition"
-      version = "~> 0.6.3" # Asegura compatibilidad con versiones disponibles
-    }
+
   }
 }
