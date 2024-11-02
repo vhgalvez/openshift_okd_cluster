@@ -85,9 +85,3 @@ variable "controlplane_count" {
   description = "Number of control planes"
   default     = 3
 }
-
-variable "proxy" {
-  type        = map(string)
-  description = "Proxy configuration for Ignition"
-  default     = {}
-}

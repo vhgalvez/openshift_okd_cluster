@@ -23,9 +23,3 @@ variable "controlplane_3_volume_size" {
   type        = number
   description = "Size of controlplane 3 volume in GiB"
 }
-
-variable "proxy" {
-  type        = map(string)
-  description = "Proxy configuration for Ignition"
-  default     = {}
-}
