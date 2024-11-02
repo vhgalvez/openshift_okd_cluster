@@ -1,5 +1,7 @@
 # terraform\modules\domain\main.tf
 
+// Ensure no provider version constraints are defined here to avoid conflicts
+
 # Definición de la VM okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name            = var.bootstrap.name
@@ -37,6 +39,8 @@ resource "libvirt_domain" "okd_bootstrap" {
     wait_for_lease = true
   }
 }
+
+// Ensure no provider version constraints are defined here to avoid conflicts
 
 # Definición de la VM okd_controlplane_1
 resource "libvirt_domain" "okd_controlplane_1" {
@@ -76,6 +80,8 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 }
 
+// Ensure no provider version constraints are defined here to avoid conflicts
+
 # Definición de la VM okd_controlplane_2
 resource "libvirt_domain" "okd_controlplane_2" {
   name            = var.controlplane_2.name
@@ -113,6 +119,8 @@ resource "libvirt_domain" "okd_controlplane_2" {
     wait_for_lease = true
   }
 }
+
+// Ensure no provider version constraints are defined here to avoid conflicts
 
 # Definición de la VM okd_controlplane_3
 resource "libvirt_domain" "okd_controlplane_3" {
