@@ -43,13 +43,15 @@ data "ignition_user" "core" {
 # Definición de las máquinas virtuales de OKD
 
 resource "libvirt_domain" "okd_bootstrap" {
-  name            = var.bootstrap.name
-  description     = var.bootstrap.description
-  vcpu            = var.bootstrap.vcpu
-  memory          = var.bootstrap.memory * 1024 # MiB
-  running         = true
-  qemu_agent      = true
-  coreos_ignition = data.ignition_config.startup[0].rendered
+  name        = var.bootstrap.name
+  description = var.bootstrap.description
+  vcpu        = var.bootstrap.vcpu
+  memory      = var.bootstrap.memory * 1024 # MiB
+  running     = true
+  qemu_agent  = true
+
+  # Use the bootstrap ignition configuration instead of the startup one
+  ignition = var.bootstrap_ignition_id
 
   disk {
     volume_id = var.bootstrap_volume_id
@@ -83,13 +85,15 @@ resource "libvirt_domain" "okd_bootstrap" {
 # Definición de las máquinas de control plane
 
 resource "libvirt_domain" "okd_controlplane_1" {
-  name            = var.controlplane_1.name
-  description     = var.controlplane_1.description
-  vcpu            = var.controlplane_1.vcpu
-  memory          = var.controlplane_1.memory * 1024 # MiB
-  running         = true
-  qemu_agent      = true
-  coreos_ignition = data.ignition_config.startup[1].rendered
+  name        = var.controlplane_1.name
+  description = var.controlplane_1.description
+  vcpu        = var.controlplane_1.vcpu
+  memory      = var.controlplane_1.memory * 1024 # MiB
+  running     = true
+  qemu_agent  = true
+
+  # Use the master ignition configuration
+  ignition = var.master_ignition_id
 
   disk {
     volume_id = var.controlplane_1_volume_id
@@ -121,13 +125,15 @@ resource "libvirt_domain" "okd_controlplane_1" {
 }
 
 resource "libvirt_domain" "okd_controlplane_2" {
-  name            = var.controlplane_2.name
-  description     = var.controlplane_2.description
-  vcpu            = var.controlplane_2.vcpu
-  memory          = var.controlplane_2.memory * 1024 # MiB
-  running         = true
-  qemu_agent      = true
-  coreos_ignition = data.ignition_config.startup[2].rendered
+  name        = var.controlplane_2.name
+  description = var.controlplane_2.description
+  vcpu        = var.controlplane_2.vcpu
+  memory      = var.controlplane_2.memory * 1024 # MiB
+  running     = true
+  qemu_agent  = true
+
+  # Use the master ignition configuration
+  ignition = var.master_ignition_id
 
   disk {
     volume_id = var.controlplane_2_volume_id
