@@ -1,3 +1,8 @@
+provider "ignition" {
+  source  = "community-terraform-providers/ignition"
+  version = "2.1.0"
+}
+
 # Define volume for the bootstrap Ignition file
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
