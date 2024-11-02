@@ -56,9 +56,3 @@ module "domain" {
   # ]
 }
 
-# Initialize the modules
-terraform init
-
-# Apply the configuration
-terraform apply
-
