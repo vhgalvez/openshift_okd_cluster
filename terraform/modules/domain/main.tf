@@ -52,17 +52,11 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = var.bootstrap_ignition_id
-    scsi      = false
-  }
-
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = var.bootstrap_volume_id
+    volume_id = libvirt_volume.okd_bootstrap.id
     scsi      = false
   }
 
@@ -100,17 +94,11 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = var.master_ignition_id
-    scsi      = false
-  }
-
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = var.controlplane_1_volume_id
+    volume_id = libvirt_volume.okd_controlplane_1.id
     scsi      = false
   }
 
@@ -146,17 +134,11 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = var.master_ignition_id
-    scsi      = false
-  }
-
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = var.controlplane_2_volume_id
+    volume_id = libvirt_volume.okd_controlplane_2.id
     scsi      = false
   }
 
@@ -185,24 +167,18 @@ resource "libvirt_domain" "okd_controlplane_2" {
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
-  name            = var.controlplane_3.name
-  description     = var.controlplane_3.description
-  vcpu            = var.controlplane_3.vcpu
-  memory          = var.controlplane_3.memory * 1024 # MiB
-  running         = true
-  qemu_agent      = true
-
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = var.master_ignition_id
-    scsi      = false
-  }
+  name        = var.controlplane_3.name
+  description = var.controlplane_3.description
+  vcpu        = var.controlplane_3.vcpu
+  memory      = var.controlplane_3.memory * 1024 # MiB
+  running     = true
+  qemu_agent  = true
 
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = var.controlplane_3_volume_id
+    volume_id = libvirt_volume.okd_controlplane_3.id
     scsi      = false
   }
 
