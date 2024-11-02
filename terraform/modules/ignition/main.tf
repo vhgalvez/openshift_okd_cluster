@@ -1,3 +1,4 @@
+# terraform\modules\ignition\main.tf
 terraform {
   required_providers {
     ignition = {
@@ -19,15 +20,14 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/bootstrap.ign"
+  source = "${path.module}/../../ignition_configs/bootstrap.ign" # Verifica que esta ruta sea correcta
   format = "raw"
 }
 
-// Define volume for the master Ignition file
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/master.ign"
+  source = "${path.module}/../../ignition_configs/master.ign" # Verifica que esta ruta sea correcta
   format = "raw"
 }
 
