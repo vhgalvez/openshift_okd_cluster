@@ -14,15 +14,15 @@ data "ignition_systemd_unit" "qemu_agent" {
 
 # Definición de la configuración de Ignition para cada host
 data "ignition_config" "startup" {
-  users = [data.ignition_user.core.rendered]
+  count = var.hosts
 
-  files = [for i in range(var.hosts) : data.ignition_file.hostname[i].rendered]
-
+  filesystems = []
   systemd = [
     data.ignition_systemd_unit.mount_images.rendered,
     data.ignition_systemd_unit.qemu_agent.rendered,
   ]
-  count = var.hosts
+  users = [data.ignition_user.core.rendered]
+  files = [data.ignition_file.hostname[count.index].rendered]
 }
 
 # Configuración de archivos de hostname en cada host
@@ -49,6 +49,8 @@ resource "libvirt_domain" "okd_bootstrap" {
   vcpu            = var.bootstrap.vcpu
   memory          = var.bootstrap.memory * 1024 # MiB
   running         = true
+  qemu_agent      = true
+  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[0].rendered
 
   disk {
@@ -78,6 +80,19 @@ resource "libvirt_domain" "okd_bootstrap" {
     mac            = var.bootstrap.mac
     wait_for_lease = true
   }
+
+  xml {
+    xslt = <<-XSLT
+      <?xml version="1.0" ?>
+      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:template match="@*|node()">
+          <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+          </xsl:copy>
+        </xsl:template>
+      </xsl:stylesheet>
+    XSLT
+  }
 }
 
 # Definición de las máquinas de control plane
@@ -88,6 +103,8 @@ resource "libvirt_domain" "okd_controlplane_1" {
   vcpu            = var.controlplane_1.vcpu
   memory          = var.controlplane_1.memory * 1024 # MiB
   running         = true
+  qemu_agent      = true
+  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[1].rendered
 
   disk {
@@ -117,6 +134,19 @@ resource "libvirt_domain" "okd_controlplane_1" {
     mac            = var.controlplane_1.mac
     wait_for_lease = true
   }
+
+  xml {
+    xslt = <<-XSLT
+      <?xml version="1.0" ?>
+      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:template match="@*|node()">
+          <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+          </xsl:copy>
+        </xsl:template>
+      </xsl:stylesheet>
+    XSLT
+  }
 }
 
 resource "libvirt_domain" "okd_controlplane_2" {
@@ -125,6 +155,8 @@ resource "libvirt_domain" "okd_controlplane_2" {
   vcpu            = var.controlplane_2.vcpu
   memory          = var.controlplane_2.memory * 1024 # MiB
   running         = true
+  qemu_agent      = true
+  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
@@ -154,6 +186,19 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mac            = var.controlplane_2.mac
     wait_for_lease = true
   }
+
+  xml {
+    xslt = <<-XSLT
+      <?xml version="1.0" ?>
+      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:template match="@*|node()">
+          <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+          </xsl:copy>
+        </xsl:template>
+      </xsl:stylesheet>
+    XSLT
+  }
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
@@ -163,6 +208,8 @@ resource "libvirt_domain" "okd_controlplane_3" {
   vcpu            = var.controlplane_3.vcpu
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
+  qemu_agent      = true
+  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
@@ -191,5 +238,18 @@ resource "libvirt_domain" "okd_controlplane_3" {
     addresses      = [var.controlplane_3.address]
     mac            = var.controlplane_3.mac
     wait_for_lease = true
+  }
+
+  xml {
+    xslt = <<-XSLT
+      <?xml version="1.0" ?>
+      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xsl:template match="@*|node()">
+          <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+          </xsl:copy>
+        </xsl:template>
+      </xsl:stylesheet>
+    XSLT
   }
 }
