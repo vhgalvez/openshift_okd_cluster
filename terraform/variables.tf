@@ -73,3 +73,9 @@ variable "hosts" {
   description = "Number of hosts"
   default     = 3
 }
+
+variable "hostname_prefix" {
+  type        = string
+  description = "Prefix for hostnames"
+  default     = "okd-node-"
+}

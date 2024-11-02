@@ -54,6 +54,8 @@ module "domain" {
   bootstrap_ignition_id = var.bootstrap_ignition_id
   master_ignition_id    = var.master_ignition_id
 
+  hostname_prefix = var.hostname_prefix
+
   # depends_on = [
   #   module.network,
   #   module.volumes

@@ -33,6 +33,11 @@ variable "master_ignition_id" {
   description = "value of master_ignition_id"
 }
 
+variable "hostname_prefix" {
+  type        = string
+  description = "Prefix for hostnames"
+}
+
 variable "bootstrap" {
   type = map(string)
 }

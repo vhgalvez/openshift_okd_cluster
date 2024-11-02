@@ -33,7 +33,6 @@ data "ignition_file" "hostname" {
   content {
     content = "${var.hostname_prefix}${count.index + 1}"
   }
-
 }
 
 # Configuración del usuario core
