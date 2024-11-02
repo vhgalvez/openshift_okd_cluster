@@ -22,9 +22,6 @@ data "ignition_config" "startup" {
   ]
   users = [data.ignition_user.core.rendered]
   files = [data.ignition_file.hostname[count.index].rendered]
-
-  # Ensure no empty proxy configuration is included
-  proxy = null
 }
 
 # Configuración de archivos de hostname en cada host
