@@ -41,3 +41,16 @@ variable "hostname_prefix" {
 variable "controlplane_count" {
   type = number
 }
+
+variable "hostname_prefix" {
+variable "hosts" {
+  type        = number
+  description = "Number of hosts"
+}
+
+  type = string
+}
+
+variable "controlplane_count" {
+  type = number
+}

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "~> 0.8.1"
+      version = "~> 0.7.1" // Update this to a version that supports cdrom and firmware blocks
     }
     ignition = {
       source  = "community-terraform-providers/ignition"
@@ -59,7 +59,4 @@ module "domain" {
 
   // depends_on = [
   //   module.network,
-  //   module.volumes
-  // ]
-}
-
+  //   module.volumes  // ]}
