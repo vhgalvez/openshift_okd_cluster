@@ -34,6 +34,9 @@ module "domain" {
   bootstrap_ignition_id = data.ct_config.bootstrap_config.rendered
   master_ignition_id    = data.ct_config.master_config.rendered
 
+  bootstrap_ignition_id = data.ct_config.bootstrap_config.rendered
+  master_ignition_id    = data.ct_config.master_config.rendered
+
   # depends_on = [
   #   module.network,
   #   module.volumes
