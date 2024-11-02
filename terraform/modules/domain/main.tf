@@ -42,24 +42,6 @@ data "ignition_user" "core" {
   password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
-# Definición del volumen para el archivo Ignition del bootstrap
-/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign"
-  format = "raw"
-}
-
-# Definición del volumen para el archivo Ignition del master
-/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign"
-  format = "raw"
-}
-
-# Definición del recurso para el archivo Ignition del bootstrap
-/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign")
-}
-
-# Definición del recurso para el archivo Ignition del master
-/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign")
-}
-
 # Definición de las máquinas virtuales de OKD
 
 resource "libvirt_domain" "okd_bootstrap" {
@@ -153,7 +135,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   qemu_agent  = true
 
   # Use the master ignition configuration
-  coreos_ignition = libvirt_ignition.master_ignition.id
+  coreos_ignition = file("${path.module}/../../ignition_configs/master.ign")
 
   disk {
     volume_id = var.controlplane_2_volume_id
@@ -191,7 +173,9 @@ resource "libvirt_domain" "okd_controlplane_3" {
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  coreos_ignition = libvirt_ignition.master_ignition.id
+
+  # Use the master ignition configuration
+  coreos_ignition = file("${path.module}/../../ignition_configs/master.ign")
 
   disk {
     volume_id = var.controlplane_3_volume_id
