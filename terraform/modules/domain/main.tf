@@ -56,7 +56,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   firmware = "efi"
 
   disk {
-    volume_id = var.bootstrap_volume_id
+    volume_id = libvirt_volume.okd_bootstrap.id
     scsi      = false
   }
 
@@ -98,7 +98,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   firmware = "efi"
 
   disk {
-    volume_id = var.controlplane_1_volume_id
+    volume_id = libvirt_volume.okd_controlplane_1.id
     scsi      = false
   }
 
@@ -138,7 +138,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   firmware = "efi"
 
   disk {
-    volume_id = var.controlplane_2_volume_id
+    volume_id = libvirt_volume.okd_controlplane_2.id
     scsi      = false
   }
 
@@ -178,7 +178,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   firmware = "efi"
 
   disk {
-    volume_id = var.controlplane_3_volume_id
+    volume_id = libvirt_volume.okd_controlplane_3.id
     scsi      = false
   }
 
