@@ -11,7 +11,11 @@ terraform {
   }
 }
 
-# Define volume for the bootstrap Ignition file
+provider "libvirt" {
+  // Configuration options
+}
+
+// Define volume for the bootstrap Ignition file
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
@@ -19,7 +23,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   format = "raw"
 }
 
-# Define volume for the master Ignition file
+// Define volume for the master Ignition file
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
