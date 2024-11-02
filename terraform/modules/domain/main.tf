@@ -22,6 +22,9 @@ data "ignition_config" "startup" {
   ]
   users = [data.ignition_user.core.rendered]
   files = [data.ignition_file.hostname[count.index].rendered]
+
+  # Ensure no empty proxy configuration is included
+  proxy = null
 }
 
 # Configuración de archivos de hostname en cada host
@@ -51,7 +54,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   qemu_agent  = true
 
   # Use the bootstrap ignition configuration instead of the startup one
-  ignition = var.bootstrap_ignition_id
+  coreos_ignition = data.ignition_config.startup[0].rendered
 
   disk {
     volume_id = var.bootstrap_volume_id
@@ -93,7 +96,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   qemu_agent  = true
 
   # Use the master ignition configuration
-  ignition = var.master_ignition_id
+  coreos_ignition = data.ignition_config.startup[1].rendered
 
   disk {
     volume_id = var.controlplane_1_volume_id
@@ -133,7 +136,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   qemu_agent  = true
 
   # Use the master ignition configuration
-  ignition = var.master_ignition_id
+  coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
     volume_id = var.controlplane_2_volume_id
