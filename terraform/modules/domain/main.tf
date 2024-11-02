@@ -27,9 +27,12 @@ data "ignition_config" "startup" {
 
 # Configuración de archivos de hostname en cada host
 data "ignition_file" "hostname" {
-  count   = var.hosts
-  path    = "/etc/hostname"
-  content = "${var.hostname_prefix}${count.index + 1}"
+  count = var.hosts
+  path  = "/etc/hostname"
+  
+  content {
+    content = "${var.hostname_prefix}${count.index + 1}"
+  }
   // Remove unsupported arguments
   // filesystem = "root"
   // user       = "root"
