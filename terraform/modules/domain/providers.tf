@@ -14,9 +14,5 @@ terraform {
       source  = "hashicorp/template"
       version = "~> 2.2.0"
     }
-    ignition = {
-      source  = "terraform-ignition/ignition"
-      version = "~> 2.1.0"
-    }
   }
 }
