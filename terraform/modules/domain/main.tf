@@ -58,13 +58,6 @@ resource "libvirt_domain" "okd_bootstrap" {
     mac            = var.bootstrap.mac
     wait_for_lease = true
   }
-
-  ignition {
-    systemd = [
-      data.ignition_systemd_unit.docker_images_mount.id,
-      data.ignition_systemd_unit.qemu_agent_service.id
-    ]
-  }
 }
 
 # Definición de la VM okd_controlplane_1
@@ -102,13 +95,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
     addresses      = [var.controlplane_1.address]
     mac            = var.controlplane_1.mac
     wait_for_lease = true
-  }
-
-  ignition {
-    systemd = [
-      data.ignition_systemd_unit.docker_images_mount.id,
-      data.ignition_systemd_unit.qemu_agent_service.id
-    ]
   }
 }
 
@@ -148,13 +134,6 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mac            = var.controlplane_2.mac
     wait_for_lease = true
   }
-
-  ignition {
-    systemd = [
-      data.ignition_systemd_unit.docker_images_mount.id,
-      data.ignition_systemd_unit.qemu_agent_service.id
-    ]
-  }
 }
 
 # Definición de la VM okd_controlplane_3
@@ -192,12 +171,5 @@ resource "libvirt_domain" "okd_controlplane_3" {
     addresses      = [var.controlplane_3.address]
     mac            = var.controlplane_3.mac
     wait_for_lease = true
-  }
-
-  ignition {
-    systemd = [
-      data.ignition_systemd_unit.docker_images_mount.id,
-      data.ignition_systemd_unit.qemu_agent_service.id
-    ]
   }
 }
