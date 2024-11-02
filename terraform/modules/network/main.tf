@@ -1,8 +1,3 @@
-provider "ignition" {
-  source  = "community-terraform-providers/ignition"
-  version = "2.1.0"
-}
-
 resource "libvirt_network" "okd_network" {
   name      = "okd_network"
   mode      = "nat"

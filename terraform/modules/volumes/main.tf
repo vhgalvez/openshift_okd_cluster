@@ -1,8 +1,3 @@
-provider "ignition" {
-  source  = "community-terraform-providers/ignition"
-  version = "2.1.0"
-}
-
 # size = convert GiB to Bytes
 resource "libvirt_volume" "fedora_coreos" {
   name   = "fedora_coreos.qcow2"
