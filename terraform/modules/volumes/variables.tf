@@ -1,6 +1,7 @@
 variable "coreos_image" {
   type        = string
   description = "CoreOS image to use"
+  default     = "/mnt/lv_data/organized_storage/images/fedora-coreos-39.20231101.3.0-qemu.x86_64.qcow2"
 }
 
 variable "bootstrap_volume_size" {
