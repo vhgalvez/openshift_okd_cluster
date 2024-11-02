@@ -33,6 +33,8 @@ module "ignition_config" {
   mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
   qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
   core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
+  hosts                   = var.hosts
+  hostname_prefix         = var.hostname_prefix
 }
 
 # Definición de las máquinas virtuales de OKD
@@ -221,4 +223,38 @@ resource "libvirt_domain" "okd_controlplane_3" {
     mac            = var.controlplane_3.mac
     wait_for_lease = true
   }
+}
+
+resource "libvirt_volume" "fedora_coreos" {
+  name   = "fedora_coreos.qcow2"
+  pool   = "default"
+  source = var.coreos_image
+}
+
+resource "libvirt_volume" "okd_bootstrap" {
+  name           = "okd_bootstrap.qcow2"
+  pool           = "default"
+  size           = var.bootstrap_volume_size * 1073741824
+  base_volume_id = libvirt_volume.fedora_coreos.id
+}
+
+resource "libvirt_volume" "okd_controlplane_1" {
+  name           = "okd_controlplane_1.qcow2"
+  pool           = "default"
+  size           = var.controlplane_1_volume_size * 1073741824
+  base_volume_id = libvirt_volume.fedora_coreos.id
+}
+
+resource "libvirt_volume" "okd_controlplane_2" {
+  name           = "okd_controlplane_2.qcow2"
+  pool           = "default"
+  size           = var.controlplane_2_volume_size * 1073741824
+  base_volume_id = libvirt_volume.fedora_coreos.id
+}
+
+resource "libvirt_volume" "okd_controlplane_3" {
+  name           = "okd_controlplane_3.qcow2"
+  pool           = "default"
+  size           = var.controlplane_3_volume_size * 1073741824
+  base_volume_id = libvirt_volume.fedora_coreos.id
 }

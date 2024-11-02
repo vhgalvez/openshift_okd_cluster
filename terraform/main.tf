@@ -43,6 +43,8 @@ module "volumes" {
   controlplane_1_volume_size = var.controlplane_1.volume_size
   controlplane_2_volume_size = var.controlplane_2.volume_size
   controlplane_3_volume_size = var.controlplane_3.volume_size
+  hosts                      = var.controlplane_count + 1
+  hostname_prefix            = var.hostname_prefix
 }
 
 module "domain" {

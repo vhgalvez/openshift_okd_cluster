@@ -23,3 +23,13 @@ variable "controlplane_3_volume_size" {
   type        = number
   description = "Size of controlplane 3 volume in GiB"
 }
+
+variable "hosts" {
+  type        = number
+  description = "Number of hosts"
+}
+
+variable "hostname_prefix" {
+  type        = string
+  description = "Prefix for hostnames"
+}
