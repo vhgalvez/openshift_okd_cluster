@@ -43,18 +43,12 @@ data "ignition_user" "core" {
 }
 
 # Definición del volumen para el archivo Ignition del bootstrap
-resource "libvirt_volume" "bootstrap_ignition_volume" {
-  name   = "okd_bootstrap.ign"
-  pool   = "default"
-  source = "${path.module}/../../ignition_configs/bootstrap.ign"
+/../../ignition_configs/bootstrap.ign"
   format = "raw"
 }
 
 # Definición del volumen para el archivo Ignition del master
-resource "libvirt_volume" "master_ignition_volume" {
-  name   = "okd_master.ign"
-  pool   = "default"
-  source = "${path.module}/../../ignition_configs/master.ign"
+/../../ignition_configs/master.ign"
   format = "raw"
 }
 
@@ -83,7 +77,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   qemu_agent  = true
 
   # Use the bootstrap ignition configuration
-  coreos_ignition = libvirt_ignition.bootstrap_ignition.id
+  coreos_ignition = file("${path.module}/../../ignition_configs/bootstrap.ign")
 
   disk {
     volume_id = var.bootstrap_volume_id
@@ -125,7 +119,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   qemu_agent  = true
 
   # Use the master ignition configuration
-  coreos_ignition = libvirt_ignition.master_ignition.id
+  coreos_ignition = file("${path.module}/../../ignition_configs/master.ign")
 
   disk {
     volume_id = var.controlplane_1_volume_id

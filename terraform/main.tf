@@ -51,8 +51,8 @@ module "domain" {
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
 
-  bootstrap_ignition_id = var.bootstrap_ignition_id
-  master_ignition_id    = var.master_ignition_id
+  bootstrap_ignition_id = module.ignition.bootstrap_ignition.id
+  master_ignition_id    = module.ignition.master_ignition.id
 
   hostname_prefix = var.hostname_prefix
 
