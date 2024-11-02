@@ -52,7 +52,9 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
-  # Attach the Ignition volume as a disk
+  # Use UEFI firmware without secure boot
+  firmware = "efi"
+
   disk {
     volume_id = var.bootstrap_volume_id
     scsi      = false
@@ -92,7 +94,9 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
-  # Attach the Ignition volume as a disk
+  # Use UEFI firmware without secure boot
+  firmware = "efi"
+
   disk {
     volume_id = var.controlplane_1_volume_id
     scsi      = false
@@ -130,7 +134,9 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
-  # Attach the Ignition volume as a disk
+  # Use UEFI firmware without secure boot
+  firmware = "efi"
+
   disk {
     volume_id = var.controlplane_2_volume_id
     scsi      = false
@@ -168,7 +174,9 @@ resource "libvirt_domain" "okd_controlplane_3" {
   running         = true
   qemu_agent      = true
 
-  # Attach the Ignition volume as a disk
+  # Use UEFI firmware without secure boot
+  firmware = "efi"
+
   disk {
     volume_id = var.controlplane_3_volume_id
     scsi      = false
