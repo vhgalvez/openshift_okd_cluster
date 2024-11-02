@@ -21,14 +21,10 @@ module "domain" {
   network_id = module.network.okd_network.id
 
   bootstrap_volume_id = module.volumes.bootstrap_volume.id
-  # Remove the undeclared ignition module references
-  # bootstrap_ignition_id = module.ignition.bootstrap_ignition.id
 
   controlplane_1_volume_id = module.volumes.controlplane_1_volume.id
   controlplane_2_volume_id = module.volumes.controlplane_2_volume.id
   controlplane_3_volume_id = module.volumes.controlplane_3_volume.id
-  # Remove the undeclared ignition module references
-  # master_ignition_id       = module.ignition.master_ignition.id
 
   bootstrap      = var.bootstrap
   controlplane_1 = var.controlplane_1
