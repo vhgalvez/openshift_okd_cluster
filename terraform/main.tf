@@ -19,7 +19,6 @@ module "volumes" {
   controlplane_3_volume_size = var.controlplane_3.volume_size
 }
 
-
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
