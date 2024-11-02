@@ -299,3 +299,9 @@ timedatectl status
 sudo timedatectl set-ntp true
 sudo timedatectl status
 date
+
+
+sudo virsh undefine okd-bootstrap --remove-all-storage
+sudo virsh undefine okd-controlplane-1 --remove-all-storage
+sudo virsh undefine okd-controlplane-2 --remove-all-storage
+sudo virsh undefine okd-controlplane-3 --remove-all-storage
