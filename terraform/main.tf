@@ -89,6 +89,6 @@ module "domain" {
 
   hosts = var.controlplane_count + 1
 
-  bootstrap_ignition_id = module.ignition.bootstrap_ignition_id
-  master_ignition_id    = module.ignition.master_ignition_id
+  bootstrap_ignition_id = module.ignition.bootstrap_ignition.id
+  master_ignition_id    = module.ignition.master_ignition.id
 }
