@@ -1,15 +1,2 @@
-terraform {
-  required_version = "~>1.5"
-
-  required_providers {
-    libvirt = {
-      source  = "dmacvicar/libvirt"
-      version = "0.8.1"
-    }
-  }
-}
-
-provider "libvirt" {
-  uri = "qemu:///system"
-}
+// Remove the entire content of this file as it is already defined in main.tf
 
