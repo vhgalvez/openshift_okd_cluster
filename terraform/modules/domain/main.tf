@@ -14,32 +14,14 @@ data "ignition_systemd_unit" "qemu_agent" {
   content = file("${path.module}/../../docker-images-mount/qemu-agent.service")
 }
 
-# Definición de la configuración de Ignition para cada host
-data "ignition_config" "startup" {
-  count = var.hosts
-
-  systemd = [
-    data.ignition_systemd_unit.mount_images.rendered,
-    data.ignition_systemd_unit.qemu_agent.rendered,
-  ]
-  users = [data.ignition_user.core.rendered]
-  files = [data.ignition_file.hostname[count.index].rendered]
-}
-
-# Configuración de archivos de hostname en cada host
-data "ignition_file" "hostname" {
-  count = var.hosts
-  path  = "/etc/hostname"
-
-  content {
-    content = "${var.hostname_prefix}${count.index + 1}"
-  }
-}
-
-# Configuración del usuario core
-data "ignition_user" "core" {
-  name          = "core"
-  password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
+# Definición de la configuración de Ignition reutilizable
+module "ignition_config" {
+  source                  = "../ignition"
+  hosts                   = var.hosts
+  hostname_prefix         = var.hostname_prefix
+  mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
+  qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
+  core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
 # Definición de las máquinas virtuales de OKD
@@ -52,11 +34,17 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.bootstrap_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_bootstrap.id
+    volume_id = var.bootstrap_volume_id
     scsi      = false
   }
 
@@ -94,11 +82,17 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.master_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_controlplane_1.id
+    volume_id = var.controlplane_1_volume_id
     scsi      = false
   }
 
@@ -134,11 +128,17 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.master_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_controlplane_2.id
+    volume_id = var.controlplane_2_volume_id
     scsi      = false
   }
 
@@ -174,11 +174,17 @@ resource "libvirt_domain" "okd_controlplane_3" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.master_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_controlplane_3.id
+    volume_id = var.controlplane_3_volume_id
     scsi      = false
   }
 
