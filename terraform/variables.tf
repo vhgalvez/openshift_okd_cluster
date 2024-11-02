@@ -59,9 +59,11 @@ variable "controlplane_3" {
 variable "bootstrap_ignition_id" {
   type        = string
   description = "Rendered Ignition config for bootstrap node"
+  default     = ""
 }
 
 variable "master_ignition_id" {
   type        = string
   description = "Rendered Ignition config for master nodes"
+  default     = ""
 }
