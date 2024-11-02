@@ -24,6 +24,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   format = "raw"
 }
 
+// Define volume for the master Ignition file
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
@@ -69,9 +70,9 @@ data "ignition_config" "startup" {
 }
 
 output "bootstrap_ignition" {
-  value = libvirt_volume.bootstrap_ignition.id
+  value = libvirt_volume.bootstrap_ignition
 }
 
 output "master_ignition" {
-  value = libvirt_volume.master_ignition.id
+  value = libvirt_volume.master_ignition
 }
