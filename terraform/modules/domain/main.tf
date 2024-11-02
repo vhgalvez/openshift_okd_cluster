@@ -163,7 +163,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   vcpu            = var.controlplane_3.vcpu
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
-  coreos_ignition = data.ignition_config.startup[3].rendered
+  coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
     volume_id = var.controlplane_3_volume_id
