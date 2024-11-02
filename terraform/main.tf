@@ -58,6 +58,8 @@ module "domain" {
 
   controlplane_count = var.controlplane_count
 
+  proxy = var.proxy
+
   // depends_on = [
   //   module.network,
   //   module.volumes
