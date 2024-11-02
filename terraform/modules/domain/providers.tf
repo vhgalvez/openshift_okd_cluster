@@ -13,8 +13,8 @@ terraform {
       version = "~> 2.2.0"
     }
     ignition = {
-      source  = "terraform-providers/ignition" # Actualización de fuente de proveedor
-      version = "~> 2.1.0"
+      source  = "terraform-providers/ignition"
+      version = "~> 0.6.3" # Asegura compatibilidad con versiones disponibles
     }
   }
 }
