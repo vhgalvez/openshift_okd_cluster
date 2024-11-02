@@ -42,19 +42,11 @@ data "ignition_user" "core" {
   password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
-variable "bootstrap_volume_id" {
+variable "bootstrap_ignition_id" {
   type = string
 }
 
-variable "controlplane_1_volume_id" {
-  type = string
-}
-
-variable "controlplane_2_volume_id" {
-  type = string
-}
-
-variable "controlplane_3_volume_id" {
+variable "master_ignition_id" {
   type = string
 }
 
