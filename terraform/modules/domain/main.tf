@@ -42,6 +42,22 @@ data "ignition_user" "core" {
   password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
+# Definición del volumen para el archivo Ignition del bootstrap
+resource "libvirt_volume" "bootstrap_ignition_volume" {
+  name   = "okd_bootstrap.ign"
+  pool   = "default"
+  source = "${path.module}/../../ignition_configs/bootstrap.ign"
+  format = "raw"
+}
+
+# Definición del volumen para el archivo Ignition del master
+resource "libvirt_volume" "master_ignition_volume" {
+  name   = "okd_master.ign"
+  pool   = "default"
+  source = "${path.module}/../../ignition_configs/master.ign"
+  format = "raw"
+}
+
 # Definición del recurso para el archivo Ignition del bootstrap
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "okd_bootstrap.ign"
