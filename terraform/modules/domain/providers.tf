@@ -1,6 +1,4 @@
 terraform {
-  required_version = "= 1.9.8"
-
   required_providers {
     ct = {
       source  = "poseidon/ct"
@@ -13,6 +11,10 @@ terraform {
     template = {
       source  = "hashicorp/template"
       version = "~> 2.2.0"
+    }
+    ignition = {
+      source  = "terraform-providers/ignition" # Actualización de fuente de proveedor
+      version = "~> 2.1.0"
     }
   }
 }
