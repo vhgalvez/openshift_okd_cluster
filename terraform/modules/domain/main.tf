@@ -46,14 +46,14 @@ data "ignition_user" "core" {
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "okd_bootstrap.ign"
   pool    = "default"
-  content = file("/mnt/lv_data/okd_bootstrap.ign")
+  content = file("${path.module}/../../ignition_configs/bootstrap.ign")
 }
 
 # Definición del recurso para el archivo Ignition del master
 resource "libvirt_ignition" "master_ignition" {
   name    = "okd_master.ign"
   pool    = "default"
-  content = file("/mnt/lv_data/okd_master.ign")
+  content = file("${path.module}/../../ignition_configs/master.ign")
 }
 
 # Definición de las máquinas virtuales de OKD
