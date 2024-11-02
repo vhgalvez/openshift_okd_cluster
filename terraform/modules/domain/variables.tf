@@ -48,3 +48,9 @@ variable "controlplane_2" {
 variable "controlplane_3" {
   type = map(string)
 }
+
+variable "hosts" {
+  type        = number
+  description = "Number of hosts"
+  default     = 3
+}
