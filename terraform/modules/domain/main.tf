@@ -152,12 +152,13 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
 
 data "ignition_systemd_unit" "mount-images" {
-  name = "var-mnt-images.mount"
+  name    = "var-mnt-images.mount"
   enabled = true
-  content = "${file("${path.module}/terraform/docker-images-mount/docker-images.mount")}"
+  content = file("${path.module}/../../terraform/docker-images-mount/docker-images.mount")
 }
+
 data "ignition_systemd_unit" "qemu-agent" {
-  name = "qemu-agent.service"
+  name    = "qemu-agent.service"
   enabled = true
-  content = "${file("${path.module}/terraform/docker-images-mount/docker-images-mount.service")}"
+  content = file("${path.module}/../../terraform/docker-images-mount/docker-images-mount.service")
 }
