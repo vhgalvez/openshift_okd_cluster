@@ -1,3 +1,4 @@
+
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
 data "ignition_systemd_unit" "mount_images" {
@@ -22,9 +23,6 @@ data "ignition_config" "startup" {
   ]
   users = [data.ignition_user.core.rendered]
   files = [data.ignition_file.hostname[count.index].rendered]
-
-  # Ensure no empty proxy configuration is included
-  proxy = null
 }
 
 # Configuración de archivos de hostname en cada host
@@ -53,7 +51,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
-  # Use the bootstrap ignition configuration instead of the startup one
+  # Use the bootstrap ignition configuration
   coreos_ignition = data.ignition_config.startup[0].rendered
 
   disk {
