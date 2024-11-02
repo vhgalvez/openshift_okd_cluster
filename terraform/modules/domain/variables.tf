@@ -46,3 +46,11 @@ variable "hosts" {
   type        = number
   description = "Number of hosts"
 }
+
+variable "bootstrap_ignition_id" {
+  type = string
+}
+
+variable "master_ignition_id" {
+  type = string
+}

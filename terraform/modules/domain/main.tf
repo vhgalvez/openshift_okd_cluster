@@ -167,12 +167,12 @@ resource "libvirt_domain" "okd_controlplane_2" {
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
-  name            = var.controlplane_3.name
-  description     = var.controlplane_3.description
-  vcpu            = var.controlplane_3.vcpu
-  memory          = var.controlplane_3.memory * 1024 # MiB
-  running         = true
-  qemu_agent      = true
+  name        = var.controlplane_3.name
+  description = var.controlplane_3.description
+  vcpu        = var.controlplane_3.vcpu
+  memory      = var.controlplane_3.memory * 1024 # MiB
+  running     = true
+  qemu_agent  = true
 
   # Use UEFI firmware without secure boot
   firmware = "efi"
