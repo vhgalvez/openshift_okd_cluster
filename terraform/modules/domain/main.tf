@@ -43,21 +43,21 @@ data "ignition_user" "core" {
 }
 
 # Definición del volumen para el archivo Ignition del bootstrap
-/../../ignition_configs/bootstrap.ign"
+/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign"
   format = "raw"
 }
 
 # Definición del volumen para el archivo Ignition del master
-/../../ignition_configs/master.ign"
+/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign"
   format = "raw"
 }
 
 # Definición del recurso para el archivo Ignition del bootstrap
-/../../ignition_configs/bootstrap.ign")
+/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign")
 }
 
 # Definición del recurso para el archivo Ignition del master
-/../../ignition_configs/master.ign")
+/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign")
 }
 
 # Definición de las máquinas virtuales de OKD
