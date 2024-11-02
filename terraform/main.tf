@@ -51,12 +51,12 @@ module "domain" {
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
 
-  # Remove the bootstrap_ignition_id and master_ignition_id variables
-
   hostname_prefix = var.hostname_prefix
 
   controlplane_count = var.controlplane_count
 
   // depends_on = [
   //   module.network,
-  //   module.volumes  // ]}
+  //   module.volumes
+  // ]
+}

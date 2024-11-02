@@ -249,7 +249,6 @@ resource "libvirt_domain" "okd_controlplane_3" {
     network_id     = var.network_id
     hostname       = var.controlplane_3.name
     addresses      = [var.controlplane_3.address]
-  network_interface {
     mac            = var.controlplane_3.mac
     wait_for_lease = true
   }
@@ -267,29 +266,5 @@ resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
   source = "${path.module}/../../ignition_configs/master.ign"
-  format = "RAW"
-}
-
-    network_id     = var.network_id
-    hostname       = var.controlplane_3.name
-    addresses      = [var.controlplane_3.address]
-    mac            = var.controlplane_3.mac
-    wait_for_lease = true
-  }
-}
-
-# Ensure libvirt_volume resources are referenced
-resource "libvirt_volume" "bootstrap_ignition" {
-
-  source = "${path.module}/../../ignition_configs/master.ign"
-  format = "RAW"
-}
-
-resource "libvirt_volume" "master_ignition" {
-  name   = "okd_master.ign"
-  pool   = "default"
-  name   = "okd_bootstrap.ign"
-  pool   = "default"
-  source = "${path.module}/../../ignition_configs/bootstrap.ign"
   format = "RAW"
 }
