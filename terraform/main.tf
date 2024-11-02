@@ -2,7 +2,7 @@ terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "~> 0.8.1" // Ensure compatibility with cdrom and firmware blocks
+      version = "~> 0.8.1"
     }
     ignition = {
       source  = "community-terraform-providers/ignition"
@@ -13,6 +13,10 @@ terraform {
 
 provider "libvirt" {
   uri = "qemu:///system"
+}
+
+provider "ignition" {
+  // Configuration options
 }
 
 module "ignition" {
@@ -55,13 +59,8 @@ module "domain" {
 
   controlplane_count = var.controlplane_count
 
-  hosts = var.controlplane_count + 1 // Define the hosts variable
+  hosts = var.controlplane_count + 1
 
   bootstrap_ignition_id = module.ignition.bootstrap_ignition.id
   master_ignition_id    = module.ignition.master_ignition.id
-
-  // depends_on = [
-  //   module.network,
-  //   module.volumes
-  // ]
 }

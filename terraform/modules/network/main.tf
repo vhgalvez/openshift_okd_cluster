@@ -1,3 +1,24 @@
+terraform {
+  required_providers {
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "0.8.1"
+    }
+  }
+}
+
+provider "ignition" {
+  // Configuration options
+}
+
+provider "libvirt" {
+  // Configuration options
+}
+
 resource "libvirt_network" "okd_network" {
   name      = "okd_network"
   mode      = "nat"

@@ -1,3 +1,24 @@
+terraform {
+  required_providers {
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "0.8.1"
+    }
+  }
+}
+
+provider "ignition" {
+  // Configuration options
+}
+
+provider "libvirt" {
+  // Configuration options
+}
+
 # Define volume for the bootstrap Ignition file
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
