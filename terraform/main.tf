@@ -57,6 +57,9 @@ module "domain" {
 
   hosts = var.controlplane_count + 1 // Define the hosts variable
 
+  bootstrap_ignition_id = module.ignition.bootstrap_ignition.id
+  master_ignition_id    = module.ignition.master_ignition.id
+
   // depends_on = [
   //   module.network,
   //   module.volumes
