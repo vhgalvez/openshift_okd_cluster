@@ -42,6 +42,22 @@ data "ignition_user" "core" {
   password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
+variable "bootstrap_volume_id" {
+  type = string
+}
+
+variable "controlplane_1_volume_id" {
+  type = string
+}
+
+variable "controlplane_2_volume_id" {
+  type = string
+}
+
+variable "controlplane_3_volume_id" {
+  type = string
+}
+
 # Definición de las máquinas virtuales de OKD
 
 resource "libvirt_domain" "okd_bootstrap" {
@@ -52,11 +68,17 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.bootstrap_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_bootstrap.id
+    volume_id = var.bootstrap_volume_id
     scsi      = false
   }
 
@@ -94,11 +116,17 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.master_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_controlplane_1.id
+    volume_id = var.controlplane_1_volume_id
     scsi      = false
   }
 
@@ -134,11 +162,17 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.master_ignition_id
+    scsi      = false
+  }
+
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_controlplane_2.id
+    volume_id = var.controlplane_2_volume_id
     scsi      = false
   }
 
@@ -167,18 +201,24 @@ resource "libvirt_domain" "okd_controlplane_2" {
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
-  name        = var.controlplane_3.name
-  description = var.controlplane_3.description
-  vcpu        = var.controlplane_3.vcpu
-  memory      = var.controlplane_3.memory * 1024 # MiB
-  running     = true
-  qemu_agent  = true
+  name            = var.controlplane_3.name
+  description     = var.controlplane_3.description
+  vcpu            = var.controlplane_3.vcpu
+  memory          = var.controlplane_3.memory * 1024 # MiB
+  running         = true
+  qemu_agent      = true
+
+  # Attach the Ignition volume as a disk
+  disk {
+    volume_id = var.master_ignition_id
+    scsi      = false
+  }
 
   # Use UEFI firmware without secure boot
   firmware = "efi"
 
   disk {
-    volume_id = libvirt_volume.okd_controlplane_3.id
+    volume_id = var.controlplane_3_volume_id
     scsi      = false
   }
 
