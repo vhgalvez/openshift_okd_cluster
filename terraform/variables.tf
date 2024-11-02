@@ -1,4 +1,3 @@
-
 variable "coreos_image" {
   type        = string
   default     = "/mnt/lv_data/organized_storage/images/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2"
@@ -55,4 +54,14 @@ variable "controlplane_3" {
     address     = "192.168.150.12"
     mac         = "AA:BB:CC:20:00:02"
   }
+}
+
+variable "bootstrap_ignition_id" {
+  type        = string
+  description = "Rendered Ignition config for bootstrap node"
+}
+
+variable "master_ignition_id" {
+  type        = string
+  description = "Rendered Ignition config for master nodes"
 }

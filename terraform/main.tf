@@ -31,6 +31,9 @@ module "domain" {
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
 
+  bootstrap_ignition_id = data.ct_config.bootstrap_config.rendered
+  master_ignition_id    = data.ct_config.master_config.rendered
+
   # depends_on = [
   #   module.network,
   #   module.volumes

@@ -29,7 +29,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   vcpu            = var.bootstrap.vcpu
   memory          = var.bootstrap.memory * 1024 # MiB
   running         = true
-  coreos_ignition = data.ct_config.bootstrap_config.rendered
+  coreos_ignition = var.bootstrap_ignition_id
 
   disk {
     volume_id = var.bootstrap_volume_id
@@ -67,7 +67,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   vcpu            = var.controlplane_1.vcpu
   memory          = var.controlplane_1.memory * 1024 # MiB
   running         = true
-  coreos_ignition = data.ct_config.master_config.rendered
+  coreos_ignition = var.master_ignition_id
 
   disk {
     volume_id = var.controlplane_1_volume_id
@@ -105,7 +105,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   vcpu            = var.controlplane_2.vcpu
   memory          = var.controlplane_2.memory * 1024 # MiB
   running         = true
-  coreos_ignition = data.ct_config.master_config.rendered
+  coreos_ignition = var.master_ignition_id
 
   disk {
     volume_id = var.controlplane_2_volume_id
@@ -143,7 +143,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   vcpu            = var.controlplane_3.vcpu
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
-  coreos_ignition = data.ct_config.master_config.rendered
+  coreos_ignition = var.master_ignition_id
 
   disk {
     volume_id = var.controlplane_3_volume_id
