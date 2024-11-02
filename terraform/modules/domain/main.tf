@@ -13,7 +13,6 @@ terraform {
   }
 }
 
-
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
 data "ignition_systemd_unit" "mount_images" {
