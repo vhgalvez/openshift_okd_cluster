@@ -55,6 +55,7 @@ module "domain" {
 
   controlplane_count = var.controlplane_count
 
+  hosts = var.controlplane_count + 1 // Define the hosts variable
   // depends_on = [
   //   module.network,
   //   module.volumes
