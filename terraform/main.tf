@@ -56,9 +56,11 @@ module "domain" {
 
   hostname_prefix = var.hostname_prefix
 
-  # depends_on = [
-  #   module.network,
-  #   module.volumes
-  # ]
+  controlplane_count = var.controlplane_count
+
+  // depends_on = [
+  //   module.network,
+  //   module.volumes
+  // ]
 }
 

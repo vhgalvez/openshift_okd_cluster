@@ -157,6 +157,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
+  count           = var.controlplane_count - 2
   name            = var.controlplane_3.name
   description     = var.controlplane_3.description
   vcpu            = var.controlplane_3.vcpu

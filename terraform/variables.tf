@@ -79,3 +79,9 @@ variable "hostname_prefix" {
   description = "Prefix for hostnames"
   default     = "okd-node-"
 }
+
+variable "controlplane_count" {
+  type        = number
+  description = "Number of control planes"
+  default     = 3
+}
