@@ -59,3 +59,9 @@ variable "hosts" {
   description = "Number of hosts"
   default     = 3
 }
+
+variable "controlplane_count" {
+  type        = number
+  description = "Number of control planes"
+  default     = 3
+}
