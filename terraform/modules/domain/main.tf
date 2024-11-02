@@ -29,20 +29,17 @@ data "ignition_config" "startup" {
 data "ignition_file" "hostname" {
   count = var.hosts
   path  = "/etc/hostname"
-  
+
   content {
     content = "${var.hostname_prefix}${count.index + 1}"
   }
-  // Remove unsupported arguments
-  // filesystem = "root"
-  // user       = "root"
-  // group      = "root"
+
 }
 
 # Configuración del usuario core
 data "ignition_user" "core" {
-  name           = "core"
-  password_hash  = "$5$XMoeOXG6$8WZoUCLhh8L/KYhsJN2pIRb3asZ2Xos3rJla.FA1TI7"
+  name          = "core"
+  password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
 # Definición de las máquinas virtuales de OKD
