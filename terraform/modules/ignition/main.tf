@@ -20,14 +20,14 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/bootstrap.ign" # Verifica que esta ruta sea correcta
+  source = "${path.module}/../../ignition_configs/bootstrap.ign"
   format = "raw"
 }
 
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/master.ign" # Verifica que esta ruta sea correcta
+  source = "${path.module}/../../ignition_configs/master.ign"
   format = "raw"
 }
 
@@ -66,4 +66,12 @@ data "ignition_config" "startup" {
   ]
   users = [data.ignition_user.core.rendered]
   files = [data.ignition_file.hostname[count.index].rendered]
+}
+
+output "bootstrap_ignition" {
+  value = libvirt_volume.bootstrap_ignition.id
+}
+
+output "master_ignition" {
+  value = libvirt_volume.master_ignition.id
 }
