@@ -149,31 +149,3 @@ resource "libvirt_domain" "okd_controlplane_3" {
     wait_for_lease = true
   }
 }
-
-resource "libvirt_domain" "okd_worker_1" {
-  name            = var.worker_1.name
-  description     = var.worker_1.description
-  vcpu            = var.worker_1.vcpu
-  memory          = var.worker_1.memory * 1024 # MiB
-  running         = true
-  coreos_ignition = var.worker_ignition_id
-
-  disk {
-    volume_id = var.worker_1_volume_id
-    scsi      = false
-  }
-
-  cpu {
-    mode = "host-passthrough"
-  }
-
-  graphics {
-    type     = "vnc"
-    autoport = true
-  }
-
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
-  }
