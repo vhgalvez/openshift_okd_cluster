@@ -13,14 +13,6 @@ terraform {
   }
 }
 
-// Remove the redundant provider blocks
-// provider "ignition" {
-//   // Configuration options
-// }
-
-// provider "libvirt" {
-//   // Configuration options
-// }
 
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
@@ -189,12 +181,12 @@ resource "libvirt_domain" "okd_controlplane_2" {
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
-  name            = var.controlplane_3.name
-  description     = var.controlplane_3.description
-  vcpu            = var.controlplane_3.vcpu
-  memory          = var.controlplane_3.memory * 1024 # MiB
-  running         = true
-  qemu_agent      = true
+  name        = var.controlplane_3.name
+  description = var.controlplane_3.description
+  vcpu        = var.controlplane_3.vcpu
+  memory      = var.controlplane_3.memory * 1024 # MiB
+  running     = true
+  qemu_agent  = true
 
   # Attach the Ignition volume as a disk
   disk {

@@ -12,7 +12,7 @@ terraform {
 }
 
 provider "libvirt" {
-  // Configuration options
+  uri = "qemu:///system"
 }
 
 // Define volume for the bootstrap Ignition file
