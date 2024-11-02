@@ -59,8 +59,8 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = {
-    efi = {
+  firmware {
+    efi {
       secure_boot = false
     }
   }
@@ -111,8 +111,8 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = {
-    efi = {
+  firmware {
+    efi {
       secure_boot = false
     }
   }
@@ -161,8 +161,8 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = {
-    efi = {
+  firmware {
+    efi {
       secure_boot = false
     }
   }
@@ -211,8 +211,8 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = {
-    efi = {
+  firmware {
+    efi {
       secure_boot = false
     }
   }
