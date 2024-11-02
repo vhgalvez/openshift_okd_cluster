@@ -52,19 +52,16 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
-  # Attach Ignition volume as CD-ROM
-  # cdrom {
-  #   volume_id = libvirt_volume.bootstrap_ignition.id
-  # }
-
-  # firmware {
-  #   efi {}
-  # }
-
-  # Add ignition disk
-  disk {
+  # Attach the Ignition volume as a CD-ROM
+  cdrom {
     volume_id = libvirt_volume.bootstrap_ignition.id
-    scsi      = false
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {
+      secure_boot = false
+    }
   }
 
   disk {
@@ -106,19 +103,16 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
-  # Remove or comment out the cdrom and firmware blocks
-  # cdrom {
-  #   volume_id = libvirt_volume.master_ignition.id
-  # }
-
-  # firmware {
-  #   efi {}
-  # }
-
-  # Add ignition disk
-  disk {
+  # Attach the Ignition volume as a CD-ROM
+  cdrom {
     volume_id = libvirt_volume.master_ignition.id
-    scsi      = false
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {
+      secure_boot = false
+    }
   }
 
   disk {
@@ -158,19 +152,16 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
-  # Remove or comment out the cdrom and firmware blocks
-  # cdrom {
-  #   volume_id = libvirt_volume.master_ignition.id
-  # }
-
-  # firmware {
-  #   efi {}
-  # }
-
-  # Add ignition disk
-  disk {
+  # Attach the Ignition volume as a CD-ROM
+  cdrom {
     volume_id = libvirt_volume.master_ignition.id
-    scsi      = false
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {
+      secure_boot = false
+    }
   }
 
   disk {
@@ -210,19 +201,16 @@ resource "libvirt_domain" "okd_controlplane_3" {
   running         = true
   qemu_agent      = true
 
-  # Remove or comment out the cdrom and firmware blocks
-  # cdrom {
-  #   volume_id = libvirt_volume.master_ignition.id
-  # }
-
-  # firmware {
-  #   efi {}
-  # }
-
-  # Add ignition disk
-  disk {
+  # Attach the Ignition volume as a CD-ROM
+  cdrom {
     volume_id = libvirt_volume.master_ignition.id
-    scsi      = false
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {
+      secure_boot = false
+    }
   }
 
   disk {
