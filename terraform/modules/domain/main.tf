@@ -3,22 +3,22 @@
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
 data "ct_config" "bootstrap_config" {
-  content = file("${path.module}/../ignition_configs/bootstrap.ign")
+  content = file("${path.root}/ignition_configs/bootstrap.ign")
 }
 
 data "ct_config" "master_config" {
-  content = file("${path.module}/../ignition_configs/master.ign")
+  content = file("${path.root}/ignition_configs/master.ign")
 }
 
 data "ignition_systemd_unit" "docker_images_mount" {
   name    = "docker-images.mount"
-  content = file("${path.module}/../docker-images-mount/docker-images.mount")
+  content = file("${path.root}/docker-images-mount/docker-images.mount")
   enabled = true
 }
 
 data "ignition_systemd_unit" "qemu_agent_service" {
   name    = "qemu-agent.service"
-  content = file("${path.module}/../docker-images-mount/qemu-agent.service")
+  content = file("${path.root}/docker-images-mount/qemu-agent.service")
   enabled = true
 }
 
