@@ -67,3 +67,9 @@ variable "master_ignition_id" {
   description = "Rendered Ignition config for master nodes"
   default     = ""
 }
+
+variable "hosts" {
+  type        = number
+  description = "Number of hosts"
+  default     = 3
+}

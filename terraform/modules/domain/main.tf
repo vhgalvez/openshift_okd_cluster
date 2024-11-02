@@ -27,13 +27,12 @@ data "ignition_config" "startup" {
 
 # Configuración de archivos de hostname en cada host
 data "ignition_file" "hostname" {
-  count      = var.hosts
-  filesystem = "root"
-  path       = "/etc/hostname"
-  mode       = 420
-  user       = "root"
-  group      = "root"
-  contents   = "${var.hostname_prefix}${count.index + 1}"
+  count = var.hosts
+  // Remove unsupported arguments
+  // filesystem = "root"
+  // user       = "root"
+  // group      = "root"
+  // contents   = "${var.hostname_prefix}${count.index + 1}"
 }
 
 # Configuración del usuario core
