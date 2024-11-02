@@ -22,7 +22,6 @@ data "ignition_config" "startup" {
   ]
   users = [data.ignition_user.core.rendered]
   files = [data.ignition_file.hostname[count.index].rendered]
-  proxy = var.proxy
 }
 
 # Configuración de archivos de hostname en cada host
