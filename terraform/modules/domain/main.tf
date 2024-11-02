@@ -1,6 +1,5 @@
 
 # terraform\modules\domain\main.tf
-
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
 data "ignition_systemd_unit" "mount_images" {
@@ -96,7 +95,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   qemu_agent  = true
 
   # Use the master ignition configuration
-  coreos_ignition = data.ignition_config.startup[1].rendered
+  coreos_ignition = data.ignition_config.startup[0].rendered
 
   disk {
     volume_id = var.controlplane_1_volume_id
@@ -136,7 +135,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   qemu_agent  = true
 
   # Use the master ignition configuration
-  coreos_ignition = data.ignition_config.startup[2].rendered
+  coreos_ignition = data.ignition_config.startup[1].rendered
 
   disk {
     volume_id = var.controlplane_2_volume_id
@@ -174,7 +173,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  coreos_ignition = data.ignition_config.startup[3].rendered
+  coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
     volume_id = var.controlplane_3_volume_id
