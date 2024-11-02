@@ -40,11 +40,11 @@ module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
 
-  bootstrap_volume_id = module.volumes.okd_bootstrap.id
+  bootstrap_volume_id = module.volumes.okd_bootstrap_id
 
-  controlplane_1_volume_id = module.volumes.okd_controlplane_1.id
-  controlplane_2_volume_id = module.volumes.okd_controlplane_2.id
-  controlplane_3_volume_id = module.volumes.okd_controlplane_3.id
+  controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
+  controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
+  controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
   bootstrap      = var.bootstrap
   controlplane_1 = var.controlplane_1
