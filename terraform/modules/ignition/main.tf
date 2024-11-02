@@ -1,3 +1,4 @@
+# terraform\modules\ignition\main.tf
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "okd_bootstrap.ign"
   pool    = "default"
