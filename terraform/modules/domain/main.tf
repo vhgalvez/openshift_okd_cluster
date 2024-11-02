@@ -52,9 +52,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
-  # Use the bootstrap ignition configuration
-  coreos_ignition = "${path.module}/../../ignition_configs/bootstrap.ign"
-
+  # Attach the Ignition volume as a disk
   disk {
     volume_id = var.bootstrap_volume_id
     scsi      = false
@@ -94,9 +92,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
-  # Use the master ignition configuration
-  coreos_ignition = "${path.module}/../../ignition_configs/master.ign"
-
+  # Attach the Ignition volume as a disk
   disk {
     volume_id = var.controlplane_1_volume_id
     scsi      = false
@@ -134,9 +130,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
-  # Use the master ignition configuration
-  coreos_ignition = "${path.module}/../../ignition_configs/master.ign"
-
+  # Attach the Ignition volume as a disk
   disk {
     volume_id = var.controlplane_2_volume_id
     scsi      = false
@@ -174,9 +168,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   running         = true
   qemu_agent      = true
 
-  # Use the master ignition configuration
-  coreos_ignition = "${path.module}/../../ignition_configs/master.ign"
-
+  # Attach the Ignition volume as a disk
   disk {
     volume_id = var.controlplane_3_volume_id
     scsi      = false
