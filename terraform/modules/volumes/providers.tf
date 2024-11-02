@@ -6,6 +6,10 @@ terraform {
       source  = "dmacvicar/libvirt"
       version = "0.8.1"
     }
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
   }
 }
 

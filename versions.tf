@@ -1,14 +1,12 @@
 terraform {
-  required_version = ">= 0.13"
-
   required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "0.8.1"
+    }
     ct = {
       source  = "poseidon/ct"
       version = "~> 0.13.0"
-    }
-    libvirt = {
-      source  = "dmacvicar/libvirt"
-      version = ">= 0.8.1, < 0.9.0"
     }
     ignition = {
       source  = "community-terraform-providers/ignition"
