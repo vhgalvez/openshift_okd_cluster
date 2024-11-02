@@ -13,13 +13,14 @@ terraform {
   }
 }
 
-provider "ignition" {
-  // Configuration options
-}
+// Remove the redundant provider blocks
+// provider "ignition" {
+//   // Configuration options
+// }
 
-provider "libvirt" {
-  // Configuration options
-}
+// provider "libvirt" {
+//   // Configuration options
+// }
 
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 

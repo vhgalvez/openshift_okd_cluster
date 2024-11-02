@@ -11,13 +11,14 @@ terraform {
   }
 }
 
-provider "ignition" {
-  // Configuration options
-}
+// Remove the redundant provider blocks
+// provider "ignition" {
+//   // Configuration options
+// }
 
-provider "libvirt" {
-  // Configuration options
-}
+// provider "libvirt" {
+//   // Configuration options
+// }
 
 resource "libvirt_network" "okd_network" {
   name      = "okd_network"
