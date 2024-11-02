@@ -19,6 +19,18 @@ provider "ignition" {
   // Configuration options
 }
 
+data "ignition_systemd_unit" "mount_images" {
+  name    = "var-mnt-images.mount"
+  enabled = true
+  content = file("${path.module}/docker-images-mount/docker-images.mount")
+}
+
+data "ignition_systemd_unit" "qemu_agent" {
+  name    = "qemu-agent.service"
+  enabled = true
+  content = file("${path.module}/docker-images-mount/qemu-agent.service")
+}
+
 module "ignition" {
   source                  = "./modules/ignition"
   mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
