@@ -16,7 +16,6 @@ data "ignition_systemd_unit" "qemu_agent" {
 data "ignition_config" "startup" {
   count = var.hosts
 
-  filesystems = []
   systemd = [
     data.ignition_systemd_unit.mount_images.rendered,
     data.ignition_systemd_unit.qemu_agent.rendered,
@@ -50,7 +49,6 @@ resource "libvirt_domain" "okd_bootstrap" {
   memory          = var.bootstrap.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[0].rendered
 
   disk {
@@ -80,19 +78,6 @@ resource "libvirt_domain" "okd_bootstrap" {
     mac            = var.bootstrap.mac
     wait_for_lease = true
   }
-
-  xml {
-    xslt = <<-XSLT
-      <?xml version="1.0" ?>
-      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-        <xsl:template match="@*|node()">
-          <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-          </xsl:copy>
-        </xsl:template>
-      </xsl:stylesheet>
-    XSLT
-  }
 }
 
 # Definición de las máquinas de control plane
@@ -104,7 +89,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
   memory          = var.controlplane_1.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[1].rendered
 
   disk {
@@ -134,19 +118,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
     mac            = var.controlplane_1.mac
     wait_for_lease = true
   }
-
-  xml {
-    xslt = <<-XSLT
-      <?xml version="1.0" ?>
-      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-        <xsl:template match="@*|node()">
-          <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-          </xsl:copy>
-        </xsl:template>
-      </xsl:stylesheet>
-    XSLT
-  }
 }
 
 resource "libvirt_domain" "okd_controlplane_2" {
@@ -156,7 +127,6 @@ resource "libvirt_domain" "okd_controlplane_2" {
   memory          = var.controlplane_2.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
@@ -186,19 +156,6 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mac            = var.controlplane_2.mac
     wait_for_lease = true
   }
-
-  xml {
-    xslt = <<-XSLT
-      <?xml version="1.0" ?>
-      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-        <xsl:template match="@*|node()">
-          <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-          </xsl:copy>
-        </xsl:template>
-      </xsl:stylesheet>
-    XSLT
-  }
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
@@ -209,7 +166,6 @@ resource "libvirt_domain" "okd_controlplane_3" {
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  fw_cfg_name     = "opt/com.coreos/config"
   coreos_ignition = data.ignition_config.startup[2].rendered
 
   disk {
@@ -238,18 +194,5 @@ resource "libvirt_domain" "okd_controlplane_3" {
     addresses      = [var.controlplane_3.address]
     mac            = var.controlplane_3.mac
     wait_for_lease = true
-  }
-
-  xml {
-    xslt = <<-XSLT
-      <?xml version="1.0" ?>
-      <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-        <xsl:template match="@*|node()">
-          <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-          </xsl:copy>
-        </xsl:template>
-      </xsl:stylesheet>
-    XSLT
   }
 }
