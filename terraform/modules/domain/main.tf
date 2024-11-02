@@ -42,20 +42,6 @@ data "ignition_user" "core" {
   password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
 
-# Definición del recurso para el archivo Ignition del bootstrap
-resource "libvirt_ignition" "bootstrap_ignition" {
-  name    = "okd_bootstrap.ign"
-  pool    = "default"
-  content = file("${path.module}/../../ignition_configs/bootstrap.ign")
-}
-
-# Definición del recurso para el archivo Ignition del master
-resource "libvirt_ignition" "master_ignition" {
-  name    = "okd_master.ign"
-  pool    = "default"
-  content = file("${path.module}/../../ignition_configs/master.ign")
-}
-
 # Definición de las máquinas virtuales de OKD
 
 resource "libvirt_domain" "okd_bootstrap" {
@@ -66,8 +52,15 @@ resource "libvirt_domain" "okd_bootstrap" {
   running     = true
   qemu_agent  = true
 
-  # Use the bootstrap ignition configuration
-  coreos_ignition = libvirt_ignition.bootstrap_ignition.id
+  # Attach Ignition volume as CD-ROM
+  cdrom {
+    volume_id = libvirt_volume.bootstrap_ignition.id
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {}
+  }
 
   disk {
     volume_id = var.bootstrap_volume_id
@@ -108,8 +101,15 @@ resource "libvirt_domain" "okd_controlplane_1" {
   running     = true
   qemu_agent  = true
 
-  # Use the master ignition configuration
-  coreos_ignition = libvirt_ignition.master_ignition.id
+  # Attach Ignition volume as CD-ROM
+  cdrom {
+    volume_id = libvirt_volume.master_ignition.id
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {}
+  }
 
   disk {
     volume_id = var.controlplane_1_volume_id
@@ -148,8 +148,15 @@ resource "libvirt_domain" "okd_controlplane_2" {
   running     = true
   qemu_agent  = true
 
-  # Use the master ignition configuration
-  coreos_ignition = libvirt_ignition.master_ignition.id
+  # Attach Ignition volume as CD-ROM
+  cdrom {
+    volume_id = libvirt_volume.master_ignition.id
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {}
+  }
 
   disk {
     volume_id = var.controlplane_2_volume_id
@@ -187,7 +194,16 @@ resource "libvirt_domain" "okd_controlplane_3" {
   memory          = var.controlplane_3.memory * 1024 # MiB
   running         = true
   qemu_agent      = true
-  coreos_ignition = libvirt_ignition.master_ignition.id
+
+  # Attach Ignition volume as CD-ROM
+  cdrom {
+    volume_id = libvirt_volume.master_ignition.id
+  }
+
+  # Use UEFI firmware without secure boot
+  firmware {
+    efi {}
+  }
 
   disk {
     volume_id = var.controlplane_3_volume_id
@@ -216,4 +232,19 @@ resource "libvirt_domain" "okd_controlplane_3" {
     mac            = var.controlplane_3.mac
     wait_for_lease = true
   }
+}
+
+# Ensure libvirt_volume resources are referenced
+resource "libvirt_volume" "bootstrap_ignition" {
+  name   = "okd_bootstrap.ign"
+  pool   = "default"
+  source = "${path.module}/../../ignition_configs/bootstrap.ign"
+  format = "RAW"
+}
+
+resource "libvirt_volume" "master_ignition" {
+  name   = "okd_master.ign"
+  pool   = "default"
+  source = "${path.module}/../../ignition_configs/master.ign"
+  format = "RAW"
 }

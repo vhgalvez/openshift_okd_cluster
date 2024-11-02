@@ -1,13 +1,15 @@
-# Definición del recurso para el archivo Ignition del bootstrap
-resource "libvirt_ignition" "bootstrap_ignition" {
-  name    = "okd_bootstrap.ign"
-  pool    = "default"
-  content = file("${path.module}/../../ignition_configs/bootstrap.ign")
+# Define volume for the bootstrap Ignition file
+resource "libvirt_volume" "bootstrap_ignition" {
+  name   = "okd_bootstrap.ign"
+  pool   = "default"
+  source = "${path.module}/../../ignition_configs/bootstrap.ign"
+  format = "RAW"
 }
 
-# Definición del recurso para el archivo Ignition del master
-resource "libvirt_ignition" "master_ignition" {
-  name    = "okd_master.ign"
-  pool    = "default"
-  content = file("${path.module}/../../ignition_configs/master.ign")
+# Define volume for the master Ignition file
+resource "libvirt_volume" "master_ignition" {
+  name   = "okd_master.ign"
+  pool   = "default"
+  source = "${path.module}/../../ignition_configs/master.ign"
+  format = "RAW"
 }
