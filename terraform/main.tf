@@ -1,3 +1,7 @@
+provider "libvirt" {
+  uri = "qemu:///system"
+}
+
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
