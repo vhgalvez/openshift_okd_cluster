@@ -11,6 +11,10 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+module "ignition" {
+  source = "./modules/ignition"
+}
+
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
