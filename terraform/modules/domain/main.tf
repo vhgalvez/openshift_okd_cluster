@@ -1,4 +1,3 @@
-
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
 data "ignition_systemd_unit" "mount_images" {
@@ -23,6 +22,9 @@ data "ignition_config" "startup" {
   ]
   users = [data.ignition_user.core.rendered]
   files = [data.ignition_file.hostname[count.index].rendered]
+
+  # Ensure no empty proxy configuration is included
+  proxy = null
 }
 
 # Configuración de archivos de hostname en cada host
