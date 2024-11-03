@@ -64,6 +64,8 @@ module "ignition" {
   core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
   hosts                   = var.controlplane_count + 1
   hostname_prefix         = var.hostname_prefix
+  bootstrap_ignition_id   = var.bootstrap_ignition_id
+  master_ignition_id      = var.master_ignition_id
 }
 
 module "network" {
