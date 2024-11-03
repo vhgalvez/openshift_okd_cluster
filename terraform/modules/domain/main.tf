@@ -1,31 +1,6 @@
 # terraform/modules/domain/main.tf
 
-terraform {
-  required_providers {
-    ignition = {
-      source  = "community-terraform-providers/ignition"
-      version = "2.1.0"
-    }
-    libvirt = {
-      source  = "dmacvicar/libvirt"
-      version = "0.8.1"
-    }
-  }
-}
-
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
-
-data "ignition_systemd_unit" "mount_images" {
-  name    = "var-mnt-images.mount"
-  enabled = true
-  content = file("${path.module}/../../qemu-agent/docker-images.mount")
-}
-
-data "ignition_systemd_unit" "qemu_agent" {
-  name    = "qemu-agent.service"
-  enabled = true
-  content = file("${path.module}/../../qemu-agent/qemu-agent.service")
-}
 
 # Definición de la configuración de Ignition reutilizable
 module "ignition_config" {
