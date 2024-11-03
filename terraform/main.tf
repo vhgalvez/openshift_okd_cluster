@@ -95,4 +95,5 @@ module "domain" {
 
   bootstrap_ignition_id = module.ignition.bootstrap_ignition
   master_ignition_id    = module.ignition.master_ignition
+  core_user_password_hash = var.core_user_password_hash
 }

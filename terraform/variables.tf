@@ -85,3 +85,7 @@ variable "controlplane_count" {
   description = "Number of control planes"
   default     = 3
 }
+
+variable "core_user_password_hash" {
+  type = string
+}
