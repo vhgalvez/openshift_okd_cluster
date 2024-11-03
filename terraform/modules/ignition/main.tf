@@ -35,12 +35,13 @@ data "ignition_systemd_unit" "mount_images" {
   name    = "var-mnt-images.mount"
   enabled = true
   content = "${file("${path.module}/qemu-agent/var-mnt-images.mount")}"
+}
 
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
   content = "${file("${path.module}/qemu-agent/qemu-agent.service")}"
-
+}
 
 data "ignition_user" "core" {
   name          = "core"
