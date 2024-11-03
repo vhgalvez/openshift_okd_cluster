@@ -20,7 +20,7 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
-  source = "/mnt/lv_data/okd_bootstrap.ign"  // Update this path if necessary
+  source = "${path.module}/../../ignition_configs/bootstrap.ign"  // Update this path if necessary
   format = "raw"
 }
 
@@ -28,7 +28,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
-  source = "/mnt/lv_data/okd_master.ign"  // Update this path if necessary
+  source = "${path.module}/../../ignition_configs/master.ign"  // Update this path if necessary
   format = "raw"
 }
 
