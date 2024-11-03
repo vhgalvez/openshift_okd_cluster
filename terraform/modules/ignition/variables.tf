@@ -18,3 +18,11 @@ variable "qemu_agent_content" {
 variable "core_user_password_hash" {
   type = string
 }
+
+variable "bootstrap_ignition_id" {
+  type = string
+}
+
+variable "master_ignition_id" {
+  type = string
+}
