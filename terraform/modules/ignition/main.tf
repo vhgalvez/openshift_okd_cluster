@@ -20,7 +20,7 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/bootstrap.ign"  // Update this path if necessary
+  source = "/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign"  // Update this path if necessary
   format = "raw"
 }
 
@@ -28,7 +28,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/master.ign"  // Update this path if necessary
+  source = "/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign"  // Update this path if necessary
   format = "raw"
 }
 
