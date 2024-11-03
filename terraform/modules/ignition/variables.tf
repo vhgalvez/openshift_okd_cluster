@@ -1,3 +1,4 @@
+# terraform\modules\ignition\variables.tf
 variable "hosts" {
   type = number
 }
