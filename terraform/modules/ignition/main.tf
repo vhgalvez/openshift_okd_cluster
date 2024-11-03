@@ -34,40 +34,13 @@ resource "libvirt_volume" "master_ignition" {
 data "ignition_systemd_unit" "mount_images" {
   name    = "var-mnt-images.mount"
   enabled = true
-  content = <<EOF
-[Unit]
-Description=Mount Docker Images Directory
-Before=local-fs.target
-
-[Mount]
-What=/srv/images
-Where=/var/lib/docker-images
-Type=none
-Options=bind
-
-[Install]
-WantedBy=multi-user.target
-EOF
-}
+  content = "${file("${path.module}/qemu-agent/var-mnt-images.mount")}"
 
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
-  content = <<EOF
-[Unit]
-Description=QEMU Guest Agent
-After=docker.service
-Requires=docker.service
+  content = "${file("${path.module}/qemu-agent/qemu-agent.service")}"
 
-[Service]
-ExecStartPre=-/usr/bin/docker load -i /var/lib/docker-images/qemu-guest-agent.tar
-ExecStart=/usr/bin/docker run --rm --name qemu-guest-agent rancher/os-qemuguestagent:v2.8.1-2
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOF
-}
 
 data "ignition_user" "core" {
   name          = "core"
