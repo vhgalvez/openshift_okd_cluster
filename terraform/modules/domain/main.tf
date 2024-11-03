@@ -35,6 +35,8 @@ module "ignition_config" {
   mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
   qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
   core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
+  bootstrap_ignition_id   = var.bootstrap_ignition_id
+  master_ignition_id      = var.master_ignition_id
 }
 
 # Definición de las máquinas virtuales de OKD
