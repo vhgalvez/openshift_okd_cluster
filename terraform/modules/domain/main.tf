@@ -18,13 +18,13 @@ terraform {
 data "ignition_systemd_unit" "mount_images" {
   name    = "var-mnt-images.mount"
   enabled = true
-  content = file("${path.module}/../ignition/qemu-agent/var-mnt-images.mount")
+  content = file("${path.module}/../../qemu-agent/docker-images.mount")
 }
 
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
-  content = file("${path.module}/../ignition/qemu-agent/qemu-agent.service")
+  content = file("${path.module}/../../qemu-agent/qemu-agent.service")
 }
 
 # Definición de la configuración de Ignition reutilizable
