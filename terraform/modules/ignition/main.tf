@@ -21,6 +21,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
   source = var.bootstrap_ignition_id
+  format = "raw"
 }
 
 // Define volume for the master Ignition file
