@@ -306,6 +306,6 @@ sudo virsh undefine okd-controlplane-1 --remove-all-storage
 sudo virsh undefine okd-controlplane-2 --remove-all-storage
 sudo virsh undefine okd-controlplane-3 --remove-all-storage
 
-sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/bootstrap.ign
 
+sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/bootstrap.ign
 sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/master.ign
