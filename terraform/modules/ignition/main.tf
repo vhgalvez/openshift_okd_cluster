@@ -20,27 +20,53 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "okd_bootstrap.ign"
   pool   = "default"
-  source = "/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign"
+  source = var.bootstrap_ignition_id
 }
 
 // Define volume for the master Ignition file
 resource "libvirt_volume" "master_ignition" {
   name   = "okd_master.ign"
   pool   = "default"
-  source = "/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign"
+  source = var.master_ignition_id
   format = "raw"
 }
 
 data "ignition_systemd_unit" "mount_images" {
   name    = "var-mnt-images.mount"
   enabled = true
-  content = var.mount_images_content
+  content = <<EOF
+[Unit]
+Description=Mount Docker Images Directory
+Before=local-fs.target
+
+[Mount]
+What=/srv/images
+Where=/var/lib/docker-images
+Type=none
+Options=bind
+
+[Install]
+WantedBy=multi-user.target
+EOF
 }
 
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
-  content = var.qemu_agent_content
+  content = <<EOF
+[Unit]
+Description=QEMU Guest Agent
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker load -i /var/lib/docker-images/qemu-guest-agent.tar
+ExecStart=/usr/bin/docker run --rm --name qemu-guest-agent rancher/os-qemuguestagent:v2.8.1-2
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
 }
 
 data "ignition_user" "core" {
