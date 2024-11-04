@@ -20,10 +20,14 @@ resource "libvirt_volume" "bootstrap_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/bootstrap.ign"
   format = "raw"
-  depends_on = [null_resource.copy_ignition_files]
 
   provisioner "local-exec" {
-    command = "while [ ! -f /mnt/lv_data/bootstrap.ign ]; do sleep 1; done"
+    command = "test -f /mnt/lv_data/bootstrap.ign"
+    when    = create
+  }
+
+  lifecycle {
+    replace_triggered_by = [var.ignition_files_ready]
   }
 }
 
@@ -32,9 +36,13 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/master.ign"
   format = "raw"
-  depends_on = [null_resource.copy_ignition_files]
 
   provisioner "local-exec" {
-    command = "while [ ! -f /mnt/lv_data/master.ign ]; do sleep 1; done"
+    command = "test -f /mnt/lv_data/master.ign"
+    when    = create
+  }
+
+  lifecycle {
+    replace_triggered_by = [var.ignition_files_ready]
   }
 }

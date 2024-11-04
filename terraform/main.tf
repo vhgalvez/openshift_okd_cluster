@@ -49,6 +49,7 @@ module "ignition" {
   hostname_prefix         = var.hostname_prefix
   bootstrap_ignition_id   = var.bootstrap_ignition_id
   master_ignition_id      = var.master_ignition_id
+  ignition_files_ready    = null_resource.copy_ignition_files.id
 }
 
 module "network" {
