@@ -19,13 +19,13 @@ provider "libvirt" {
 data "ignition_systemd_unit" "mount_images" {
   name    = "docker-images.mount"
   enabled = true
-  content = var.mount_images_content
+  content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
 }
 
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
-  content = var.qemu_agent_content
+  content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 }
 
 resource "libvirt_volume" "bootstrap_ignition" {
