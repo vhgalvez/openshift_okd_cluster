@@ -31,7 +31,6 @@ data "ignition_systemd_unit" "qemu_agent" {
   content = "${file("${path.module}/qemu-agent/qemu-agent.service")}"
 }
 
-# Copia de archivos ignition 
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "cp -f ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -f ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
