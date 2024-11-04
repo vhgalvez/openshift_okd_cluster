@@ -16,15 +16,15 @@ provider "libvirt" {
 }
 
 data "ignition_systemd_unit" "mount_images" {
-  name    = "var-mnt-images.mount"
+  name    = "var-lib-docker-images.mount"
   enabled = true
-  content = var.mount_images_content
+  content = replace(var.mount_images_content, "\r\n", "\n")
 }
 
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
-  content = var.qemu_agent_content
+  content = replace(var.qemu_agent_content, "\r\n", "\n")
 }
 
 resource "libvirt_volume" "bootstrap_ignition" {
