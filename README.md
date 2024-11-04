@@ -301,14 +301,11 @@ sudo timedatectl status
 date
 
 
-sudo virsh undefine okd-bootstrap --remove-all-storage
-sudo virsh undefine okd-controlplane-1 --remove-all-storage
-sudo virsh undefine okd-controlplane-2 --remove-all-storage
-sudo virsh undefine okd-controlplane-3 --remove-all-storage
 
 
 sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/bootstrap.ign
 sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/master.ign
+
 
 
 
@@ -336,9 +333,12 @@ sudo virsh shutdown okd-controlplane-1
 sudo virsh shutdown okd-controlplane-2
 sudo virsh shutdown okd-controlplane-3
 
-virsh destroy okd-controlplane-1
-virsh undefine okd-controlplane-1
-virsh destroy okd-controlplane-2
-virsh undefine okd-controlplane-2
-virsh destroy okd-controlplane-3
-virsh undefine okd-controlplane-3
+sudo virsh destroy okd-controlplane-1
+sudo virsh undefine okd-controlplane-1
+sudo virsh destroy okd-controlplane-2
+sudo virsh undefine okd-controlplane-2
+sudo virsh destroy okd-controlplane-3
+sudo virsh undefine okd-controlplane-3
+
+
+sudo virsh list --all
