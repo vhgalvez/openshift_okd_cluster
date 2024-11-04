@@ -316,7 +316,14 @@ sudo virsh undefine okd-controlplane-2 --nvram
 sudo virsh undefine okd-controlplane-3 --nvram
 
 
+sudo virsh destroy okd-controlplane-2
+sudo virsh destroy okd-controlplane-3
+sudo virsh destroy okd-bootstrap
+sudo virsh destroy okd-controlplane-1
+
+
 sudo virsh shutdown okd-bootstrap
 sudo virsh shutdown okd-controlplane-1
 sudo virsh shutdown okd-controlplane-2
 sudo virsh shutdown okd-controlplane-3
+
