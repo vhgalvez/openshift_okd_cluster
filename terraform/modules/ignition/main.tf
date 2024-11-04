@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "0.8.1"
+    }
+  }
+}
+
+provider "libvirt" {
+  uri = "qemu:///system"
+}
+
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
