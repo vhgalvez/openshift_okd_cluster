@@ -33,7 +33,7 @@ data "ignition_systemd_unit" "qemu_agent" {
 
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
-    command = "cp -f ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -f ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
+    command = "rm -f /mnt/lv_data/bootstrap.ign /mnt/lv_data/master.ign && cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
   }
 }
 
