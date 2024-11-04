@@ -19,7 +19,7 @@ resource "libvirt_network" "okd_network" {
   autostart = true
 
   lifecycle {
-    ignore_changes = [uuid]
+    ignore_changes = [id]
   }
 
   dns {

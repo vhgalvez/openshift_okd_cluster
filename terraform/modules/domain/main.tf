@@ -22,8 +22,8 @@ provider "libvirt" {
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = <<EOT
-      cp /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/
-      cp /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/
+      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/
+      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/
     EOT
   }
 
