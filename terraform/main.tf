@@ -35,6 +35,9 @@ resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "rm -f /mnt/lv_data/bootstrap.ign /mnt/lv_data/master.ign && cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
   }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 }
 
 module "ignition" {
@@ -46,6 +49,7 @@ module "ignition" {
   hostname_prefix         = var.hostname_prefix
   bootstrap_ignition_id   = var.bootstrap_ignition_id
   master_ignition_id      = var.master_ignition_id
+  depends_on              = [null_resource.copy_ignition_files] // Added dependency
 }
 
 module "network" {
@@ -74,6 +78,7 @@ module "volumes" {
   controlplane_2_volume_id   = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id   = module.volumes.okd_controlplane_3_id
   network_id                 = module.network.okd_network.id
+  depends_on                 = [null_resource.copy_ignition_files] // Added dependency
 }
 
 module "domain" {

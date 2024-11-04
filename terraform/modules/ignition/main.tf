@@ -27,18 +27,26 @@ resource "null_resource" "copy_ignition_files" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
-  source = "/mnt/lv_data/bootstrap.ign" // Verifica esta ruta
+  source = "/mnt/lv_data/bootstrap.ign"
   format = "raw"
-  depends_on = [null_resource.copy_ignition_files]
+  depends_on = [null_resource.copy_ignition_files] // Added dependency
+
+  provisioner "local-exec" {
+    command = "test -f /mnt/lv_data/bootstrap.ign"
+  }
 }
 
 // Define volume for the master Ignition file
 resource "libvirt_volume" "master_ignition" {
   name   = "master.ign"
   pool   = "default"
-  source = "/mnt/lv_data/master.ign" // Verifica esta ruta
+  source = "/mnt/lv_data/master.ign"
   format = "raw"
-  depends_on = [null_resource.copy_ignition_files]
+  depends_on = [null_resource.copy_ignition_files] // Added dependency
+
+  provisioner "local-exec" {
+    command = "test -f /mnt/lv_data/master.ign"
+  }
 }
 
 data "ignition_systemd_unit" "mount_images" {
