@@ -95,16 +95,3 @@ module "domain" {
   mount_images_content    = module.ignition.mount_images_content
   qemu_agent_content      = module.ignition.qemu_agent_content
 }
-
-[Unit]
-Description=QEMU Guest Agent
-After=docker.service
-Requires=docker.service
-
-[Service]
-ExecStartPre=-/usr/bin/docker load -i /var/lib/docker-images/qemu-guest-agent.tar
-ExecStart=/usr/bin/docker run --rm --name qemu-guest-agent rancher/os-qemuguestagent:v2.8.1-2
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
