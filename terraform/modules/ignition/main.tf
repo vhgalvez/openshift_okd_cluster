@@ -16,7 +16,7 @@ provider "libvirt" {
 }
 
 data "ignition_systemd_unit" "mount_images" {
-  name    = "var-lib-docker-images.mount"
+  name    = "docker-images.mount"
   enabled = true
   content = replace(var.mount_images_content, "\r\n", "\n")
 }
