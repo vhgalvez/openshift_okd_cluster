@@ -21,6 +21,10 @@ module "ignition_config" {
   hosts                   = var.hosts
   hostname_prefix         = var.hostname_prefix
   core_user_password_hash = var.core_user_password_hash
+  mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
+  qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
+  bootstrap_ignition_id   = libvirt_volume.bootstrap_ignition.id
+  master_ignition_id      = libvirt_volume.master_ignition.id
 }
 
 # Definición de las máquinas virtuales de OKD
