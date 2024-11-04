@@ -17,20 +17,6 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-// copiar los archivos de Ignition a la carpeta de datos
-
-//resource "null_resource" "copy_ignition_files" {
-//  provisioner "local-exec" {
-//    command = <<EOT
-//      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/
-//      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/
-//    EOT
-//  }
-//
-//  triggers = {
-//    always_run = "${timestamp()}"
-//  }
-//}
 
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 
@@ -63,7 +49,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   disk {
     volume_id = var.bootstrap_volume_id
@@ -111,7 +97,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   disk {
     volume_id = var.controlplane_1_volume_id
@@ -157,7 +143,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   disk {
     volume_id = var.controlplane_2_volume_id
@@ -203,7 +189,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   disk {
     volume_id = var.controlplane_3_volume_id
