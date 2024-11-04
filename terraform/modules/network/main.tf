@@ -18,6 +18,10 @@ resource "libvirt_network" "okd_network" {
   addresses = ["192.168.150.0/24"]
   autostart = true
 
+  lifecycle {
+    ignore_changes = [uuid]
+  }
+
   dns {
     enabled    = true
     local_only = false

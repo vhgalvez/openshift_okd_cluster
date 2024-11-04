@@ -31,6 +31,12 @@ data "ignition_systemd_unit" "qemu_agent" {
   content = "${file("${path.module}/qemu-agent/qemu-agent.service")}"
 }
 
+resource "null_resource" "copy_ignition_files" {
+  provisioner "local-exec" {
+    command = "cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
+  }
+}
+
 module "ignition" {
   source                  = "./modules/ignition"
   mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
