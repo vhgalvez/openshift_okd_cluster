@@ -240,4 +240,29 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 }
 
+resource "libvirt_domain" "coreos_machine" {
+  count  = var.hosts
+  name   = format(var.hostname_format, count.index + 1)
+  vcpu   = "1"
+  memory = "2048"
+
+  qemu_agent       = true
+  coreos_ignition  = element(libvirt_ignition.ignition.*.id, count.index)
+
+  disk {
+    volume_id = element(libvirt_volume.coreos-disk.*.id, count.index)
+  }
+
+  filesystem {
+    source = "/srv/images"
+    target = "qemu_docker_images"
+    readonly = true
+  }
+
+  network_interface {
+    network_name = "default"
+    wait_for_lease = true
+  }
+}
+
 
