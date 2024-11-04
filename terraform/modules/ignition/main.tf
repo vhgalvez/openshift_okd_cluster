@@ -29,7 +29,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/bootstrap.ign"
   format = "raw"
-  depends_on = [null_resource.copy_ignition_files] // Added dependency
+  depends_on = [null_resource.copy_ignition_files]
 
   provisioner "local-exec" {
     command = "test -f /mnt/lv_data/bootstrap.ign"
@@ -42,7 +42,7 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/master.ign"
   format = "raw"
-  depends_on = [null_resource.copy_ignition_files] // Added dependency
+  depends_on = [null_resource.copy_ignition_files]
 
   provisioner "local-exec" {
     command = "test -f /mnt/lv_data/master.ign"
