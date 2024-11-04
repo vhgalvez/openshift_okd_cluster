@@ -53,13 +53,11 @@ resource "libvirt_domain" "okd_bootstrap" {
 
   nvram {
     file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    label = "virtio"
   }
 
   disk {
     volume_id = var.bootstrap_volume_id
     scsi      = false
-    label     = "virtio"
   }
 
   cpu {
@@ -107,13 +105,11 @@ resource "libvirt_domain" "okd_controlplane_1" {
 
   nvram {
     file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    label = "virtio"
   }
 
   disk {
     volume_id = var.controlplane_1_volume_id
     scsi      = false
-    label     = "virtio"
   }
 
   cpu {
@@ -159,13 +155,11 @@ resource "libvirt_domain" "okd_controlplane_2" {
 
   nvram {
     file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    label = "virtio"
   }
 
   disk {
     volume_id = var.controlplane_2_volume_id
     scsi      = false
-    label     = "virtio"
   }
 
   cpu {
@@ -211,13 +205,11 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
   nvram {
     file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    label = "virtio"
   }
 
   disk {
     volume_id = var.controlplane_3_volume_id
     scsi      = false
-    label     = "virtio"
   }
 
   cpu {
