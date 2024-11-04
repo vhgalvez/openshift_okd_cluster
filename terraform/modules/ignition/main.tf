@@ -23,6 +23,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/bootstrap.ign" // Ensure this path is correct
   format = "raw"
+  depends_on = [null_resource.copy_ignition_files]
 }
 
 // Define volume for the master Ignition file
@@ -31,6 +32,7 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/master.ign" // Ensure this path is correct
   format = "raw"
+  depends_on = [null_resource.copy_ignition_files]
 }
 
 data "ignition_systemd_unit" "mount_images" {
