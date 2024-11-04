@@ -20,11 +20,7 @@ module "ignition_config" {
   source                  = "../ignition"
   hosts                   = var.hosts
   hostname_prefix         = var.hostname_prefix
-  mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
-  qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
   core_user_password_hash = var.core_user_password_hash
-  bootstrap_ignition_id   = libvirt_volume.bootstrap_ignition.id
-  master_ignition_id      = libvirt_volume.master_ignition.id
 }
 
 # Definición de las máquinas virtuales de OKD
@@ -39,7 +35,7 @@ resource "libvirt_domain" "okd_bootstrap" {
 
   # Attach the Ignition volume as a disk
   disk {
-    volume_id = libvirt_volume.bootstrap_ignition.id
+    volume_id = module.ignition_config.bootstrap_ignition
     scsi      = false
   }
 
@@ -87,7 +83,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
 
   # Attach the Ignition volume as a disk
   disk {
-    volume_id = libvirt_volume.master_ignition.id
+    volume_id = module.ignition_config.master_ignition
     scsi      = false
   }
 
@@ -133,7 +129,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
 
   # Attach the Ignition volume as a disk
   disk {
-    volume_id = libvirt_volume.master_ignition.id
+    volume_id = module.ignition_config.master_ignition
     scsi      = false
   }
 
@@ -179,7 +175,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
   # Attach the Ignition volume as a disk
   disk {
-    volume_id = libvirt_volume.master_ignition.id
+    volume_id = module.ignition_config.master_ignition
     scsi      = false
   }
 
