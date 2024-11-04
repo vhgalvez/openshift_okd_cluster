@@ -32,7 +32,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   depends_on = [null_resource.copy_ignition_files]
 
   provisioner "local-exec" {
-    command = "test -f /mnt/lv_data/bootstrap.ign"
+    command = "while [ ! -f /mnt/lv_data/bootstrap.ign ]; do sleep 1; done"
   }
 }
 
@@ -45,7 +45,7 @@ resource "libvirt_volume" "master_ignition" {
   depends_on = [null_resource.copy_ignition_files]
 
   provisioner "local-exec" {
-    command = "test -f /mnt/lv_data/master.ign"
+    command = "while [ ! -f /mnt/lv_data/master.ign ]; do sleep 1; done"
   }
 }
 
