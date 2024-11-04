@@ -1,4 +1,3 @@
-
 # terraform/modules/ignition/main.tf
 
 terraform {
