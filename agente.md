@@ -23,7 +23,7 @@ El uso del agente de QEMU Guest Agent permite que libvirt pueda recoger informac
 Primero, descarga la imagen del contenedor que contiene el agente de QEMU Guest Agent. Utiliza Podman o Docker:
 
 ```sh
-$ docker pull docker.io/rancher/os-qemuguestagent:v2.8.1-2
+sudo docker pull docker.io/rancher/os-qemuguestagent:v2.8.1-2
 ```
 
 Este comando descarga la imagen del agente de QEMU Guest Agent desde el repositorio de Docker.
@@ -33,14 +33,14 @@ Este comando descarga la imagen del agente de QEMU Guest Agent desde el reposito
 Una vez descargada la imagen, guárdala en un archivo TAR para poder transferirla y utilizarla en las máquinas virtuales.
 
 ```sh
-$ sudo podman save docker.io/rancher/os-qemuguestagent:v2.8.1-2 -o /srv/images/qemu-guest-agent.tar
+sudo podman save docker.io/rancher/os-qemuguestagent:v2.8.1-2 -o /srv/images/qemu-guest-agent.tar
 ```
 
 Si el directorio `/srv/images` no tiene los permisos correctos, debes asegurarte de que el usuario pueda escribir en él:
 
 ```sh
-$ sudo chown victory:victory /srv/images
-$ sudo chmod 777 /srv/images
+sudo chown victory:victory /srv/images
+sudo chmod 777 /srv/images
 ```
 
 Esto permitirá que Podman guarde la imagen en ese directorio sin problemas de permisos.
@@ -50,7 +50,7 @@ Esto permitirá que Podman guarde la imagen en ese directorio sin problemas de p
 Si SELinux está habilitado y en modo "enforcing", podría causar problemas de acceso a los archivos. Puedes cambiar el modo a "permissive" para evitar problemas de permisos temporales:
 
 ```sh
-$ sudo setenforce 0
+sudo setenforce 0
 ```
 
 Esto cambia SELinux a modo permisivo, pero asegúrate de volver a "enforcing" una vez hayas terminado la configuración para mantener la seguridad del sistema.
@@ -60,7 +60,7 @@ Esto cambia SELinux a modo permisivo, pero asegúrate de volver a "enforcing" un
 Una vez la imagen ha sido exportada, muevela al directorio `/srv/images` para que esté disponible para las máquinas virtuales.
 
 ```sh
-$ sudo mv /home/victory/qemu-guest-agent.tar /srv/images/qemu-guest-agent.tar
+sudo mv /home/victory/qemu-guest-agent.tar /srv/images/qemu-guest-agent.tar
 ```
 
 ### 5. Configurar los archivos de Ignition
@@ -143,8 +143,8 @@ resource "libvirt_domain" "okd_bootstrap" {
 Ejecuta `terraform init` y `terraform apply` para inicializar y desplegar el entorno. Esto creará las máquinas virtuales y aplicará las configuraciones de Ignition necesarias.
 
 ```sh
-$ terraform init
-$ terraform apply
+sudo terraform init
+sudo terraform apply
 ```
 
 Este proceso desplegará las máquinas y utilizará el agente de QEMU para recolectar información sobre la VM, como la dirección IP.
