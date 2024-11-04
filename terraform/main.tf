@@ -96,4 +96,6 @@ module "domain" {
   bootstrap_ignition_id = module.ignition.bootstrap_ignition
   master_ignition_id    = module.ignition.master_ignition
   core_user_password_hash = var.core_user_password_hash
+  mount_images_content    = module.ignition.mount_images_content
+  qemu_agent_content      = module.ignition.qemu_agent_content
 }
