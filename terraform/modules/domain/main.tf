@@ -49,9 +49,10 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware {
-    loader = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram  = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+
+  nvram {
+    file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   disk {
@@ -100,9 +101,10 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware {
-    loader = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram  = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+
+  nvram {
+    file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   disk {
@@ -149,9 +151,10 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware {
-    loader = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram  = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+
+  nvram {
+    file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   disk {
@@ -198,9 +201,10 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 
   # Use UEFI firmware without secure boot
-  firmware {
-    loader = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram  = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+
+  nvram {
+    file = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   disk {
