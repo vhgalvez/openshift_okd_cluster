@@ -15,6 +15,18 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+data "ignition_systemd_unit" "mount_images" {
+  name    = "var-mnt-images.mount"
+  enabled = true
+  content = var.mount_images_content
+}
+
+data "ignition_systemd_unit" "qemu_agent" {
+  name    = "qemu-agent.service"
+  enabled = true
+  content = var.qemu_agent_content
+}
+
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"

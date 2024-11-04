@@ -19,18 +19,6 @@ provider "ignition" {
   // Configuration options
 }
 
-data "ignition_systemd_unit" "mount_images" {
-  name    = "var-mnt-images.mount"
-  enabled = true
-  content = "${file("${path.module}/qemu-agent/docker-images.mount")}"
-}
-
-data "ignition_systemd_unit" "qemu_agent" {
-  name    = "qemu-agent.service"
-  enabled = true
-  content = "${file("${path.module}/qemu-agent/qemu-agent.service")}"
-}
-
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "rm -f /mnt/lv_data/bootstrap.ign /mnt/lv_data/master.ign && cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
@@ -42,8 +30,8 @@ resource "null_resource" "copy_ignition_files" {
 
 module "ignition" {
   source                  = "./modules/ignition"
-  mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
-  qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
+  mount_images_content    = file("${path.module}/qemu-agent/docker-images.mount")
+  qemu_agent_content      = file("${path.module}/qemu-agent/qemu-agent.service")
   core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
   hosts                   = var.controlplane_count + 1
   hostname_prefix         = var.hostname_prefix
