@@ -19,7 +19,7 @@ provider "libvirt" {
 
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
-    command = "cp -f ${path.module}/../../ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -f ${path.module}/../../ignition_configs/master.ign /mnt/lv_data/"
+    command = "rm -f /mnt/lv_data/bootstrap.ign /mnt/lv_data/master.ign && cp ${path.module}/../../ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/../../ignition_configs/master.ign /mnt/lv_data/"
   }
 }
 
@@ -27,7 +27,7 @@ resource "null_resource" "copy_ignition_files" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
-  source = "/mnt/lv_data/bootstrap.ign" // Ensure this path is correct
+  source = "/mnt/lv_data/bootstrap.ign" // Verifica esta ruta
   format = "raw"
   depends_on = [null_resource.copy_ignition_files]
 }
@@ -36,7 +36,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
 resource "libvirt_volume" "master_ignition" {
   name   = "master.ign"
   pool   = "default"
-  source = "/mnt/lv_data/master.ign" // Ensure this path is correct
+  source = "/mnt/lv_data/master.ign" // Verifica esta ruta
   format = "raw"
   depends_on = [null_resource.copy_ignition_files]
 }
