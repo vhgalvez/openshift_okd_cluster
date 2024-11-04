@@ -30,8 +30,8 @@ resource "null_resource" "copy_ignition_files" {
 
 module "ignition" {
   source                  = "./modules/ignition"
-  mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
-  qemu_agent_content      = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
+  mount_images_content    = file("${path.module}/qemu-agent/docker-images.mount")
+  qemu_agent_content      = file("${path.module}/qemu-agent/qemu-agent.service")
   core_user_password_hash = var.core_user_password_hash
   hosts                   = var.controlplane_count + 1
   hostname_prefix         = var.hostname_prefix
