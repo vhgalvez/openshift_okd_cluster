@@ -26,8 +26,3 @@ variable "bootstrap_ignition_id" {
 variable "master_ignition_id" {
   type = string
 }
-
-variable "ignition_files_ready" {
-  description = "Trigger value that indicates ignition files are ready"
-  type        = string
-}
