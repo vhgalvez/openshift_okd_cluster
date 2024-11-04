@@ -17,6 +17,12 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+resource "null_resource" "copy_ignition_files" {
+  provisioner "local-exec" {
+    command = "cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
+  }
+}
+
 // Define volume for the bootstrap Ignition file
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
