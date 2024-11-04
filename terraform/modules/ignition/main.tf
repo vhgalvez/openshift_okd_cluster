@@ -21,7 +21,7 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/bootstrap.ign"
+  source = "/mnt/lv_data/bootstrap.ign" // Ensure this path is correct
   format = "raw"
 }
 
@@ -29,7 +29,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
 resource "libvirt_volume" "master_ignition" {
   name   = "master.ign"
   pool   = "default"
-  source = "${path.module}/../../ignition_configs/master.ign"
+  source = "/mnt/lv_data/master.ign" // Ensure this path is correct
   format = "raw"
 }
 

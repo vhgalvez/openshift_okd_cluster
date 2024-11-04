@@ -214,3 +214,5 @@ resource "libvirt_domain" "okd_controlplane_3" {
     wait_for_lease = true
   }
 }
+
+
