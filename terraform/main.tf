@@ -30,7 +30,7 @@ resource "null_resource" "copy_ignition_files" {
 
 module "ignition" {
   source                  = "./modules/ignition"
-  mount_images_content    = file("${path.module}/qemu-agent/docker-images.mount")
+  mount_images_content    = file("${path.module}/qemu-agent/var-lib-docker-images.mount")
   qemu_agent_content      = file("${path.module}/qemu-agent/qemu-agent.service")
   core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
   hosts                   = var.controlplane_count + 1
@@ -95,3 +95,16 @@ module "domain" {
   mount_images_content    = module.ignition.mount_images_content
   qemu_agent_content      = module.ignition.qemu_agent_content
 }
+
+[Unit]
+Description=QEMU Guest Agent
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker load -i /var/lib/docker-images/qemu-guest-agent.tar
+ExecStart=/usr/bin/docker run --rm --name qemu-guest-agent rancher/os-qemuguestagent:v2.8.1-2
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
