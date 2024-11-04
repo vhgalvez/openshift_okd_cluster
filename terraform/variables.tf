@@ -59,13 +59,13 @@ variable "controlplane_3" {
 variable "bootstrap_ignition_id" {
   type        = string
   description = "Rendered Ignition config for bootstrap node"
-  default     = "/home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign"
+  default     = "/mnt/lv_data/ignition_configs/bootstrap.ign"
 }
 
 variable "master_ignition_id" {
   type        = string
   description = "Rendered Ignition config for master nodes"
-  default     = "/home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign"
+  default     = "/mnt/lv_data/ignition_configs/master.ign"
 }
 
 variable "hosts" {

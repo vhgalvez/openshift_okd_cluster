@@ -9,7 +9,7 @@ module "ignition_config" {
   hostname_prefix         = var.hostname_prefix
   mount_images_content    = data.ignition_systemd_unit.mount_images.rendered
   qemu_agent_content      = data.ignition_systemd_unit.qemu_agent.rendered
-  core_user_password_hash = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
+  core_user_password_hash = var.core_user_password_hash
   bootstrap_ignition_id   = libvirt_volume.bootstrap_ignition.id
   master_ignition_id      = libvirt_volume.master_ignition.id
 }
