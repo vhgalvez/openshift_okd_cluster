@@ -22,12 +22,7 @@ resource "libvirt_volume" "bootstrap_ignition" {
   format = "raw"
 
   provisioner "local-exec" {
-    command = "test -f /mnt/lv_data/bootstrap.ign"
-    when    = create
-  }
-
-  lifecycle {
-    replace_triggered_by = [var.ignition_files_ready]
+    command = "while [ ! -f /mnt/lv_data/bootstrap.ign ]; do sleep 1; done"
   }
 }
 
@@ -38,11 +33,6 @@ resource "libvirt_volume" "master_ignition" {
   format = "raw"
 
   provisioner "local-exec" {
-    command = "test -f /mnt/lv_data/master.ign"
-    when    = create
-  }
-
-  lifecycle {
-    replace_triggered_by = [var.ignition_files_ready]
+    command = "while [ ! -f /mnt/lv_data/master.ign ]; do sleep 1; done"
   }
 }
