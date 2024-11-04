@@ -53,7 +53,7 @@ resource "libvirt_domain" "okd_bootstrap" {
 
   nvram {
     file = "/var/lib/libvirt/qemu/nvram/${var.bootstrap.name}_VARS.fd"
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
   disk {
@@ -106,7 +106,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
 
   nvram {
     file = "/var/lib/libvirt/qemu/nvram/${var.controlplane_1.name}_VARS.fd"
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
   disk {
@@ -157,7 +157,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
 
   nvram {
     file = "/var/lib/libvirt/qemu/nvram/${var.controlplane_2.name}_VARS.fd"
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
   disk {
@@ -208,7 +208,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
   nvram {
     file = "/var/lib/libvirt/qemu/nvram/${var.controlplane_3.name}_VARS.fd"
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
   disk {
