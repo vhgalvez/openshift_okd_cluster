@@ -19,18 +19,18 @@ provider "libvirt" {
 
 // copiar los archivos de Ignition a la carpeta de datos
 
-resource "null_resource" "copy_ignition_files" {
-  provisioner "local-exec" {
-    command = <<EOT
-      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/
-      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/
-    EOT
-  }
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
+//resource "null_resource" "copy_ignition_files" {
+//  provisioner "local-exec" {
+//    command = <<EOT
+//      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/
+//      cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/
+//    EOT
+//  }
+//
+//  triggers = {
+//    always_run = "${timestamp()}"
+//  }
+//}
 
 # Configuración de los archivos de Ignition para montar el directorio de imágenes Docker y el servicio del agente de QEMU
 

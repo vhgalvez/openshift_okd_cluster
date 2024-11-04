@@ -28,7 +28,7 @@ resource "libvirt_network" "okd_network" {
   }
 
   dnsmasq_options {
-    # bootstrap
+    // bootstrap
     options {
       option_name  = "address"
       option_value = "/okd-bootstrap.local.okd.lab/${var.bootstrap.address}"
@@ -46,7 +46,7 @@ resource "libvirt_network" "okd_network" {
       option_value = "api-int.local.okd.lab,${var.bootstrap.address}"
     }
 
-    # control plane 1
+    // control plane 1
     options {
       option_name  = "address"
       option_value = "/okd-controlplane-1.local.okd.lab/${var.controlplane_1.address}"
@@ -80,7 +80,7 @@ resource "libvirt_network" "okd_network" {
       option_value = "/console-openshift-console.apps.local.okd.lab/${var.controlplane_1.address}"
     }
 
-    # control plane 2
+    // control plane 2
     options {
       option_name  = "address"
       option_value = "/okd-controlplane-2.local.okd.lab/${var.controlplane_2.address}"
@@ -114,7 +114,7 @@ resource "libvirt_network" "okd_network" {
       option_value = "/console-openshift-console.apps.local.okd.lab/${var.controlplane_2.address}"
     }
 
-    # control plane 3
+    // control plane 3
     options {
       option_name  = "address"
       option_value = "/okd-controlplane-3.local.okd.lab/${var.controlplane_3.address}"
@@ -148,7 +148,7 @@ resource "libvirt_network" "okd_network" {
       option_value = "/console-openshift-console.apps.local.okd.lab/${var.controlplane_3.address}"
     }
 
-    # etcd
+    // etcd
     options {
       option_name  = "address"
       option_value = "/etcd-0.local.okd.lab/${var.controlplane_1.address}"
