@@ -26,8 +26,8 @@ module "ignition_config" {
   hosts                   = var.hosts
   hostname_prefix         = var.hostname_prefix
   core_user_password_hash = var.core_user_password_hash
-  mount_images_content    = var.mount_images_content
-  qemu_agent_content      = var.qemu_agent_content
+  mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
+  qemu_agent_content      = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
   bootstrap_ignition_id   = var.bootstrap_ignition_id
   master_ignition_id      = var.master_ignition_id
 }
@@ -52,7 +52,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   nvram {
-    file = "/var/lib/libvirt/qemu/nvram/${var.bootstrap.name}_VARS.fd"
+    file     = "/var/lib/libvirt/qemu/nvram/${var.bootstrap.name}_VARS.fd"
     template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
@@ -105,7 +105,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   nvram {
-    file = "/var/lib/libvirt/qemu/nvram/${var.controlplane_1.name}_VARS.fd"
+    file     = "/var/lib/libvirt/qemu/nvram/${var.controlplane_1.name}_VARS.fd"
     template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
@@ -156,7 +156,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   nvram {
-    file = "/var/lib/libvirt/qemu/nvram/${var.controlplane_2.name}_VARS.fd"
+    file     = "/var/lib/libvirt/qemu/nvram/${var.controlplane_2.name}_VARS.fd"
     template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
@@ -207,7 +207,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
 
   nvram {
-    file = "/var/lib/libvirt/qemu/nvram/${var.controlplane_3.name}_VARS.fd"
+    file     = "/var/lib/libvirt/qemu/nvram/${var.controlplane_3.name}_VARS.fd"
     template = "/var/lib/libvirt/OVMF_VARS.fd"
   }
 
@@ -246,21 +246,21 @@ resource "libvirt_domain" "coreos_machine" {
   vcpu   = "1"
   memory = "2048"
 
-  qemu_agent       = true
-  coreos_ignition  = element(libvirt_ignition.ignition.*.id, count.index)
+  qemu_agent      = true
+  coreos_ignition = element(libvirt_ignition.ignition.*.id, count.index)
 
   disk {
     volume_id = element(libvirt_volume.coreos-disk.*.id, count.index)
   }
 
   filesystem {
-    source = "/srv/images"
-    target = "qemu_docker_images"
+    source   = "/srv/images"
+    target   = "qemu_docker_images"
     readonly = true
   }
 
   network_interface {
-    network_name = "default"
+    network_name   = "default"
     wait_for_lease = true
   }
 }
