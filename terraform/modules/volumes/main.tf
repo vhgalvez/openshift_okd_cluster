@@ -46,17 +46,3 @@ resource "libvirt_volume" "okd_controlplane_3" {
   size           = var.controlplane_3_volume_size * 1073741824
   base_volume_id = libvirt_volume.fedora_coreos.id
 }
-
-resource "libvirt_volume" "bootstrap_ignition" {
-  name   = "bootstrap.ign"
-  pool   = "default"
-  source = file("${path.module}/../../ignition_configs/bootstrap.ign")
-  format = "raw"
-}
-
-resource "libvirt_volume" "master_ignition" {
-  name   = "master.ign"
-  pool   = "default"
-  source = file("${path.module}/../../ignition_configs/master.ign")
-  format = "raw"
-}
