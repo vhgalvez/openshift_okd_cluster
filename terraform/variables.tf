@@ -95,11 +95,9 @@ variable "core_user_password_hash" {
 variable "mount_images_content" {
   description = "Content for mounting Docker images directory"
   type        = string
-  default     = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
 }
 
 variable "qemu_agent_content" {
   description = "Content for QEMU agent service"
   type        = string
-  default     = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 }
