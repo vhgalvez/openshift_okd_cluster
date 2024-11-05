@@ -59,14 +59,15 @@ module "volumes" {
   hostname_prefix            = var.hostname_prefix
   network_id                 = module.network.okd_network.id
 
-  # Utiliza los IDs de volumen como variables de salida
-  bootstrap_volume_id      = module.volumes.okd_bootstrap_id
-  controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
-  controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
-  controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
+  # Definimos los argumentos faltantes
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
 
   depends_on = [null_resource.copy_ignition_files]
 }
+
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
