@@ -73,7 +73,14 @@ module "volumes" {
   hosts                      = var.controlplane_count + 1
   hostname_prefix            = var.hostname_prefix
   network_id                 = module.network.okd_network.id
+
+  # Pasar argumentos adicionales necesarios para el módulo `volumes`
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
 }
+
 
 # Configuración del módulo domain, utilizando volúmenes generados
 module "domain" {
