@@ -1,4 +1,4 @@
-# terraform\main.tf
+# main.tf
 
 terraform {
   required_providers {
@@ -13,9 +13,7 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-
-# main.tf
-
+# Network module
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
@@ -24,6 +22,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
+# Volumes module
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -38,16 +37,26 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
+# Ignition module with all required arguments
 module "ignition" {
-  source               = "./modules/ignition"
-  bootstrap            = var.bootstrap
-  controlplane_1       = var.controlplane_1
-  controlplane_2       = var.controlplane_2
-  controlplane_3       = var.controlplane_3
-  mount_images_content = file("./qemu-agent/docker-images.mount")
-  qemu_agent_content   = file("./qemu-agent/qemu-agent.service")
+  source                     = "./modules/ignition"
+  bootstrap                  = var.bootstrap
+  controlplane_1             = var.controlplane_1
+  controlplane_2             = var.controlplane_2
+  controlplane_3             = var.controlplane_3
+  bootstrap_volume_id        = module.volumes.okd_bootstrap_id
+  controlplane_1_volume_id   = module.volumes.okd_controlplane_1_id
+  controlplane_2_volume_id   = module.volumes.okd_controlplane_2_id
+  controlplane_3_volume_id   = module.volumes.okd_controlplane_3_id
+  network_id                 = module.network.okd_network_id
+  core_user_password_hash    = var.core_user_password_hash
+  hosts                      = var.controlplane_count + 1
+  hostname_prefix            = var.hostname_prefix
+  mount_images_content       = file("./qemu-agent/docker-images.mount")
+  qemu_agent_content         = file("./qemu-agent/qemu-agent.service")
 }
 
+# Domain module
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
@@ -55,13 +64,10 @@ module "domain" {
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
-
-  # Pass the Ignition volume IDs from the ignition module
-  bootstrap_ignition_id = module.ignition.bootstrap_ignition_id
-  master_ignition_id    = module.ignition.master_ignition_id
-
-  bootstrap      = var.bootstrap
-  controlplane_1 = var.controlplane_1
-  controlplane_2 = var.controlplane_2
-  controlplane_3 = var.controlplane_3
+  bootstrap_ignition_id    = module.ignition.bootstrap_ignition_id
+  master_ignition_id       = module.ignition.master_ignition_id
+  bootstrap                = var.bootstrap
+  controlplane_1           = var.controlplane_1
+  controlplane_2           = var.controlplane_2
+  controlplane_3           = var.controlplane_3
 }
