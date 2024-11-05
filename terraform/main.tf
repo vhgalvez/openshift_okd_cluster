@@ -19,7 +19,7 @@ provider "libvirt" {
 
 provider "ignition" {}
 
-# Copy Ignition files to the target directory
+# Copy Ignition files to /mnt/lv_data (if needed for non-Terraform usage)
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
@@ -29,19 +29,17 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Define libvirt Ignition resources with dependencies
+# Define libvirt Ignition resources using source file references
 resource "libvirt_ignition" "bootstrap_ignition" {
-  name       = "bootstrap.ign"
-  content    = file("${path.module}/ignition_configs/bootstrap.ign")  # Reference source file
-  pool       = "default"
-  depends_on = [null_resource.copy_ignition_files]  # Ensure the copy runs first
+  name    = "bootstrap.ign"
+  content = file("${path.module}/ignition_configs/bootstrap.ign") # Direct reference to source file
+  pool    = "default"
 }
 
 resource "libvirt_ignition" "master_ignition" {
-  name       = "master.ign"
-  content    = file("${path.module}/ignition_configs/master.ign")  # Reference source file
-  pool       = "default"
-  depends_on = [null_resource.copy_ignition_files]  # Ensure the copy runs first
+  name    = "master.ign"
+  content = file("${path.module}/ignition_configs/master.ign") # Direct reference to source file
+  pool    = "default"
 }
 
 # Network module configuration
