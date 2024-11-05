@@ -16,6 +16,8 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+# modules/domain/main.tf
+
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
@@ -37,7 +39,8 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.bootstrap_ignition_id
+  # Use the base64-encoded content from the data block
+  coreos_ignition = base64encode(data.local_file.bootstrap_ignition.content)
 
   graphics {
     type     = "vnc"
@@ -66,7 +69,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.master_ignition_id
+  coreos_ignition = base64encode(data.local_file.master_ignition.content)
 
   graphics {
     type     = "vnc"
@@ -95,7 +98,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.master_ignition_id
+  coreos_ignition = base64encode(data.local_file.master_ignition.content)
 
   graphics {
     type     = "vnc"
@@ -124,7 +127,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.master_ignition_id
+  coreos_ignition = base64encode(data.local_file.master_ignition.content)
 
   graphics {
     type     = "vnc"
