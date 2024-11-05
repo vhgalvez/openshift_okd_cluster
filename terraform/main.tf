@@ -57,10 +57,6 @@ module "volumes" {
   controlplane_3_volume_size = var.controlplane_3.volume_size
   hosts                      = var.controlplane_count + 1
   hostname_prefix            = var.hostname_prefix
-  bootstrap                  = var.bootstrap
-  controlplane_1             = var.controlplane_1
-  controlplane_2             = var.controlplane_2
-  controlplane_3             = var.controlplane_3
   network_id                 = module.network.okd_network.id
   depends_on                 = [null_resource.copy_ignition_files] // Added dependency
 }
