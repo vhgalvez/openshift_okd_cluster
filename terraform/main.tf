@@ -49,10 +49,8 @@ module "ignition" {
   core_user_password_hash = var.core_user_password_hash
   hosts                   = var.controlplane_count + 1
   hostname_prefix         = var.hostname_prefix
-
-  # Asignar los IDs de Ignition
-  bootstrap_ignition_id = libvirt_ignition.bootstrap_ignition.id
-  master_ignition_id    = libvirt_ignition.master_ignition.id
+  bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
+  master_ignition_id      = libvirt_ignition.master_ignition.id
 }
 
 # Configuración del módulo network
@@ -95,16 +93,13 @@ module "domain" {
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
-  bootstrap      = var.bootstrap
-  controlplane_1 = var.controlplane_1
-  controlplane_2 = var.controlplane_2
-  controlplane_3 = var.controlplane_3
-
-  hostname_prefix    = var.hostname_prefix
-  controlplane_count = var.controlplane_count
-  hosts              = var.controlplane_count + 1
-
-  # Asignación de Ignition IDs para bootstrap y master
+  bootstrap               = var.bootstrap
+  controlplane_1          = var.controlplane_1
+  controlplane_2          = var.controlplane_2
+  controlplane_3          = var.controlplane_3
+  hostname_prefix         = var.hostname_prefix
+  controlplane_count      = var.controlplane_count
+  hosts                   = var.controlplane_count + 1
   bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
   master_ignition_id      = libvirt_ignition.master_ignition.id
   core_user_password_hash = var.core_user_password_hash
