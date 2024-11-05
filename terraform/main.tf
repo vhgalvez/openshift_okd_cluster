@@ -38,15 +38,6 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Módulo para Ignition
-module "ignition" {
-  source                  = "./modules/ignition"
-  mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
-  qemu_agent_content      = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
-  core_user_password_hash = var.core_user_password_hash
-  hosts                   = var.controlplane_count + 1
-  hostname_prefix         = var.hostname_prefix
-}
 
 # Módulo para los volúmenes de las máquinas
 module "volumes" {
@@ -63,7 +54,19 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Módulo de dominio con el contenido de Ignition en lugar de IDs
+
+
+# Módulo para Ignition
+module "ignition" {
+  source                  = "./modules/ignition"
+  mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
+  qemu_agent_content      = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
+  core_user_password_hash = var.core_user_password_hash
+  hosts                   = var.controlplane_count + 1
+  hostname_prefix         = var.hostname_prefix
+}
+
+# Módulo para el dominio
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
@@ -82,7 +85,7 @@ module "domain" {
   hosts                    = var.controlplane_count + 1
   core_user_password_hash  = var.core_user_password_hash
 
-  # Ignition content
+  # Ignition content instead of IDs
   bootstrap_ignition_content = file("/mnt/lv_data/bootstrap.ign")
   master_ignition_content    = file("/mnt/lv_data/master.ign")
 }
