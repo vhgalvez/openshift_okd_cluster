@@ -18,17 +18,20 @@ provider "libvirt" {
 }
 
 # Definir el recurso libvirt_ignition para el archivo bootstrap
+
+
 resource "libvirt_ignition" "bootstrap_ignition" {
-  name    = "bootstrap.ign"
-  content = file("/mnt/lv_data/bootstrap.ign")
-  pool    = "default"
+  name       = "bootstrap.ign"
+  content    = file("/mnt/lv_data/bootstrap.ign")
+  pool       = "default"
+  depends_on = [null_resource.copy_ignition_files]  # Añade esta línea
 }
 
-# Definir el recurso libvirt_ignition para el archivo master
 resource "libvirt_ignition" "master_ignition" {
-  name    = "master.ign"
-  content = file("/mnt/lv_data/master.ign")
-  pool    = "default"
+  name       = "master.ign"
+  content    = file("/mnt/lv_data/master.ign")
+  pool       = "default"
+  depends_on = [null_resource.copy_ignition_files]  # Añade esta línea
 }
 
 
