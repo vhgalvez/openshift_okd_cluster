@@ -16,13 +16,12 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Ignition para el archivo bootstrap
 
+# Ignition para el archivo bootstrap
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "bootstrap.ign"
   content = var.bootstrap_ignition_content
 }
-
 resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = var.master_ignition_content
