@@ -46,6 +46,11 @@ module "domain" {
   bootstrap_ignition_id    = libvirt_volume.bootstrap_ignition.id
   master_ignition_id       = libvirt_volume.master_ignition.id
 
+  # Agrega estas variables para resolver el error
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
 }
 
 # Módulo de Ignition
