@@ -1,6 +1,5 @@
-# terraform\modules\domain\variables.tf
+# modules/domain/variables.tf
 
-# Existing variables
 variable "network_id" {
   type = string
 }
@@ -21,18 +20,16 @@ variable "controlplane_3_volume_id" {
   type = string
 }
 
-# Add missing ignition IDs for bootstrap and master
-variable "bootstrap_ignition_id" {
+variable "bootstrap_ignition" {
   type        = string
-  description = "Ignition ID for the bootstrap node"
+  description = "Base64-encoded Ignition content for the bootstrap node"
 }
 
-variable "master_ignition_id" {
+variable "master_ignition" {
   type        = string
-  description = "Ignition ID for the master/control plane nodes"
+  description = "Base64-encoded Ignition content for the master/control plane nodes"
 }
 
-# VM details as maps
 variable "bootstrap" {
   type = map(any)
 }

@@ -1,4 +1,4 @@
-# terraform/modules/domain/main.tfterraform 
+# modules/domain/main.tf
 
 terraform {
   required_providers {
@@ -15,8 +15,6 @@ terraform {
 provider "libvirt" {
   uri = "qemu:///system"
 }
-
-# modules/domain/main.tf
 
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
@@ -39,8 +37,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  # Use the base64-encoded content from the data block
-  coreos_ignition = base64encode(data.local_file.bootstrap_ignition.content)
+  coreos_ignition = var.bootstrap_ignition
 
   graphics {
     type     = "vnc"
@@ -69,7 +66,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = base64encode(data.local_file.master_ignition.content)
+  coreos_ignition = var.master_ignition
 
   graphics {
     type     = "vnc"
@@ -98,7 +95,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = base64encode(data.local_file.master_ignition.content)
+  coreos_ignition = var.master_ignition
 
   graphics {
     type     = "vnc"
@@ -127,7 +124,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = base64encode(data.local_file.master_ignition.content)
+  coreos_ignition = var.master_ignition
 
   graphics {
     type     = "vnc"
