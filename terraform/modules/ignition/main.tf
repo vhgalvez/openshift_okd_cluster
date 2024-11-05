@@ -11,41 +11,29 @@ terraform {
     }
   }
 }
-
 provider "libvirt" {
   uri = "qemu:///system"
 }
-
 data "ignition_systemd_unit" "mount_images" {
   name    = "docker-images.mount"
   enabled = true
   content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
 }
-
 data "ignition_systemd_unit" "qemu_agent" {
   name    = "qemu-agent.service"
   enabled = true
   content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 }
-
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
   source = "/mnt/lv_data/bootstrap.ign"
   format = "raw"
-
-  provisioner "local-exec" {
-    command = "while [ ! -f /mnt/lv_data/bootstrap.ign ]; do sleep 1; done"
-  }
 }
-
 resource "libvirt_volume" "master_ignition" {
   name   = "master.ign"
   pool   = "default"
   source = "/mnt/lv_data/master.ign"
   format = "raw"
 
-  provisioner "local-exec" {
-    command = "while [ ! -f /mnt/lv_data/master.ign ]; do sleep 1; done"
-  }
 }
