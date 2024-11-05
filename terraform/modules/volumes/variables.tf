@@ -1,4 +1,5 @@
 # terraform\modules\volumes\variables.tf
+
 variable "coreos_image" {
   type        = string
   description = "CoreOS image to use"
@@ -69,23 +70,4 @@ variable "controlplane_3_volume_id" {
 
 variable "network_id" {
   type = string
-}
-variable "bootstrap_volume_id" {
-  type    = string
-  default = ""
-}
-
-variable "controlplane_1_volume_id" {
-  type    = string
-  default = ""
-}
-
-variable "controlplane_2_volume_id" {
-  type    = string
-  default = ""
-}
-
-variable "controlplane_3_volume_id" {
-  type    = string
-  default = ""
 }
