@@ -63,7 +63,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Configuración del módulo volumes
+# Configuración del módulo volumes (sin argumentos de IDs de volumen)
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -80,7 +80,7 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Configuración del módulo domain con los IDs de volumen obtenidos como salidas de `volumes`
+# Configuración del módulo domain usando los IDs de volumen generados en el módulo volumes
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
@@ -88,7 +88,7 @@ module "domain" {
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
-  # Referencias a los volúmenes generados por el módulo `volumes`
+  # Referencias a los IDs de volúmenes exportados por el módulo `volumes`
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
