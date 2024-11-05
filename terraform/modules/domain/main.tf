@@ -242,15 +242,15 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
 resource "libvirt_domain" "coreos_machine" {
   count  = var.hosts
-  name   = format(var.hostname_format, count.index + 1)
+  name   = format(var.hostname_prefix, count.index + 1)
   vcpu   = "1"
   memory = "2048"
 
   qemu_agent       = true
-  coreos_ignition  = element(libvirt_ignition.ignition.*.id, count.index)
+  coreos_ignition  = element([var.bootstrap_ignition_id, var.master_ignition_id], count.index)
 
   disk {
-    volume_id = element(libvirt_volume.coreos-disk.*.id, count.index)
+    volume_id = element([var.bootstrap_volume_id, var.controlplane_1_volume_id, var.controlplane_2_volume_id, var.controlplane_3_volume_id], count.index)
   }
 
   filesystem {
