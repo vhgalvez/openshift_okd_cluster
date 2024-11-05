@@ -264,10 +264,10 @@ resource "libvirt_domain" "coreos_machine" {
     wait_for_lease = true
   }
 
-  firmware {
+  firmware = {
     file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram {
-      file = "/var/lib/libvirt/qemu/nvram/${format("%s-%d", var.hostname_prefix, count.index + 1)}_VARS.fd"
+    nvram = {
+      file = format("/var/lib/libvirt/qemu/nvram/%s-%d_VARS.fd", var.hostname_prefix, count.index + 1)
       template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
     }
   }
