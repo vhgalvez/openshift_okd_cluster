@@ -68,3 +68,13 @@ variable "mount_images_content" {
 variable "qemu_agent_content" {
   type = string
 }
+
+variable "bootstrap_ignition_content" {
+  description = "Content of the bootstrap Ignition file"
+  type        = string
+}
+
+variable "master_ignition_content" {
+  description = "Content of the master Ignition file"
+  type        = string
+}

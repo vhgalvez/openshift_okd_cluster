@@ -31,8 +31,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Modulo para copiar archivos Ignition al directorio /mnt/lv_data
-
+# Recurso para copiar archivos Ignition, para asegurarse de que estén en la ubicación correcta
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
@@ -41,7 +40,6 @@ resource "null_resource" "copy_ignition_files" {
     always_run = "${timestamp()}"
   }
 }
-
 
 
 
@@ -95,4 +93,12 @@ module "domain" {
   controlplane_count       = var.controlplane_count
   hosts                    = var.controlplane_count + 1
   core_user_password_hash  = var.core_user_password_hash
+
+   # Leer el contenido de los archivos Ignition y pasarlo como variables
+  bootstrap_ignition_content = file("/mnt/lv_data/bootstrap.ign")
+  master_ignition_content    = file("/mnt/lv_data/master.ign")
+  
+  depends_on = [null_resource.copy_ignition_files]
+
+
 }
