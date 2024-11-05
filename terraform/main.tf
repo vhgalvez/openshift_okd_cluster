@@ -1,5 +1,6 @@
 # terraform/main.tf
 
+# terraform/main.tf
 terraform {
   required_providers {
     libvirt = {
@@ -28,21 +29,21 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Definir el recurso libvirt_ignition para el archivo bootstrap
+# Define the libvirt_ignition resource for the bootstrap file
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "bootstrap.ign"
   content = file("/mnt/lv_data/bootstrap.ign")
   pool    = "default"
 }
 
-# Definir el recurso libvirt_ignition para el archivo master
+# Define the libvirt_ignition resource for the master file
 resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = file("/mnt/lv_data/master.ign")
   pool    = "default"
 }
 
-# Configuración del módulo ignition
+# Ignition module configuration
 module "ignition" {
   source                  = "./modules/ignition"
   mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
@@ -54,7 +55,7 @@ module "ignition" {
   master_ignition_id      = libvirt_ignition.master_ignition.id
 }
 
-# Configuración del módulo network
+# Network module configuration
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
@@ -63,7 +64,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Configuración del módulo volumes (sin argumentos de IDs de volumen)
+# Volumes module configuration without volume ID arguments
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -80,7 +81,7 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Configuración del módulo domain usando los IDs de volumen generados en el módulo volumes
+# Domain module configuration using volume IDs from volumes module
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
@@ -88,7 +89,7 @@ module "domain" {
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
-  # Referencias a los IDs de volúmenes exportados por el módulo `volumes`
+  # Volume IDs from the volumes module
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
@@ -105,3 +106,4 @@ module "domain" {
   master_ignition_id      = libvirt_ignition.master_ignition.id
   core_user_password_hash = var.core_user_password_hash
 }
+
