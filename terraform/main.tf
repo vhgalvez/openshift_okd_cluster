@@ -73,7 +73,7 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Módulo de dominio con el volumen generado
+# Modulo de dominio con el volumen generado
 
 module "domain" {
   source                   = "./modules/domain"
@@ -96,4 +96,6 @@ module "domain" {
   # Leer el contenido de los archivos Ignition y pasarlo como variables
   bootstrap_ignition_content = file("/mnt/lv_data/bootstrap.ign")
   master_ignition_content    = file("/mnt/lv_data/master.ign")
+
 }
+
