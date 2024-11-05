@@ -58,17 +58,6 @@ variable "controlplane_3" {
   }
 }
 
-variable "bootstrap_ignition_id" {
-  type        = string
-  description = "Rendered Ignition config for bootstrap node"
-  default     = "/mnt/lv_data/ignition_configs/bootstrap.ign"
-}
-
-variable "master_ignition_id" {
-  type        = string
-  description = "Rendered Ignition config for master nodes"
-  default     = "/mnt/lv_data/ignition_configs/master.ign"
-}
 
 variable "hosts" {
   type        = number
