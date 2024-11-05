@@ -22,7 +22,7 @@ provider "ignition" {
 
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
-    command = "cp -r ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
+    command = "cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
   }
   triggers = {
     always_run = "${timestamp()}"

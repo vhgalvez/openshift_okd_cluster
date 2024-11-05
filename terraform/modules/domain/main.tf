@@ -55,7 +55,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.bootstrap_ignition_id
+  coreos_ignition = file("/mnt/lv_data/bootstrap.ign")
 }
 
 resource "libvirt_domain" "okd_controlplane_1" {
@@ -79,7 +79,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.master_ignition_id
+  coreos_ignition = file("/mnt/lv_data/master.ign")
 }
 
 resource "libvirt_domain" "okd_controlplane_2" {
@@ -103,7 +103,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.master_ignition_id
+  coreos_ignition = file("/mnt/lv_data/master.ign")
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
@@ -127,7 +127,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = var.master_ignition_id
+  coreos_ignition = file("/mnt/lv_data/master.ign")
 }
 
 resource "libvirt_domain" "coreos_machine" {
