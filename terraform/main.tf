@@ -1,14 +1,8 @@
-# terraform/main.tf
-
 terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
       version = "~> 0.8.1"
-    }
-    ignition = {
-      source  = "community-terraform-providers/ignition"
-      version = "2.1.0"
     }
   }
 }
@@ -17,9 +11,6 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-provider "ignition" {}
-
-# Módulo para la red `okd_network`
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
@@ -28,18 +19,6 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Recurso para copiar archivos Ignition
-resource "null_resource" "copy_ignition_files" {
-  provisioner "local-exec" {
-    command = "sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
-  }
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
-
-
-# Módulo para los volúmenes de las máquinas
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -53,7 +32,6 @@ module "volumes" {
   controlplane_2             = var.controlplane_2
   controlplane_3             = var.controlplane_3
 }
-
 
 
 # Módulo para Ignition
@@ -70,22 +48,10 @@ module "ignition" {
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
-  mount_images_content     = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
-  qemu_agent_content       = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
-  bootstrap                = var.bootstrap
-  controlplane_1           = var.controlplane_1
-  controlplane_2           = var.controlplane_2
-  controlplane_3           = var.controlplane_3
-  hostname_prefix          = var.hostname_prefix
-  controlplane_count       = var.controlplane_count
-  hosts                    = var.controlplane_count + 1
-  core_user_password_hash  = var.core_user_password_hash
-
-  # Ignition content instead of IDs
-  bootstrap_ignition_content = file("/mnt/lv_data/bootstrap.ign")
-  master_ignition_content    = file("/mnt/lv_data/master.ign")
+  bootstrap_ignition_id    = libvirt_volume.bootstrap_ignition.id
+  master_ignition_id       = libvirt_volume.master_ignition.id
 }

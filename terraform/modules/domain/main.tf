@@ -1,10 +1,5 @@
-# terraform/modules/domain/main.tf
-terraform {
+# terraform/modules/domain/main.tfterraform {
   required_providers {
-    ignition = {
-      source  = "community-terraform-providers/ignition"
-      version = "2.1.0"
-    }
     libvirt = {
       source  = "dmacvicar/libvirt"
       version = "0.8.1"
@@ -16,20 +11,6 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-
-# Ignition para el archivo bootstrap
-resource "libvirt_ignition" "bootstrap_ignition" {
-  name    = "bootstrap.ign"
-  content = var.bootstrap_ignition_content
-}
-resource "libvirt_ignition" "master_ignition" {
-  name    = "master.ign"
-  content = var.master_ignition_content
-}
-
-
-
-# Definir el recurso libvirt_domain para okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
@@ -51,8 +32,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  # Uso del volumen Ignition para el archivo bootstrap
-  coreos_ignition = libvirt_volume.bootstrap_ignition.id
+  coreos_ignition = var.bootstrap_ignition_id
 
   graphics {
     type     = "vnc"
@@ -60,7 +40,6 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 }
 
-# Configuración para okd_controlplane_1
 resource "libvirt_domain" "okd_controlplane_1" {
   name       = var.controlplane_1.name
   memory     = var.controlplane_1.memory * 1024
@@ -82,8 +61,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  # Uso del volumen Ignition para el archivo master
-  coreos_ignition = libvirt_volume.master_ignition.id
+  coreos_ignition = var.master_ignition_id
 
   graphics {
     type     = "vnc"
@@ -91,7 +69,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 }
 
-# Configuración para okd_controlplane_2
 resource "libvirt_domain" "okd_controlplane_2" {
   name       = var.controlplane_2.name
   memory     = var.controlplane_2.memory * 1024
@@ -113,8 +90,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  # Uso del volumen Ignition para el archivo master
-  coreos_ignition = libvirt_volume.master_ignition.id
+  coreos_ignition = var.master_ignition_id
 
   graphics {
     type     = "vnc"
@@ -122,7 +98,6 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 }
 
-# Configuración para okd_controlplane_3
 resource "libvirt_domain" "okd_controlplane_3" {
   name       = var.controlplane_3.name
   memory     = var.controlplane_3.memory * 1024
@@ -144,8 +119,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  # Uso del volumen Ignition para el archivo master
-  coreos_ignition = libvirt_volume.master_ignition.id
+  coreos_ignition = var.master_ignition_id
 
   graphics {
     type     = "vnc"
