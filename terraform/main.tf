@@ -47,7 +47,6 @@ module "ignition" {
 }
 
 # Módulo de dominio
-# Módulo de dominio
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
