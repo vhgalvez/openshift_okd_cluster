@@ -17,6 +17,22 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+resource "libvirt_ignition" "bootstrap_ignition" {
+  name       = "bootstrap.ign"
+  content    = file("/mnt/lv_data/bootstrap.ign")
+  pool       = "default"
+  depends_on = [null_resource.copy_ignition_files]
+}
+
+resource "libvirt_ignition" "master_ignition" {
+  name       = "master.ign"
+  content    = file("/mnt/lv_data/master.ign")
+  pool       = "default"
+  depends_on = [null_resource.copy_ignition_files]
+}
+
+
+
 # Definir el recurso libvirt_ignition para el archivo bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
