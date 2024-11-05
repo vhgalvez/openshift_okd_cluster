@@ -57,20 +57,21 @@ module "volumes" {
   controlplane_3_volume_size = var.controlplane_3.volume_size
   hosts                      = var.controlplane_count + 1
   hostname_prefix            = var.hostname_prefix
-  bootstrap                  = var.bootstrap
-  controlplane_1             = var.controlplane_1
-  controlplane_2             = var.controlplane_2
-  controlplane_3             = var.controlplane_3
   network_id                 = module.network.okd_network.id
-  depends_on                 = [null_resource.copy_ignition_files] // Added dependency
-}
 
+  # Utiliza los IDs de volumen como variables de salida
+  bootstrap_volume_id      = module.volumes.okd_bootstrap_id
+  controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
+  controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
+  controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
+
+  depends_on = [null_resource.copy_ignition_files]
+}
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
 
-  bootstrap_volume_id = module.volumes.okd_bootstrap_id
-
+  bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
@@ -80,11 +81,9 @@ module "domain" {
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
 
-  hostname_prefix = var.hostname_prefix
-
+  hostname_prefix    = var.hostname_prefix
   controlplane_count = var.controlplane_count
-
-  hosts = var.controlplane_count + 1
+  hosts              = var.controlplane_count + 1
 
   bootstrap_ignition_id   = var.bootstrap_ignition_id
   master_ignition_id      = var.master_ignition_id
