@@ -50,6 +50,7 @@ module "ignition" {
   core_user_password_hash = var.core_user_password_hash
   hosts                   = var.controlplane_count + 1
   hostname_prefix         = var.hostname_prefix
+}ame_prefix         = var.hostname_prefix
 }
 
 # Configuración del módulo network
