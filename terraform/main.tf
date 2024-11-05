@@ -47,6 +47,7 @@ module "ignition" {
 }
 
 # Módulo de dominio
+# Módulo de dominio
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
@@ -54,8 +55,6 @@ module "domain" {
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
-  bootstrap_ignition_id    = module.ignition.bootstrap_ignition_id
-  master_ignition_id       = module.ignition.master_ignition_id
   bootstrap                = var.bootstrap
   controlplane_1           = var.controlplane_1
   controlplane_2           = var.controlplane_2
