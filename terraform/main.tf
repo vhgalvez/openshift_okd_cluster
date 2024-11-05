@@ -78,7 +78,7 @@ module "volumes" {
 # Configuración del módulo `domain`, usando el ID de red y los IDs de Ignition
 module "domain" {
   source               = "./modules/domain"
-  network_id           = module.network.okd_network_id # Ajuste: referencia correcta al output del módulo network
+  network_id           = module.network.okd_network_id
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
@@ -88,6 +88,10 @@ module "domain" {
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
+  # IDs de Ignition desde el módulo `ignition`
+  bootstrap_ignition_id = module.ignition.bootstrap_ignition_id
+  master_ignition_id    = module.ignition.master_ignition_id
+
   bootstrap               = var.bootstrap
   controlplane_1          = var.controlplane_1
   controlplane_2          = var.controlplane_2
@@ -95,7 +99,5 @@ module "domain" {
   hostname_prefix         = var.hostname_prefix
   controlplane_count      = var.controlplane_count
   hosts                   = var.controlplane_count + 1
-  bootstrap_ignition_id   = module.ignition.bootstrap_ignition_id # Ajuste: referencia correcta al output del módulo ignition
-  master_ignition_id      = module.ignition.master_ignition_id    # Ajuste: referencia correcta al output del módulo ignition
   core_user_password_hash = var.core_user_password_hash
 }

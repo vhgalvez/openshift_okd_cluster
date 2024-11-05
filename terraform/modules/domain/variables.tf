@@ -56,6 +56,7 @@ variable "master_ignition_id" {
   type = string
 }
 
+
 variable "core_user_password_hash" {
   type = string
 }
