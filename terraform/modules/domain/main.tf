@@ -1,5 +1,4 @@
 # terraform/modules/domain/main.tf
-
 terraform {
   required_providers {
     ignition = {
@@ -28,10 +27,6 @@ resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = var.master_ignition_content
 }
-
-
-
-
 
 # Definir el recurso libvirt_ignition para el archivo bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
