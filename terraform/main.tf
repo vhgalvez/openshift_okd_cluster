@@ -64,10 +64,13 @@ module "domain" {
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
-  bootstrap_ignition       = module.ignition.bootstrap_ignition_content
-  master_ignition          = module.ignition.master_ignition_content
-  bootstrap                = var.bootstrap
-  controlplane_1           = var.controlplane_1
-  controlplane_2           = var.controlplane_2
-  controlplane_3           = var.controlplane_3
+
+  # Pass the Ignition content from the ignition module
+  bootstrap_ignition = module.ignition.bootstrap_ignition_content
+  master_ignition    = module.ignition.master_ignition_content
+
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
 }
