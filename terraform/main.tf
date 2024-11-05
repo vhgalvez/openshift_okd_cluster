@@ -32,6 +32,7 @@ module "network" {
 }
 
 # Modulo para copiar archivos Ignition al directorio /mnt/lv_data
+
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
