@@ -55,7 +55,6 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-
 # Modulo de dominio
 module "domain" {
   source                   = "./modules/domain"
