@@ -91,3 +91,13 @@ variable "core_user_password_hash" {
   type    = string
   default = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
+
+variable "mount_images_content" {
+  description = "Content for mounting Docker images directory"
+  type        = string
+}
+
+variable "qemu_agent_content" {
+  description = "Content for QEMU agent service"
+  type        = string
+}
