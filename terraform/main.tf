@@ -1,6 +1,4 @@
 # terraform/main.tf
-
-# terraform/main.tf
 terraform {
   required_providers {
     libvirt = {
@@ -29,14 +27,13 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Define the libvirt_ignition resource for the bootstrap file
+# Define Ignition resources
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "bootstrap.ign"
   content = file("/mnt/lv_data/bootstrap.ign")
   pool    = "default"
 }
 
-# Define the libvirt_ignition resource for the master file
 resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = file("/mnt/lv_data/master.ign")
@@ -64,7 +61,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Volumes module configuration without volume ID arguments
+# Volumes module configuration
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -81,7 +78,7 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Domain module configuration using volume IDs from volumes module
+# Domain module configuration using outputs from volumes module
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
@@ -89,7 +86,7 @@ module "domain" {
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
-  # Volume IDs from the volumes module
+  # Pass volume IDs from the outputs of the volumes module
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
@@ -106,4 +103,3 @@ module "domain" {
   master_ignition_id      = libvirt_ignition.master_ignition.id
   core_user_password_hash = var.core_user_password_hash
 }
-
