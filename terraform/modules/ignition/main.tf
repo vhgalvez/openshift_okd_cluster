@@ -16,6 +16,17 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+# Copy Ignition files to /mnt/lv_data
+resource "null_resource" "copy_ignition_files" {
+  provisioner "local-exec" {
+    command = "cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
+  }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+}
+
+
 # Define data resources to read Ignition files
 data "local_file" "bootstrap_ignition" {
   filename = "/mnt/lv_data/bootstrap.ign"
