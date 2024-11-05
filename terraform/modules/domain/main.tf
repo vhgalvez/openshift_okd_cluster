@@ -56,6 +56,11 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 
   coreos_ignition = file("/mnt/lv_data/bootstrap.ign")
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
 }
 
 resource "libvirt_domain" "okd_controlplane_1" {
@@ -80,6 +85,11 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 
   coreos_ignition = file("/mnt/lv_data/master.ign")
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
 }
 
 resource "libvirt_domain" "okd_controlplane_2" {
@@ -104,6 +114,11 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 
   coreos_ignition = file("/mnt/lv_data/master.ign")
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
@@ -128,6 +143,11 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 
   coreos_ignition = file("/mnt/lv_data/master.ign")
+
+  graphics {
+    type     = "vnc"
+    autoport = true
+  }
 }
 
 resource "libvirt_domain" "coreos_machine" {
@@ -158,6 +178,11 @@ resource "libvirt_domain" "coreos_machine" {
   nvram {
     file = format("/var/lib/libvirt/qemu/nvram/%s-%d_VARS.fd", var.hostname_prefix, count.index + 1)
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+  }
+
+  graphics {
+    type     = "vnc"
+    autoport = true
   }
 }
 
