@@ -1,4 +1,5 @@
 // terraform\modules\volumes\outputs.tf
+
 output "bootstrap_volume" {
   value = libvirt_volume.okd_bootstrap
 }
@@ -30,3 +31,4 @@ output "okd_controlplane_2_id" {
 output "okd_controlplane_3_id" {
   value = libvirt_volume.okd_controlplane_3.id
 }
+

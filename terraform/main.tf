@@ -62,6 +62,8 @@ module "network" {
 }
 
 # Configuración del módulo volumes
+
+# Configuración del módulo volumes
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -77,6 +79,9 @@ module "volumes" {
   controlplane_2             = var.controlplane_2
   controlplane_3             = var.controlplane_3
 }
+
+
+
 
 # Configuración del módulo domain, usando los IDs de volumen como salidas de `volumes`
 module "domain" {
