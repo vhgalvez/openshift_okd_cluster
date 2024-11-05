@@ -31,21 +31,6 @@ resource "libvirt_ignition" "master_ignition" {
   pool    = "default"
 }
 
-# Definir el recurso libvirt_ignition para el archivo bootstrap
-resource "libvirt_ignition" "bootstrap_ignition" {
-  name    = "bootstrap.ign"
-  content = file("${path.module}/../ignition_configs/bootstrap.ign")  # Directly reference the source file
-  pool    = "default"
-}
-
-# Definir el recurso libvirt_ignition para el archivo master
-resource "libvirt_ignition" "master_ignition" {
-  name    = "master.ign"
-  content = file("${path.module}/../ignition_configs/master.ign")  # Directly reference the source file
-  pool    = "default"
-}
-
-
 
 # Configuración del recurso libvirt_domain para okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
