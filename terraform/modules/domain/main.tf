@@ -49,12 +49,10 @@ resource "libvirt_domain" "okd_bootstrap" {
     mac        = var.bootstrap.mac
   }
 
-  firmware {
-    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram {
-      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap.name)
-      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    }
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+  nvram {
+    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap.name)
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.bootstrap_ignition_id
@@ -75,12 +73,10 @@ resource "libvirt_domain" "okd_controlplane_1" {
     mac        = var.controlplane_1.mac
   }
 
-  firmware {
-    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram {
-      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1.name)
-      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    }
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+  nvram {
+    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1.name)
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition_id
@@ -101,12 +97,10 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mac        = var.controlplane_2.mac
   }
 
-  firmware {
-    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram {
-      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2.name)
-      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    }
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+  nvram {
+    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2.name)
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition_id
@@ -127,12 +121,10 @@ resource "libvirt_domain" "okd_controlplane_3" {
     mac        = var.controlplane_3.mac
   }
 
-  firmware {
-    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram {
-      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3.name)
-      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    }
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+  nvram {
+    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3.name)
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition_id
@@ -162,12 +154,10 @@ resource "libvirt_domain" "coreos_machine" {
     wait_for_lease = true
   }
 
-  firmware {
-    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-    nvram {
-      file = format("/var/lib/libvirt/qemu/nvram/%s-%d_VARS.fd", var.hostname_prefix, count.index + 1)
-      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
-    }
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+  nvram {
+    file = format("/var/lib/libvirt/qemu/nvram/%s-%d_VARS.fd", var.hostname_prefix, count.index + 1)
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 }
 
