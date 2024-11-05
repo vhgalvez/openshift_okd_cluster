@@ -1,7 +1,5 @@
 # terraform\main.tf
 
-# terraform/main.tf
-
 terraform {
   required_providers {
     libvirt = {
@@ -19,10 +17,10 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Proveedor de ignition
-provider "ignition" {}
+provider "ignition" {
+  // Configuración adicional del proveedor, si es necesario
+}
 
-# Recurso para copiar archivos Ignition a la ubicación necesaria
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
@@ -32,21 +30,20 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Definir el recurso libvirt_ignition para el archivo bootstrap
+# Definir los recursos libvirt_ignition para los archivos bootstrap y master
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "bootstrap.ign"
   content = file("/mnt/lv_data/bootstrap.ign")
   pool    = "default"
 }
 
-# Definir el recurso libvirt_ignition para el archivo master
 resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = file("/mnt/lv_data/master.ign")
   pool    = "default"
 }
 
-# Módulo ignition para pasar configuración de servicios del sistema
+# Configuración del módulo ignition
 module "ignition" {
   source                  = "./modules/ignition"
   mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
@@ -56,7 +53,7 @@ module "ignition" {
   hostname_prefix         = var.hostname_prefix
 }
 
-# Módulo de red para la configuración de network
+# Configuración del módulo network
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
@@ -65,7 +62,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Módulo de volúmenes para crear volúmenes
+# Configuración del módulo volumes
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -76,14 +73,23 @@ module "volumes" {
   hosts                      = var.controlplane_count + 1
   hostname_prefix            = var.hostname_prefix
   network_id                 = module.network.okd_network.id
+
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
+
+  depends_on = [null_resource.copy_ignition_files]
 }
 
-# Módulo de dominio, que utiliza los recursos Ignition
+# Configuración del módulo domain
 module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
 
-  # Asignación de volúmenes creados
+  mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
+  qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
+
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
@@ -98,7 +104,7 @@ module "domain" {
   controlplane_count = var.controlplane_count
   hosts              = var.controlplane_count + 1
 
-  # Asignación de Ignition IDs para bootstrap y master
+  # Solo aquí se usan los archivos Ignition
   bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
   master_ignition_id      = libvirt_ignition.master_ignition.id
   core_user_password_hash = var.core_user_password_hash
