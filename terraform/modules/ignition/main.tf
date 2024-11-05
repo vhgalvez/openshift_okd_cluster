@@ -1,4 +1,4 @@
-# terraform/modules/ignition/main.tf
+# modules/ignition/main.tf
 
 terraform {
   required_providers {
@@ -50,13 +50,4 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = data.local_file.master_ignition.filename
   format = "raw"
-}
-
-# Output Ignition volume IDs
-output "bootstrap_ignition_id" {
-  value = libvirt_volume.bootstrap_ignition.id
-}
-
-output "master_ignition_id" {
-  value = libvirt_volume.master_ignition.id
 }
