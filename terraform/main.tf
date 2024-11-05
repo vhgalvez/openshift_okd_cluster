@@ -19,9 +19,6 @@ provider "libvirt" {
 
 provider "ignition" {}
 
-# Eliminamos la definición de `libvirt_network.okd_network` en `main.tf`
-# y usamos el módulo `network` para definir esta red
-
 # Modulo para la red `okd_network`
 module "network" {
   source         = "./modules/network"
@@ -31,7 +28,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Recurso para copiar archivos Ignition, para asegurarse de que estén en la ubicación correcta
+# Recurso para copiar archivos Ignition a la ubicación correcta
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
@@ -41,8 +38,6 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-
-
 # Módulo para Ignition
 module "ignition" {
   source                  = "./modules/ignition"
@@ -51,14 +46,9 @@ module "ignition" {
   core_user_password_hash = var.core_user_password_hash
   hosts                   = var.controlplane_count + 1
   hostname_prefix         = var.hostname_prefix
-
-  # Dependencia del archivo copiado
-  bootstrap_ignition_id = null_resource.copy_ignition_files.id
-  master_ignition_id    = null_resource.copy_ignition_files.id
 }
 
 # Módulo para los volúmenes de las máquinas
-# Configuración del módulo `volumes`, usando el ID de red del módulo `network`
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -66,16 +56,14 @@ module "volumes" {
   controlplane_1_volume_size = var.controlplane_1.volume_size
   controlplane_2_volume_size = var.controlplane_2.volume_size
   controlplane_3_volume_size = var.controlplane_3.volume_size
-  network_id                 = module.network.okd_network_id # Ajuste: referencia correcta al output del módulo network
+  network_id                 = module.network.okd_network_id
   bootstrap                  = var.bootstrap
   controlplane_1             = var.controlplane_1
   controlplane_2             = var.controlplane_2
   controlplane_3             = var.controlplane_3
 }
 
-# Modulo de dominio con el volumen generado
-
-
+# Módulo de dominio con el volumen generado y contenido de Ignition
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
