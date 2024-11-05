@@ -1,5 +1,4 @@
 # main.tf
-
 terraform {
   required_providers {
     libvirt = {
@@ -78,6 +77,10 @@ module "volumes" {
   controlplane_1             = var.controlplane_1
   controlplane_2             = var.controlplane_2
   controlplane_3             = var.controlplane_3
+  bootstrap_volume_id        = var.bootstrap_volume_id
+  controlplane_1_volume_id   = var.controlplane_1_volume_id
+  controlplane_2_volume_id   = var.controlplane_2_volume_id
+  controlplane_3_volume_id   = var.controlplane_3_volume_id
 }
 
 # Configuración del módulo de dominios usando salidas del módulo de volúmenes
