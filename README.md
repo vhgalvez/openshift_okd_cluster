@@ -342,3 +342,6 @@ sudo virsh undefine okd-controlplane-3
 
 
 sudo virsh list --all
+
+
+find . -name "*.tf" -exec cat {} +
