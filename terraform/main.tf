@@ -17,6 +17,26 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+
+# main.tf
+
+terraform {
+  required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "~> 0.8.1"
+    }
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
+  }
+}
+
+provider "libvirt" {
+  uri = "qemu:///system"
+}
+
 provider "ignition" {}
 
 # Copiar archivos Ignition al directorio adecuado
@@ -44,6 +64,9 @@ resource "libvirt_ignition" "master_ignition" {
 
 # Configuración del módulo Ignition
 module "ignition" {
+  providers = {
+    libvirt = libvirt
+  }
   source                  = "./modules/ignition"
   mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content      = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
@@ -86,6 +109,9 @@ variable "controlplane_3_volume_id" {
 
 # Configuración del módulo de volúmenes
 module "volumes" {
+  providers = {
+    libvirt = libvirt
+  }
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
   bootstrap_volume_size      = var.bootstrap.volume_size
@@ -107,6 +133,9 @@ module "volumes" {
 
 # Configuración del módulo de dominios usando salidas del módulo de volúmenes
 module "domain" {
+  providers = {
+    libvirt = libvirt
+  }
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
 
