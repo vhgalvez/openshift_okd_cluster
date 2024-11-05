@@ -16,13 +16,14 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Copy Ignition files to /mnt/lv_data
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
-    command = "cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
+    command = "cp -r ./ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -r ./ignition_configs/master.ign /mnt/lv_data/"
   }
+
+  # Adding a trigger to always run the copy if the plan re-runs
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 }
 
