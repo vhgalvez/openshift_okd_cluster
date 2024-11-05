@@ -61,10 +61,6 @@ module "volumes" {
   controlplane_1             = var.controlplane_1
   controlplane_2             = var.controlplane_2
   controlplane_3             = var.controlplane_3
-  bootstrap_volume_id        = libvirt_volume.okd_bootstrap.id
-  controlplane_1_volume_id   = libvirt_volume.okd_controlplane_1.id
-  controlplane_2_volume_id   = libvirt_volume.okd_controlplane_2.id
-  controlplane_3_volume_id   = libvirt_volume.okd_controlplane_3.id
   network_id                 = module.network.okd_network.id
   depends_on                 = [null_resource.copy_ignition_files] // Added dependency
 }
@@ -73,11 +69,11 @@ module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
 
-  bootstrap_volume_id = module.volumes.okd_bootstrap_id
+  bootstrap_volume_id = module.volumes.okd_bootstrap.id
 
-  controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
-  controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
-  controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
+  controlplane_1_volume_id = module.volumes.okd_controlplane_1.id
+  controlplane_2_volume_id = module.volumes.okd_controlplane_2.id
+  controlplane_3_volume_id = module.volumes.okd_controlplane_3.id
 
   bootstrap      = var.bootstrap
   controlplane_1 = var.controlplane_1
