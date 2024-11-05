@@ -16,22 +16,30 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+# Define data resources to read Ignition files
+data "local_file" "bootstrap_ignition" {
+  filename = "/mnt/lv_data/bootstrap.ign"
+}
 
-# Data block for the Ignition configuration files
+data "local_file" "master_ignition" {
+  filename = "/mnt/lv_data/master.ign"
+}
+
+# Resource for Bootstrap Ignition Volume
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
-  source = "/mnt/lv_data/bootstrap.ign"
+  source = data.local_file.bootstrap_ignition.filename
   format = "raw"
 }
 
+# Resource for Master Ignition Volume
 resource "libvirt_volume" "master_ignition" {
   name   = "master.ign"
   pool   = "default"
-  source = "/mnt/lv_data/master.ign"
+  source = data.local_file.master_ignition.filename
   format = "raw"
 }
-
 
 # Resource for Bootstrap Node
 resource "libvirt_domain" "okd_bootstrap" {
