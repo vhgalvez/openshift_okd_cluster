@@ -19,7 +19,7 @@ provider "libvirt" {
 
 provider "ignition" {}
 
-# Modulo para la red `okd_network`
+# Módulo para la red `okd_network`
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
@@ -28,7 +28,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Recurso para copiar archivos Ignition a la ubicación correcta
+# Recurso para copiar archivos Ignition
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
@@ -63,7 +63,7 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Módulo de dominio con el volumen generado y contenido de Ignition
+# Módulo de dominio con el contenido de Ignition en lugar de IDs
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
