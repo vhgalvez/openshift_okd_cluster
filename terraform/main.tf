@@ -1,4 +1,7 @@
 # main.tf
+
+# main.tf
+
 terraform {
   required_providers {
     libvirt = {
@@ -60,6 +63,23 @@ module "network" {
   controlplane_1 = var.controlplane_1
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
+}
+
+# Definir las variables requeridas para los volúmenes
+variable "bootstrap_volume_id" {
+  type = string
+}
+
+variable "controlplane_1_volume_id" {
+  type = string
+}
+
+variable "controlplane_2_volume_id" {
+  type = string
+}
+
+variable "controlplane_3_volume_id" {
+  type = string
 }
 
 # Configuración del módulo de volúmenes
