@@ -24,6 +24,17 @@ data "ignition_systemd_unit" "qemu_agent" {
   enabled = true
   content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 }
+
+
+# Copy Ignition files to /mnt/lv_data
+resource "null_resource" "copy_ignition_files" {
+  provisioner "local-exec" {
+    command = "cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/"
+  }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+}
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"

@@ -1,4 +1,5 @@
 # terraform\modules\domain\variables.tf
+
 variable "network_id" {
   type = string
 }
@@ -35,37 +36,12 @@ variable "controlplane_3" {
   type = map(any)
 }
 
-variable "hostname_prefix" {
-  type = string
-}
-
-variable "controlplane_count" {
-  type = number
-}
-
-variable "hosts" {
-  type        = number
-  description = "Number of hosts"
-}
-
-variable "core_user_password_hash" {
-  type = string
-}
-
-variable "mount_images_content" {
-  type = string
-}
-
-variable "qemu_agent_content" {
-  type = string
-}
-
-variable "bootstrap_ignition_content" {
-  description = "Content of the bootstrap Ignition file"
+variable "bootstrap_ignition_id" {
+  description = "ID del volumen Ignition para bootstrap"
   type        = string
 }
 
-variable "master_ignition_content" {
-  description = "Content of the master Ignition file"
+variable "master_ignition_id" {
+  description = "ID del volumen Ignition para los nodos master"
   type        = string
 }
