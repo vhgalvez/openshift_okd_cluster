@@ -48,15 +48,6 @@ variable "hosts" {
   description = "Number of hosts"
 }
 
-variable "bootstrap_ignition_id" {
-  type = string
-}
-
-variable "master_ignition_id" {
-  type = string
-}
-
-
 variable "core_user_password_hash" {
   type = string
 }
