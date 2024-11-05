@@ -1,5 +1,4 @@
-# terraform\variables.tf
-variable "coreos_image" {
+# terraform\variables.tfvariable "coreos_image" {
   type        = string
   default     = "/mnt/lv_data/organized_storage/images/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2"
   description = "CoreOS image to use"
@@ -57,6 +56,7 @@ variable "controlplane_3" {
   }
 }
 
+# Declaración única de las variables Ignition
 variable "bootstrap_ignition_id" {
   type        = string
   description = "Rendered Ignition config for bootstrap node"
@@ -90,16 +90,4 @@ variable "controlplane_count" {
 variable "core_user_password_hash" {
   type    = string
   default = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
-}
-
-# Variable para el ID de ignition del nodo bootstrap
-variable "bootstrap_ignition_id" {
-  description = "ID del archivo Ignition para bootstrap"
-  type        = string
-}
-
-# Variable para el ID de ignition del nodo master
-variable "master_ignition_id" {
-  description = "ID del archivo Ignition para los nodos master"
-  type        = string
 }
