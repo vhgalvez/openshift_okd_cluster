@@ -175,3 +175,8 @@ resource "libvirt_network" "okd_network" {
     }
   }
 }
+
+
+output "okd_network_id" {
+  value = libvirt_network.okd_network.id
+}

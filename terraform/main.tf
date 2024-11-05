@@ -56,6 +56,7 @@ module "ignition" {
 }
 
 # Módulo para los volúmenes de las máquinas
+# Configuración del módulo `volumes`, usando el ID de red del módulo `network`
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -63,7 +64,7 @@ module "volumes" {
   controlplane_1_volume_size = var.controlplane_1.volume_size
   controlplane_2_volume_size = var.controlplane_2.volume_size
   controlplane_3_volume_size = var.controlplane_3.volume_size
-  network_id                 = module.network.okd_network_id  # Se usa el ID de la red desde el módulo `network`
+  network_id                 = module.network.okd_network_id  # Ajuste: referencia correcta al output del módulo network
   bootstrap                  = var.bootstrap
   controlplane_1             = var.controlplane_1
   controlplane_2             = var.controlplane_2
@@ -71,9 +72,10 @@ module "volumes" {
 }
 
 # Módulo de dominio con el volumen generado
+# Configuración del módulo `domain`, usando el ID de red y los IDs de Ignition
 module "domain" {
   source               = "./modules/domain"
-  network_id           = module.network.okd_network_id  # Se usa el ID de `okd_network` desde el módulo `network`
+  network_id           = module.network.okd_network_id  # Ajuste: referencia correcta al output del módulo network
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
@@ -90,7 +92,7 @@ module "domain" {
   hostname_prefix         = var.hostname_prefix
   controlplane_count      = var.controlplane_count
   hosts                   = var.controlplane_count + 1
-  bootstrap_ignition_id   = module.ignition.bootstrap_ignition_id
-  master_ignition_id      = module.ignition.master_ignition_id
+  bootstrap_ignition_id   = module.ignition.bootstrap_ignition_id  # Ajuste: referencia correcta al output del módulo ignition
+  master_ignition_id      = module.ignition.master_ignition_id     # Ajuste: referencia correcta al output del módulo ignition
   core_user_password_hash = var.core_user_password_hash
 }
