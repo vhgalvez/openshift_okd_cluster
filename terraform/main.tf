@@ -73,13 +73,14 @@ module "volumes" {
   hostname_prefix            = var.hostname_prefix
   network_id                 = module.network.okd_network.id
 
-  bootstrap                  = var.bootstrap
-  controlplane_1             = var.controlplane_1
-  controlplane_2             = var.controlplane_2
-  controlplane_3             = var.controlplane_3
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
 
-  depends_on                 = [null_resource.copy_ignition_files]
+  depends_on = [null_resource.copy_ignition_files]
 }
+
 
 # Configuración del módulo domain
 module "domain" {
@@ -94,17 +95,17 @@ module "domain" {
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
-  bootstrap                = var.bootstrap
-  controlplane_1           = var.controlplane_1
-  controlplane_2           = var.controlplane_2
-  controlplane_3           = var.controlplane_3
+  bootstrap      = var.bootstrap
+  controlplane_1 = var.controlplane_1
+  controlplane_2 = var.controlplane_2
+  controlplane_3 = var.controlplane_3
 
-  hostname_prefix          = var.hostname_prefix
-  controlplane_count       = var.controlplane_count
-  hosts                    = var.controlplane_count + 1
+  hostname_prefix    = var.hostname_prefix
+  controlplane_count = var.controlplane_count
+  hosts              = var.controlplane_count + 1
 
   # Asignación de Ignition IDs para bootstrap y master
-  bootstrap_ignition_id    = libvirt_ignition.bootstrap_ignition.id
-  master_ignition_id       = libvirt_ignition.master_ignition.id
-  core_user_password_hash  = var.core_user_password_hash
+  bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
+  master_ignition_id      = libvirt_ignition.master_ignition.id
+  core_user_password_hash = var.core_user_password_hash
 }
