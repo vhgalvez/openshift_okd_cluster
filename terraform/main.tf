@@ -1,4 +1,5 @@
 # terraform/main.tf
+
 terraform {
   required_providers {
     libvirt = {
@@ -62,7 +63,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Configuración del módulo volumes (sin argumentos de volumen ID)
+# Configuración del módulo volumes (sin los argumentos de volumen ID)
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
