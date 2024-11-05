@@ -80,6 +80,9 @@ module "domain" {
   source     = "./modules/domain"
   network_id = module.network.okd_network.id
 
+  mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
+  qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
+
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
@@ -97,6 +100,4 @@ module "domain" {
   bootstrap_ignition_id   = var.bootstrap_ignition_id
   master_ignition_id      = var.master_ignition_id
   core_user_password_hash = var.core_user_password_hash
-  mount_images_content    = var.mount_images_content
-  qemu_agent_content      = var.qemu_agent_content
 }
