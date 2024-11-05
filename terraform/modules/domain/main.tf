@@ -55,7 +55,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = module.ignition.bootstrap_ignition.id
+  coreos_ignition = var.bootstrap_ignition_id
 
   graphics {
     type     = "vnc"
@@ -84,7 +84,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = module.ignition.master_ignition.id
+  coreos_ignition = var.master_ignition_id
 
   graphics {
     type     = "vnc"
@@ -113,7 +113,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = module.ignition.master_ignition.id
+  coreos_ignition = var.master_ignition_id
 
   graphics {
     type     = "vnc"
@@ -142,7 +142,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = module.ignition.master_ignition.id
+  coreos_ignition = var.master_ignition_id
 
   graphics {
     type     = "vnc"
@@ -157,7 +157,7 @@ resource "libvirt_domain" "coreos_machine" {
   memory = "2048"
 
   qemu_agent       = true
-  coreos_ignition  = element([module.ignition.bootstrap_ignition.id, module.ignition.master_ignition.id], count.index)
+  coreos_ignition  = element([var.bootstrap_ignition_id, var.master_ignition_id], count.index)
 
   disk {
     volume_id = element([var.bootstrap_volume_id, var.controlplane_1_volume_id, var.controlplane_2_volume_id, var.controlplane_3_volume_id], count.index)
