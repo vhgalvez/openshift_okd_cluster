@@ -1,12 +1,17 @@
-# terraform/modules/domain/main.tfterraform {
+# terraform/modules/domain/main.tfterraform 
+
+terraform {
   required_providers {
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
     libvirt = {
       source  = "dmacvicar/libvirt"
       version = "0.8.1"
     }
   }
 }
-
 provider "libvirt" {
   uri = "qemu:///system"
 }

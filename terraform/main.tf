@@ -45,6 +45,7 @@ module "domain" {
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
   bootstrap_ignition_id    = libvirt_volume.bootstrap_ignition.id
   master_ignition_id       = libvirt_volume.master_ignition.id
+
 }
 
 # Módulo de Ignition
