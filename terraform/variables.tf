@@ -1,4 +1,4 @@
-# terraform\variables.tf
+# terraform/variables.tf
 
 variable "coreos_image" {
   type        = string
@@ -11,9 +11,9 @@ variable "bootstrap" {
   default = {
     name        = "okd-bootstrap"
     description = "okd bootstrap vm"
-    vcpu        = "5"
-    memory      = "9"  # GiB
-    volume_size = "40" # GiB
+    vcpu        = 5
+    memory      = 9  # GiB
+    volume_size = 40 # GiB
     address     = "192.168.150.3"
     mac         = "AA:BB:CC:10:00:00"
   }
@@ -24,9 +24,9 @@ variable "controlplane_1" {
   default = {
     name        = "okd-controlplane-1"
     description = "okd controlplane 1 vm"
-    vcpu        = "6"
-    memory      = "16"  # GiB
-    volume_size = "120" # GiB
+    vcpu        = 6
+    memory      = 16  # GiB
+    volume_size = 120 # GiB
     address     = "192.168.150.10"
     mac         = "AA:BB:CC:20:00:00"
   }
@@ -37,9 +37,9 @@ variable "controlplane_2" {
   default = {
     name        = "okd-controlplane-2"
     description = "okd controlplane 2 vm"
-    vcpu        = "3"
-    memory      = "3"  # GiB
-    volume_size = "20" # GiB
+    vcpu        = 3
+    memory      = 3  # GiB
+    volume_size = 20 # GiB
     address     = "192.168.150.11"
     mac         = "AA:BB:CC:20:00:01"
   }
@@ -50,14 +50,13 @@ variable "controlplane_3" {
   default = {
     name        = "okd-controlplane-3"
     description = "okd controlplane 3 vm"
-    vcpu        = "3"
-    memory      = "3"  # GiB
-    volume_size = "20" # GiB
+    vcpu        = 3
+    memory      = 3  # GiB
+    volume_size = 20 # GiB
     address     = "192.168.150.12"
     mac         = "AA:BB:CC:20:00:02"
   }
 }
-
 
 variable "hosts" {
   type        = number
@@ -78,23 +77,6 @@ variable "controlplane_count" {
 }
 
 variable "core_user_password_hash" {
-  type        = string
-  description = "Password hash for the core user"
-  default     = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
-}
-
-variable "bootstrap" {
-  type = map(string)
-}
-
-variable "controlplane_1" {
-  type = map(string)
-}
-
-variable "controlplane_2" {
-  type = map(string)
-}
-
-variable "controlplane_3" {
-  type = map(string)
+  type    = string
+  default = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
