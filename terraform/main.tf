@@ -17,6 +17,25 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+# terraform/main.tf
+
+terraform {
+  required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = "~> 0.8.1"
+    }
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
+    }
+  }
+}
+
+provider "libvirt" {
+  uri = "qemu:///system"
+}
+
 provider "ignition" {}
 
 resource "null_resource" "copy_ignition_files" {
@@ -63,7 +82,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Configuración del módulo volumes (sin los argumentos de volumen ID)
+# Configuración del módulo volumes
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
