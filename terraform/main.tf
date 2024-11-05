@@ -1,5 +1,4 @@
 # terraform/main.tf
-
 terraform {
   required_providers {
     libvirt = {
@@ -90,6 +89,7 @@ module "domain" {
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
+  # Referencias a volúmenes generados por el módulo `volumes`
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
