@@ -1,4 +1,5 @@
 # terraform\main.tf
+
 terraform {
   required_providers {
     libvirt = {
@@ -16,9 +17,7 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-provider "ignition" {
-  // Configuración adicional del proveedor, si es necesario
-}
+provider "ignition" {}
 
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
@@ -29,13 +28,14 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Definir los recursos libvirt_ignition para los archivos bootstrap y master
+# Definir el recurso libvirt_ignition para el archivo bootstrap
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "bootstrap.ign"
   content = file("/mnt/lv_data/bootstrap.ign")
   pool    = "default"
 }
 
+# Definir el recurso libvirt_ignition para el archivo master
 resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = file("/mnt/lv_data/master.ign")
@@ -73,12 +73,12 @@ module "volumes" {
   hostname_prefix            = var.hostname_prefix
   network_id                 = module.network.okd_network.id
 
-  bootstrap      = var.bootstrap
-  controlplane_1 = var.controlplane_1
-  controlplane_2 = var.controlplane_2
-  controlplane_3 = var.controlplane_3
+  bootstrap                  = var.bootstrap
+  controlplane_1             = var.controlplane_1
+  controlplane_2             = var.controlplane_2
+  controlplane_3             = var.controlplane_3
 
-  depends_on = [null_resource.copy_ignition_files]
+  depends_on                 = [null_resource.copy_ignition_files]
 }
 
 # Configuración del módulo domain
@@ -94,17 +94,17 @@ module "domain" {
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
-  bootstrap      = var.bootstrap
-  controlplane_1 = var.controlplane_1
-  controlplane_2 = var.controlplane_2
-  controlplane_3 = var.controlplane_3
+  bootstrap                = var.bootstrap
+  controlplane_1           = var.controlplane_1
+  controlplane_2           = var.controlplane_2
+  controlplane_3           = var.controlplane_3
 
-  hostname_prefix    = var.hostname_prefix
-  controlplane_count = var.controlplane_count
-  hosts              = var.controlplane_count + 1
+  hostname_prefix          = var.hostname_prefix
+  controlplane_count       = var.controlplane_count
+  hosts                    = var.controlplane_count + 1
 
-  # Solo aquí se usan los archivos Ignition
-  bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
-  master_ignition_id      = libvirt_ignition.master_ignition.id
-  core_user_password_hash = var.core_user_password_hash
+  # Asignación de Ignition IDs para bootstrap y master
+  bootstrap_ignition_id    = libvirt_ignition.bootstrap_ignition.id
+  master_ignition_id       = libvirt_ignition.master_ignition.id
+  core_user_password_hash  = var.core_user_password_hash
 }
