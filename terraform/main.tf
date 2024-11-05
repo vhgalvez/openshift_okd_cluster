@@ -93,9 +93,7 @@ module "domain" {
   hosts                    = var.controlplane_count + 1
   core_user_password_hash  = var.core_user_password_hash
 
-  # Leer el contenido de los archivos Ignition y pasarlo como variables
+  # Ignition content
   bootstrap_ignition_content = file("/mnt/lv_data/bootstrap.ign")
   master_ignition_content    = file("/mnt/lv_data/master.ign")
-
 }
-
