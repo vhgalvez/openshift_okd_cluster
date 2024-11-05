@@ -35,209 +35,107 @@ module "ignition_config" {
 # Definición de las máquinas virtuales de OKD
 
 resource "libvirt_domain" "okd_bootstrap" {
-  name        = var.bootstrap.name
-  description = var.bootstrap.description
-  vcpu        = var.bootstrap.vcpu
-  memory      = var.bootstrap.memory * 1024 # MiB
-  running     = true
-  qemu_agent  = true
-
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = module.ignition_config.bootstrap_ignition
-    scsi      = false
-  }
-
-  # Use UEFI firmware without secure boot
-  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-
-  nvram {
-    file     = "/var/lib/libvirt/qemu/nvram/${var.bootstrap.name}_VARS.fd"
-    template = "/var/lib/libvirt/OVMF_VARS.fd"
-  }
+  name   = var.bootstrap.name
+  memory = var.bootstrap.memory * 1024
+  vcpu   = var.bootstrap.vcpu
+  qemu_agent = true
 
   disk {
     volume_id = var.bootstrap_volume_id
-    scsi      = false
-  }
-
-  cpu {
-    mode = "host-passthrough"
-  }
-
-  graphics {
-    type     = "vnc"
-    autoport = true
-  }
-
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
   }
 
   network_interface {
-    network_id     = var.network_id
-    hostname       = var.bootstrap.name
-    addresses      = [var.bootstrap.address]
-    mac            = var.bootstrap.mac
-    wait_for_lease = true
+    network_id = var.network_id
+    mac        = var.bootstrap.mac
   }
+
+  firmware {
+    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+    nvram {
+      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap.name)
+      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+    }
+  }
+
+  coreos_ignition = var.bootstrap_ignition_id
 }
 
-# Definición de las máquinas de control plane
-
 resource "libvirt_domain" "okd_controlplane_1" {
-  name        = var.controlplane_1.name
-  description = var.controlplane_1.description
-  vcpu        = var.controlplane_1.vcpu
-  memory      = var.controlplane_1.memory * 1024 # MiB
-  running     = true
-  qemu_agent  = true
-
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = module.ignition_config.master_ignition
-    scsi      = false
-  }
-
-  # Use UEFI firmware without secure boot
-  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-
-  nvram {
-    file     = "/var/lib/libvirt/qemu/nvram/${var.controlplane_1.name}_VARS.fd"
-    template = "/var/lib/libvirt/OVMF_VARS.fd"
-  }
+  name   = var.controlplane_1.name
+  memory = var.controlplane_1.memory * 1024
+  vcpu   = var.controlplane_1.vcpu
+  qemu_agent = true
 
   disk {
     volume_id = var.controlplane_1_volume_id
-    scsi      = false
-  }
-
-  cpu {
-    mode = "host-passthrough"
-  }
-
-  graphics {
-    type     = "vnc"
-    autoport = true
-  }
-
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
   }
 
   network_interface {
-    network_id     = var.network_id
-    hostname       = var.controlplane_1.name
-    addresses      = [var.controlplane_1.address]
-    mac            = var.controlplane_1.mac
-    wait_for_lease = true
+    network_id = var.network_id
+    mac        = var.controlplane_1.mac
   }
+
+  firmware {
+    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+    nvram {
+      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1.name)
+      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+    }
+  }
+
+  coreos_ignition = var.master_ignition_id
 }
 
 resource "libvirt_domain" "okd_controlplane_2" {
-  name        = var.controlplane_2.name
-  description = var.controlplane_2.description
-  vcpu        = var.controlplane_2.vcpu
-  memory      = var.controlplane_2.memory * 1024 # MiB
-  running     = true
-  qemu_agent  = true
-
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = module.ignition_config.master_ignition
-    scsi      = false
-  }
-
-  # Use UEFI firmware without secure boot
-  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-
-  nvram {
-    file     = "/var/lib/libvirt/qemu/nvram/${var.controlplane_2.name}_VARS.fd"
-    template = "/var/lib/libvirt/OVMF_VARS.fd"
-  }
+  name   = var.controlplane_2.name
+  memory = var.controlplane_2.memory * 1024
+  vcpu   = var.controlplane_2.vcpu
+  qemu_agent = true
 
   disk {
     volume_id = var.controlplane_2_volume_id
-    scsi      = false
-  }
-
-  cpu {
-    mode = "host-passthrough"
-  }
-
-  graphics {
-    type     = "vnc"
-    autoport = true
-  }
-
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
   }
 
   network_interface {
-    network_id     = var.network_id
-    hostname       = var.controlplane_2.name
-    addresses      = [var.controlplane_2.address]
-    mac            = var.controlplane_2.mac
-    wait_for_lease = true
+    network_id = var.network_id
+    mac        = var.controlplane_2.mac
   }
+
+  firmware {
+    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+    nvram {
+      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2.name)
+      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+    }
+  }
+
+  coreos_ignition = var.master_ignition_id
 }
 
 resource "libvirt_domain" "okd_controlplane_3" {
-  name        = var.controlplane_3.name
-  description = var.controlplane_3.description
-  vcpu        = var.controlplane_3.vcpu
-  memory      = var.controlplane_3.memory * 1024 # MiB
-  running     = true
-  qemu_agent  = true
-
-  # Attach the Ignition volume as a disk
-  disk {
-    volume_id = module.ignition_config.master_ignition
-    scsi      = false
-  }
-
-  # Use UEFI firmware without secure boot
-  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-
-  nvram {
-    file     = "/var/lib/libvirt/qemu/nvram/${var.controlplane_3.name}_VARS.fd"
-    template = "/var/lib/libvirt/OVMF_VARS.fd"
-  }
+  name   = var.controlplane_3.name
+  memory = var.controlplane_3.memory * 1024
+  vcpu   = var.controlplane_3.vcpu
+  qemu_agent = true
 
   disk {
     volume_id = var.controlplane_3_volume_id
-    scsi      = false
-  }
-
-  cpu {
-    mode = "host-passthrough"
-  }
-
-  graphics {
-    type     = "vnc"
-    autoport = true
-  }
-
-  console {
-    type        = "pty"
-    target_type = "serial"
-    target_port = "0"
   }
 
   network_interface {
-    network_id     = var.network_id
-    hostname       = var.controlplane_3.name
-    addresses      = [var.controlplane_3.address]
-    mac            = var.controlplane_3.mac
-    wait_for_lease = true
+    network_id = var.network_id
+    mac        = var.controlplane_3.mac
   }
+
+  firmware {
+    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+    nvram {
+      file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3.name)
+      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+    }
+  }
+
+  coreos_ignition = var.master_ignition_id
 }
 
 resource "libvirt_domain" "coreos_machine" {
@@ -264,11 +162,12 @@ resource "libvirt_domain" "coreos_machine" {
     wait_for_lease = true
   }
 
-  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
-
-  nvram {
-    file = format("/var/lib/libvirt/qemu/nvram/%s-%d_VARS.fd", var.hostname_prefix, count.index + 1)
-    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+  firmware {
+    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+    nvram {
+      file = format("/var/lib/libvirt/qemu/nvram/%s-%d_VARS.fd", var.hostname_prefix, count.index + 1)
+      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+    }
   }
 }
 
