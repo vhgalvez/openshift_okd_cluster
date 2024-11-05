@@ -1,3 +1,4 @@
+# terraform\variables.tf
 variable "coreos_image" {
   type        = string
   default     = "/mnt/lv_data/organized_storage/images/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2"
