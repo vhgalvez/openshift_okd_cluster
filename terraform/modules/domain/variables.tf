@@ -1,3 +1,4 @@
+# terraform\modules\domain\variables.tf
 variable "network_id" {
   type = string
 }
@@ -64,5 +65,20 @@ variable "mount_images_content" {
 }
 
 variable "qemu_agent_content" {
+  type = string
+}
+variable "bootstrap_volume_id" {
+  type = string
+}
+
+variable "controlplane_1_volume_id" {
+  type = string
+}
+
+variable "controlplane_2_volume_id" {
+  type = string
+}
+
+variable "controlplane_3_volume_id" {
   type = string
 }

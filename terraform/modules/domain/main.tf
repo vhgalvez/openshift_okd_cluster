@@ -1,4 +1,5 @@
 # terraform/modules/domain/main.tf
+
 terraform {
   required_providers {
     ignition = {
@@ -20,21 +21,21 @@ provider "libvirt" {
 resource "libvirt_ignition" "bootstrap_ignition" {
   name    = "bootstrap.ign"
   content = file("/mnt/lv_data/bootstrap.ign")
-  pool    = "default" # Especifica el pool que necesitas
+  pool    = "default"
 }
 
 # Definir el recurso libvirt_ignition para el archivo master
 resource "libvirt_ignition" "master_ignition" {
   name    = "master.ign"
   content = file("/mnt/lv_data/master.ign")
-  pool    = "default" # Especifica el pool que necesitas
+  pool    = "default"
 }
 
 # Configuración del recurso libvirt_domain para okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
-  name   = var.bootstrap.name
-  memory = var.bootstrap.memory * 1024
-  vcpu   = var.bootstrap.vcpu
+  name       = var.bootstrap.name
+  memory     = var.bootstrap.memory * 1024
+  vcpu       = var.bootstrap.vcpu
   qemu_agent = true
 
   disk {
@@ -48,7 +49,7 @@ resource "libvirt_domain" "okd_bootstrap" {
 
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
-    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap.name)
+    file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap.name)
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
@@ -63,9 +64,9 @@ resource "libvirt_domain" "okd_bootstrap" {
 
 # Configuración del recurso libvirt_domain para okd_controlplane_1
 resource "libvirt_domain" "okd_controlplane_1" {
-  name   = var.controlplane_1.name
-  memory = var.controlplane_1.memory * 1024
-  vcpu   = var.controlplane_1.vcpu
+  name       = var.controlplane_1.name
+  memory     = var.controlplane_1.memory * 1024
+  vcpu       = var.controlplane_1.vcpu
   qemu_agent = true
 
   disk {
@@ -79,7 +80,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
 
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
-    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1.name)
+    file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1.name)
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
@@ -94,9 +95,9 @@ resource "libvirt_domain" "okd_controlplane_1" {
 
 # Configuración del recurso libvirt_domain para okd_controlplane_2
 resource "libvirt_domain" "okd_controlplane_2" {
-  name   = var.controlplane_2.name
-  memory = var.controlplane_2.memory * 1024
-  vcpu   = var.controlplane_2.vcpu
+  name       = var.controlplane_2.name
+  memory     = var.controlplane_2.memory * 1024
+  vcpu       = var.controlplane_2.vcpu
   qemu_agent = true
 
   disk {
@@ -110,7 +111,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
 
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
-    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2.name)
+    file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2.name)
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
@@ -125,9 +126,9 @@ resource "libvirt_domain" "okd_controlplane_2" {
 
 # Configuración del recurso libvirt_domain para okd_controlplane_3
 resource "libvirt_domain" "okd_controlplane_3" {
-  name   = var.controlplane_3.name
-  memory = var.controlplane_3.memory * 1024
-  vcpu   = var.controlplane_3.vcpu
+  name       = var.controlplane_3.name
+  memory     = var.controlplane_3.memory * 1024
+  vcpu       = var.controlplane_3.vcpu
   qemu_agent = true
 
   disk {
@@ -141,7 +142,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
-    file = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3.name)
+    file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3.name)
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
