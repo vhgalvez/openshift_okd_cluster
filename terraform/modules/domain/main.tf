@@ -18,22 +18,6 @@ provider "libvirt" {
 }
 
 # Definir el recurso libvirt_ignition para el archivo bootstrap
-resource "libvirt_ignition" "bootstrap_ignition" {
-  name       = "bootstrap.ign"
-  content    = var.bootstrap_ignition_id
-  pool       = "default"
-  depends_on = [null_resource.copy_ignition_files]
-}
-
-resource "libvirt_ignition" "master_ignition" {
-  name       = "master.ign"
-  content    = var.master_ignition_id
-  pool       = "default"
-  depends_on = [null_resource.copy_ignition_files]
-}
-
-
-# Configuración del recurso libvirt_domain para okd_bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
