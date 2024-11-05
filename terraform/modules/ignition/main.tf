@@ -35,5 +35,4 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = "/mnt/lv_data/master.ign"
   format = "raw"
-
 }
