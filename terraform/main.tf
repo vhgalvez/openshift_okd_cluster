@@ -97,7 +97,7 @@ module "domain" {
   controlplane_count = var.controlplane_count
   hosts              = var.controlplane_count + 1
 
-  bootstrap_ignition_id   = var.bootstrap_ignition_id
-  master_ignition_id      = var.master_ignition_id
+  bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
+  master_ignition_id      = libvirt_ignition.master_ignition.id
   core_user_password_hash = var.core_user_password_hash
 }
