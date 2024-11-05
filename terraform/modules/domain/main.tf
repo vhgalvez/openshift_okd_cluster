@@ -263,6 +263,14 @@ resource "libvirt_domain" "coreos_machine" {
     network_name = "default"
     wait_for_lease = true
   }
+
+  firmware {
+    file = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
+    nvram {
+      file = "/var/lib/libvirt/qemu/nvram/${format("%s-%d", var.hostname_prefix, count.index + 1)}_VARS.fd"
+      template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
+    }
+  }
 }
 
 
