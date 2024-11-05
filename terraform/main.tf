@@ -38,16 +38,12 @@ module "volumes" {
 
 # Módulo de Ignition (debe ser declarado antes de Domain)
 module "ignition" {
-  source                   = "./modules/ignition"
-  network_id               = module.network.okd_network_id
-  bootstrap                = var.bootstrap
-  controlplane_1           = var.controlplane_1
-  controlplane_2           = var.controlplane_2
-  controlplane_3           = var.controlplane_3
-  bootstrap_volume_id      = module.volumes.okd_bootstrap_id
-  controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
-  controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
-  controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
+  source                  = "./modules/ignition"
+  mount_images_content    = file("./qemu-agent/docker-images.mount")
+  qemu_agent_content      = file("./qemu-agent/qemu-agent.service")
+  core_user_password_hash = var.core_user_password_hash
+  hosts                   = var.controlplane_count + 1
+  hostname_prefix         = var.hostname_prefix
 }
 
 # Módulo de dominio
