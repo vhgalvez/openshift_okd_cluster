@@ -19,6 +19,14 @@ provider "libvirt" {
 
 provider "ignition" {}
 
+# Definir la red libvirt_network okd_network aquí en main.tf
+resource "libvirt_network" "okd_network" {
+  name      = "okd_network"
+  mode      = "nat"
+  domain    = "okd.lab"
+  addresses = ["192.168.150.0/24"]
+  autostart = true
+}
 
 # Copy Ignition files to /mnt/lv_data
 resource "null_resource" "copy_ignition_files" {
@@ -33,18 +41,17 @@ resource "null_resource" "copy_ignition_files" {
 # Define libvirt Ignition resources with dependencies on file copy
 resource "libvirt_ignition" "bootstrap_ignition" {
   name       = "bootstrap.ign"
-  content    = file("/mnt/lv_data/bootstrap.ign") # Use copied file path
+  content    = file("/mnt/lv_data/bootstrap.ign")
   pool       = "default"
-  depends_on = [null_resource.copy_ignition_files] # Ensure copy runs first
+  depends_on = [null_resource.copy_ignition_files]
 }
 
 resource "libvirt_ignition" "master_ignition" {
   name       = "master.ign"
-  content    = file("/mnt/lv_data/master.ign") # Use copied file path
+  content    = file("/mnt/lv_data/master.ign")
   pool       = "default"
-  depends_on = [null_resource.copy_ignition_files] # Ensure copy runs first
+  depends_on = [null_resource.copy_ignition_files]
 }
-
 
 # Network module configuration
 module "network" {
@@ -55,7 +62,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Volumes module configuration
+# Volumes module configuration, usando la red libvirt_network.okd_network
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -63,7 +70,7 @@ module "volumes" {
   controlplane_1_volume_size = var.controlplane_1.volume_size
   controlplane_2_volume_size = var.controlplane_2.volume_size
   controlplane_3_volume_size = var.controlplane_3.volume_size
-  network_id                 = module.network.okd_network.id
+  network_id                 = libvirt_network.okd_network.id
   bootstrap                  = var.bootstrap
   controlplane_1             = var.controlplane_1
   controlplane_2             = var.controlplane_2
@@ -85,7 +92,7 @@ module "ignition" {
 # Domain module configuration with volumes output
 module "domain" {
   source               = "./modules/domain"
-  network_id           = module.network.okd_network.id
+  network_id           = libvirt_network.okd_network.id  # Utilizar ID de okd_network definida en main.tf
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
