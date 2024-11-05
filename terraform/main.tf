@@ -82,13 +82,11 @@ module "domain" {
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
-  # IDs de los volúmenes desde los outputs del módulo `volumes`
   bootstrap_volume_id      = module.volumes.okd_bootstrap_id
   controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
-  # IDs de Ignition desde el módulo `ignition`
   bootstrap_ignition_id = module.ignition.bootstrap_ignition_id
   master_ignition_id    = module.ignition.master_ignition_id
 
@@ -100,4 +98,6 @@ module "domain" {
   controlplane_count      = var.controlplane_count
   hosts                   = var.controlplane_count + 1
   core_user_password_hash = var.core_user_password_hash
+
+  depends_on = [null_resource.copy_ignition_files] # Agregar aquí la dependencia en el main.tf
 }
