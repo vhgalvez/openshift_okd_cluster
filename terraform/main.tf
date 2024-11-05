@@ -86,9 +86,9 @@ module "domain" {
 
   hosts = var.controlplane_count + 1
 
-  bootstrap_ignition_id   = module.ignition.bootstrap_ignition
-  master_ignition_id      = module.ignition.master_ignition
+  bootstrap_ignition_id   = var.bootstrap_ignition_id
+  master_ignition_id      = var.master_ignition_id
   core_user_password_hash = var.core_user_password_hash
-  mount_images_content    = module.ignition.mount_images_content
-  qemu_agent_content      = module.ignition.qemu_agent_content
+  mount_images_content    = var.mount_images_content
+  qemu_agent_content      = var.qemu_agent_content
 }
