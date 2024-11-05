@@ -1,5 +1,4 @@
-# main.tf
-
+# terraform\main.tf
 terraform {
   required_providers {
     libvirt = {
@@ -29,20 +28,20 @@ resource "null_resource" "copy_ignition_files" {
   }
 }
 
-# Define recursos Ignition
+# Define recursos Ignition with dependency on file copy
 resource "libvirt_ignition" "bootstrap_ignition" {
-  name    = "bootstrap.ign"
-  content = file("/mnt/lv_data/bootstrap.ign")
-  pool    = "default"
+  name       = "bootstrap.ign"
+  content    = file("/mnt/lv_data/bootstrap.ign")
+  pool       = "default"
+  depends_on = [null_resource.copy_ignition_files]
 }
 
 resource "libvirt_ignition" "master_ignition" {
-  name    = "master.ign"
-  content = file("/mnt/lv_data/master.ign")
-  pool    = "default"
+  name       = "master.ign"
+  content    = file("/mnt/lv_data/master.ign")
+  pool       = "default"
+  depends_on = [null_resource.copy_ignition_files]
 }
-
-
 
 # Configuración del módulo de red
 module "network" {
@@ -80,6 +79,7 @@ module "ignition" {
   bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
   master_ignition_id      = libvirt_ignition.master_ignition.id
 }
+
 # Configuración del módulo de dominios usando salidas del módulo de volúmenes
 
 module "domain" {
