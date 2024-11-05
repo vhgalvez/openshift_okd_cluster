@@ -1,6 +1,4 @@
 # terraform/main.tf
-
-# terraform/main.tf
 terraform {
   required_providers {
     libvirt = {
