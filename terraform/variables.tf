@@ -91,3 +91,11 @@ variable "core_user_password_hash" {
   type    = string
   default = "$6$hNh1nwO5OWWct4aZ$OoeAkQ4gKNBnGYK0ECi8saBMbUNeQRMICcOPYEu1bFuj9Axt4Rh6EnGba07xtIsGNt2wP9SsPlz543gfJww11/"
 }
+
+variable "bootstrap_ignition_id" {
+  type = string
+}
+
+variable "master_ignition_id" {
+  type = string
+}
