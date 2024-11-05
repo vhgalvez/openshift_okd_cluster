@@ -1,4 +1,5 @@
 # terraform\main.tf
+
 terraform {
   required_providers {
     libvirt = {
@@ -18,7 +19,7 @@ provider "libvirt" {
 
 provider "ignition" {}
 
-# Copy Ignition files to /mnt/lv_data for any external needs
+# Copy Ignition files to /mnt/lv_data
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
     command = "cp ${path.module}/ignition_configs/bootstrap.ign /mnt/lv_data/ && cp ${path.module}/ignition_configs/master.ign /mnt/lv_data/"
@@ -31,16 +32,16 @@ resource "null_resource" "copy_ignition_files" {
 # Define libvirt Ignition resources with dependencies on file copy
 resource "libvirt_ignition" "bootstrap_ignition" {
   name       = "bootstrap.ign"
-  content    = file("${path.module}/ignition_configs/bootstrap.ign")  # Directly reference source file
+  content    = file("/mnt/lv_data/bootstrap.ign") # Use copied file path
   pool       = "default"
-  depends_on = [null_resource.copy_ignition_files]  # Ensure copy runs first
+  depends_on = [null_resource.copy_ignition_files] # Ensure copy runs first
 }
 
 resource "libvirt_ignition" "master_ignition" {
   name       = "master.ign"
-  content    = file("${path.module}/ignition_configs/master.ign")  # Directly reference source file
+  content    = file("/mnt/lv_data/master.ign") # Use copied file path
   pool       = "default"
-  depends_on = [null_resource.copy_ignition_files]  # Ensure copy runs first
+  depends_on = [null_resource.copy_ignition_files] # Ensure copy runs first
 }
 
 # Network module configuration
