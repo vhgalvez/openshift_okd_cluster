@@ -242,7 +242,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
 
 resource "libvirt_domain" "coreos_machine" {
   count  = var.hosts
-  name   = format(var.hostname_prefix, count.index + 1)
+  name   = format("%s-%d", var.hostname_prefix, count.index + 1)
   vcpu   = "1"
   memory = "2048"
 
