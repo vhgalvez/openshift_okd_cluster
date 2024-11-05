@@ -45,6 +45,9 @@ resource "libvirt_ignition" "master_ignition" {
 # Configuración del módulo Ignition
 module "ignition" {
   source                  = "./modules/ignition"
+  providers = {
+    libvirt = libvirt
+  }
   mount_images_content    = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content      = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
   core_user_password_hash = var.core_user_password_hash
@@ -108,25 +111,13 @@ module "volumes" {
 # Configuración del módulo de dominios usando salidas del módulo de volúmenes
 module "domain" {
   source     = "./modules/domain"
+  providers = {
+    libvirt = libvirt
+  }
   network_id = module.network.okd_network.id
 
   mount_images_content = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/docker-images.mount")
   qemu_agent_content   = file("/home/victory/openshift_okd_cluster/terraform/qemu-agent/qemu-agent.service")
 
   # Pasar IDs de volúmenes desde las salidas del módulo de volúmenes
-  bootstrap_volume_id      = module.volumes.okd_bootstrap_id
-  controlplane_1_volume_id = module.volumes.okd_controlplane_1_id
-  controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
-  controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
-
-  bootstrap               = var.bootstrap
-  controlplane_1          = var.controlplane_1
-  controlplane_2          = var.controlplane_2
-  controlplane_3          = var.controlplane_3
-  hostname_prefix         = var.hostname_prefix
-  controlplane_count      = var.controlplane_count
-  hosts                   = var.controlplane_count + 1
-  bootstrap_ignition_id   = libvirt_ignition.bootstrap_ignition.id
-  master_ignition_id      = libvirt_ignition.master_ignition.id
-  core_user_password_hash = var.core_user_password_hash
-}
+  bootstrap_volume_id      = module.volumes.ok
