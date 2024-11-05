@@ -19,6 +19,7 @@ provider "libvirt" {
 
 provider "ignition" {}
 
+
 # Copy Ignition files to /mnt/lv_data
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
@@ -43,6 +44,7 @@ resource "libvirt_ignition" "master_ignition" {
   pool       = "default"
   depends_on = [null_resource.copy_ignition_files] # Ensure copy runs first
 }
+
 
 # Network module configuration
 module "network" {
