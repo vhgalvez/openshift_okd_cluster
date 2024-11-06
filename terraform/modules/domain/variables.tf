@@ -20,6 +20,10 @@ variable "controlplane_3" {
   type = map(string)
 }
 
+variable "worker" {
+  type = map(string)
+}
+
 variable "bootstrap_ignition" {
   description = "Ignition configuration for the bootstrap node"
   type        = string
@@ -27,5 +31,10 @@ variable "bootstrap_ignition" {
 
 variable "master_ignition" {
   description = "Ignition configuration for the master nodes"
+  type        = string
+}
+
+variable "worker_ignition" {
+  description = "Ignition configuration for the worker nodes"
   type        = string
 }

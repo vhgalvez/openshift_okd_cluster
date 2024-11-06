@@ -58,6 +58,19 @@ variable "controlplane_3" {
   }
 }
 
+variable "worker" {
+  type = map(string)
+  default = {
+    name        = "okd-worker"
+    description = "okd worker vm"
+    vcpu        = 4
+    memory      = 8  # GiB
+    volume_size = 40 # GiB
+    address     = "192.168.150.20"
+    mac         = "AA:BB:CC:30:00:00"
+  }
+}
+
 variable "hosts" {
   type        = number
   description = "Number of hosts"

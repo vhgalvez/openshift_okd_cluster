@@ -16,22 +16,40 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap" {
   name   = "bootstrap"
   pool   = "default"
-  source = "/mnt/lv_data/bootstrap.ign" // Update this path if necessary
-  format = "raw"
+  source = var.coreos_image
+  format = "qcow2"
 }
 
 resource "libvirt_volume" "master" {
   name   = "master"
   pool   = "default"
-  source = "/mnt/lv_data/master.ign" // Update this path if necessary
-  format = "raw"
+  source = var.coreos_image
+  format = "qcow2"
 }
 
 resource "libvirt_volume" "worker" {
   name   = "worker"
   pool   = "default"
-  source = "/mnt/lv_data/worker.ign" // Update this path if necessary
-  format = "raw"
+  source = var.coreos_image
+  format = "qcow2"
+}
+
+resource "libvirt_ignition" "bootstrap_ign" {
+  name    = "bootstrap.ign"
+  pool    = "default"
+  content = file("/mnt/lv_data/bootstrap.ign")
+}
+
+resource "libvirt_ignition" "master_ign" {
+  name    = "master.ign"
+  pool    = "default"
+  content = file("/mnt/lv_data/master.ign")
+}
+
+resource "libvirt_ignition" "worker_ign" {
+  name    = "worker.ign"
+  pool    = "default"
+  content = file("/mnt/lv_data/worker.ign")
 }
 
 resource "libvirt_domain" "bootstrap" {
@@ -48,7 +66,7 @@ resource "libvirt_domain" "bootstrap" {
     network_name = "default"
   }
 
-  coreos_ignition = "/mnt/lv_data/bootstrap.ign" // Update this path if necessary
+  coreos_ignition = libvirt_ignition.bootstrap_ign.id
 }
 
 resource "libvirt_domain" "master" {
@@ -65,7 +83,7 @@ resource "libvirt_domain" "master" {
     network_name = "default"
   }
 
-  coreos_ignition = "/mnt/lv_data/master.ign" // Update this path if necessary
+  coreos_ignition = libvirt_ignition.master_ign.id
 }
 
 resource "libvirt_domain" "worker" {
@@ -82,7 +100,7 @@ resource "libvirt_domain" "worker" {
     network_name = "default"
   }
 
-  coreos_ignition = "/mnt/lv_data/worker.ign" // Update this path if necessary
+  coreos_ignition = libvirt_ignition.worker_ign.id
 }
 
 # Módulo para la Red
