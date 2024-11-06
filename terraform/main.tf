@@ -50,7 +50,7 @@ module "domain" {
   controlplane_1 = var.controlplane_1
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
-  bootstrap_ignition = data.local_file.bootstrap_ignition.content
-  master_ignition    = data.local_file.master_ignition.content
+  bootstrap_ignition = module.ignition.bootstrap_ignition_content
+  master_ignition    = module.ignition.master_ignition_content
 }
 

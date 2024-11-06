@@ -35,7 +35,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = file("${path.module}/../../ignition_configs/bootstrap.ign")
+  coreos_ignition = var.bootstrap_ignition
 
   graphics {
     type     = "vnc"
@@ -66,7 +66,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = file("${path.module}/../../ignition_configs/master.ign")
+  coreos_ignition = var.master_ignition
 
   graphics {
     type     = "vnc"
@@ -97,7 +97,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = file("${path.module}/../../ignition_configs/master.ign")
+  coreos_ignition = var.master_ignition
 
   graphics {
     type     = "vnc"
@@ -128,7 +128,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  coreos_ignition = file("${path.module}/../../ignition_configs/master.ign")
+  coreos_ignition = var.master_ignition
 
   graphics {
     type     = "vnc"
