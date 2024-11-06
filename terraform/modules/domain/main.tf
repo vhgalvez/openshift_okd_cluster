@@ -40,9 +40,6 @@ resource "libvirt_domain" "okd_bootstrap" {
     type     = "vnc"
     autoport = true
   }
-
-  # Dependencia explícita del módulo de volúmenes
-  depends_on = [module.volumes]
 }
 
 # Recurso para el nodo de control plane 1
@@ -73,8 +70,6 @@ resource "libvirt_domain" "okd_controlplane_1" {
     type     = "vnc"
     autoport = true
   }
-
-  depends_on = [module.volumes]
 }
 
 # Recurso para el nodo de control plane 2
@@ -105,8 +100,6 @@ resource "libvirt_domain" "okd_controlplane_2" {
     type     = "vnc"
     autoport = true
   }
-
-  depends_on = [module.volumes]
 }
 
 # Recurso para el nodo de control plane 3
@@ -137,6 +130,4 @@ resource "libvirt_domain" "okd_controlplane_3" {
     type     = "vnc"
     autoport = true
   }
-
-  depends_on = [module.volumes]
 }
