@@ -24,7 +24,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network" // Update this to the correct network name
     addresses    = [var.bootstrap["address"]]
     mac          = var.bootstrap["mac"]
   }
@@ -55,7 +55,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network" // Update this to the correct network name
     addresses    = [var.controlplane_1["address"]]
     mac          = var.controlplane_1["mac"]
   }
@@ -86,7 +86,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network" // Update this to the correct network name
     addresses    = [var.controlplane_2["address"]]
     mac          = var.controlplane_2["mac"]
   }
@@ -117,7 +117,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network" // Update this to the correct network name
     addresses    = [var.controlplane_3["address"]]
     mac          = var.controlplane_3["mac"]
   }
