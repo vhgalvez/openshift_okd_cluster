@@ -63,6 +63,19 @@ resource "libvirt_volume" "worker_ignition" {
   format = "raw"
 }
 
+
+# Output the IDs of the Ignition volumes
+output "bootstrap_ignition_content" {
+  value = libvirt_volume.bootstrap_ignition.id
+}
+
+
+
 output "worker_ignition_content" {
   value = libvirt_volume.worker_ignition.id
+}
+
+
+output "master_ignition_content" {
+  value = libvirt_volume.master_ignition.id
 }
