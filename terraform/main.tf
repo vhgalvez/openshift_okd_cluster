@@ -219,8 +219,8 @@ module "domain" {
   controlplane_2     = var.controlplane_2
   controlplane_3     = var.controlplane_3
   worker             = var.worker
-  bootstrap_ignition = module.ignition.bootstrap_ignition_id
-  master_ignition    = module.ignition.master_ignition_id
-  worker_ignition    = module.ignition.worker_ignition_id
+  bootstrap_ignition = module.ignition.bootstrap_ignition_content
+  master_ignition    = module.ignition.master_ignition_content
+  worker_ignition    = module.ignition.worker_ignition_content
 }
 
