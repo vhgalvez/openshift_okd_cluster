@@ -13,14 +13,16 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Create the new directory if it does not exist and copy Ignition files to this alternative directory
+# Create a unique temporary directory and copy Ignition files to this directory
 resource "null_resource" "prepare_ignition_files" {
   provisioner "local-exec" {
     command = <<EOT
-      mkdir -p /mnt/lv_data/ignition_alternativo
-      cp ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition_alternativo/bootstrap.iso
-      cp ./ignition_configs/master.ign /mnt/lv_data/ignition_alternativo/master.iso
-      cp ./ignition_configs/worker.ign /mnt/lv_data/ignition_alternativo/worker.iso
+      TEMP_DIR=$(mktemp -d)
+      mkdir -p $TEMP_DIR
+      cp ./ignition_configs/bootstrap.ign $TEMP_DIR/bootstrap.iso
+      cp ./ignition_configs/master.ign $TEMP_DIR/master.iso
+      cp ./ignition_configs/worker.ign $TEMP_DIR/worker.iso
+      echo $TEMP_DIR > /tmp/ignition_dir
     EOT
   }
 
@@ -41,23 +43,23 @@ resource "null_resource" "clean_up_existing_volumes" {
   depends_on = [null_resource.prepare_ignition_files]
 }
 
-# Define data sources for Ignition files in the new directory
+# Define data sources for Ignition files in the temporary directory
 data "local_file" "bootstrap_ignition" {
-  filename   = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
+  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/bootstrap.iso
   depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "master_ignition" {
-  filename   = "/mnt/lv_data/ignition_alternativo/master.iso"
+  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/master.iso
   depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "worker_ignition" {
-  filename   = "/mnt/lv_data/ignition_alternativo/worker.iso"
+  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/worker.iso
   depends_on = [null_resource.prepare_ignition_files]
 }
 
-# Create libvirt volumes for Ignition configurations from the new directory
+# Create libvirt volumes for Ignition configurations from the temporary directory
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
@@ -106,21 +108,21 @@ resource "libvirt_volume" "worker" {
 resource "libvirt_volume" "bootstrap_iso" {
   name   = "bootstrap-iso"
   pool   = "default"
-  source = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
+  source = data.local_file.bootstrap_ignition.filename
   format = "iso"
 }
 
 resource "libvirt_volume" "master_iso" {
   name   = "master-iso"
   pool   = "default"
-  source = "/mnt/lv_data/ignition_alternativo/master.iso"
+  source = data.local_file.master_ignition.filename
   format = "iso"
 }
 
 resource "libvirt_volume" "worker_iso" {
   name   = "worker-iso"
   pool   = "default"
-  source = "/mnt/lv_data/ignition_alternativo/worker.iso"
+  source = data.local_file.worker_ignition.filename
   format = "iso"
 }
 
@@ -291,5 +293,13 @@ module "domain" {
   bootstrap_ignition = libvirt_volume.bootstrap_iso.id
   master_ignition    = libvirt_volume.master_iso.id
   worker_ignition    = libvirt_volume.worker_iso.id
+}
+
+# Clean up the temporary directory
+resource "null_resource" "cleanup_temp_directory" {
+  provisioner "local-exec" {
+    command = "rm -rf $(cat /tmp/ignition_dir)"
+  }
+  depends_on = [libvirt_volume.bootstrap_ignition, libvirt_volume.master_ignition, libvirt_volume.worker_ignition]
 }
 
