@@ -45,14 +45,17 @@ resource "null_resource" "clean_up_existing_volumes" {
 # Define data sources for Ignition files in the new directory
 data "local_file" "bootstrap_ignition" {
   filename = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
 data "local_file" "master_ignition" {
   filename = "/mnt/lv_data/ignition_alternativo/master.iso"
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
 data "local_file" "worker_ignition" {
   filename = "/mnt/lv_data/ignition_alternativo/worker.iso"
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
 # Create libvirt volumes for Ignition configurations from the new directory
