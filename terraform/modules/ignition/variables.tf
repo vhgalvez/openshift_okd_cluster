@@ -1,22 +1,22 @@
 # modules/ignition/variables.tf
 
 variable "bootstrap" {
-  type = map(any)
+  type = map(string)
   description = "Configuration map for the bootstrap node"
 }
 
 variable "controlplane_1" {
-  type = map(any)
+  type = map(string)
   description = "Configuration map for control plane node 1"
 }
 
 variable "controlplane_2" {
-  type = map(any)
+  type = map(string)
   description = "Configuration map for control plane node 2"
 }
 
 variable "controlplane_3" {
-  type = map(any)
+  type = map(string)
   description = "Configuration map for control plane node 3"
 }
 
