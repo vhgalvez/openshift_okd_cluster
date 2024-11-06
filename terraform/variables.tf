@@ -2,7 +2,7 @@
 
 variable "coreos_image" {
   type        = string
-  default     = "/mnt/lv_data/organized_storage/images/fedora-coreos-39.20231101.3.0-qemu.x86_64.qcow2"
+  default     = "/mnt/lv_data/organized_storage/images/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2"
   description = "CoreOS image to use"
 }
 
