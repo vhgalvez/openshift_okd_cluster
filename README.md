@@ -364,4 +364,12 @@ sudo find . -name "*.tf" -exec cat {} +
 sudo setenforce 0
 sudo systemctl restart libvirtd
 
-sudo mkdir -p /mnt/lv_data/ignition
+sudo mkdir -p /mnt/lv_data/ignition_clonados
+sudo chmod -R 755 /mnt/lv_data/ignition_clonados/
+sudo chown -R $USER:$USER /mnt/lv_data/ignition_clonados/
+
+
+
+sudo cp /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/ignition_clonados/bootstrap.ign
+sudo cp /home/victory/openshift_okd_cluster/terraform/ignition_configs/master.ign /mnt/lv_data/ignition_clonados/master.ign
+sudo cp /home/victory/openshift_okd_cluster/terraform/ignition_configs/worker.ign /mnt/lv_data/ignition_clonados/worker.ign

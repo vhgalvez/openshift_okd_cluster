@@ -20,7 +20,7 @@ provider "libvirt" {
 # Copy Ignition files to target directory
 resource "null_resource" "copy_ignition_files" {
   provisioner "local-exec" {
-    command = "cp -r ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition/ && cp -r ./ignition_configs/master.ign /mnt/lv_data/ignition/ && cp -r ./ignition_configs/worker.ign /mnt/lv_data/ignition/"
+    command = "cp -r ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition_clonados/ && cp -r ./ignition_configs/master.ign /mnt/lv_data/ignition_clonados/ && cp -r ./ignition_configs/worker.ign /mnt/lv_data/ignition_clonados/"
   }
 
   triggers = {
@@ -30,15 +30,15 @@ resource "null_resource" "copy_ignition_files" {
 
 # Define data sources for Ignition files
 data "local_file" "bootstrap_ignition" {
-  filename = "/mnt/lv_data/ignition/bootstrap.ign"
+  filename = "/mnt/lv_data/ignition_clonados/bootstrap.ign"
 }
 
 data "local_file" "master_ignition" {
-  filename = "/mnt/lv_data/ignition/master.ign"
+  filename = "/mnt/lv_data/ignition_clonados/master.ign"
 }
 
 data "local_file" "worker_ignition" {
-  filename = "/mnt/lv_data/ignition/worker.ign"
+  filename = "/mnt/lv_data/ignition_clonados/worker.ign"
 }
 
 # Create libvirt volumes for Ignition configurations
