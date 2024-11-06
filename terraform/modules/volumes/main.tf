@@ -47,3 +47,7 @@ resource "libvirt_volume" "worker" {
   source = var.coreos_image
   format = "qcow2"
 }
+
+output "worker_volume_id" {
+  value = libvirt_volume.worker.id
+}
