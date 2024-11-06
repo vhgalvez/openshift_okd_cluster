@@ -34,6 +34,27 @@ resource "libvirt_volume" "worker" {
   format = "qcow2"
 }
 
+resource "libvirt_volume" "bootstrap_iso" {
+  name   = "bootstrap-iso"
+  pool   = "default"
+  source = "/mnt/lv_data/bootstrap.iso"
+  format = "iso"
+}
+
+resource "libvirt_volume" "master_iso" {
+  name   = "master-iso"
+  pool   = "default"
+  source = "/mnt/lv_data/master.iso"
+  format = "iso"
+}
+
+resource "libvirt_volume" "worker_iso" {
+  name   = "worker-iso"
+  pool   = "default"
+  source = "/mnt/lv_data/worker.iso"
+  format = "iso"
+}
+
 resource "libvirt_ignition" "bootstrap_ign" {
   name    = "bootstrap.ign"
   pool    = "default"
@@ -62,8 +83,17 @@ resource "libvirt_domain" "bootstrap" {
     volume_id = libvirt_volume.bootstrap.id
   }
 
+  disk {
+    volume_id = libvirt_volume.bootstrap_iso.id
+  }
+
   network_interface {
     network_name = "default"
+  }
+
+  graphics {
+    type     = "vnc"
+    autoport = true
   }
 
   coreos_ignition = libvirt_ignition.bootstrap_ign.id
@@ -79,8 +109,17 @@ resource "libvirt_domain" "master" {
     volume_id = libvirt_volume.master.id
   }
 
+  disk {
+    volume_id = libvirt_volume.master_iso.id
+  }
+
   network_interface {
     network_name = "default"
+  }
+
+  graphics {
+    type     = "vnc"
+    autoport = true
   }
 
   coreos_ignition = libvirt_ignition.master_ign.id
@@ -96,8 +135,17 @@ resource "libvirt_domain" "worker" {
     volume_id = libvirt_volume.worker.id
   }
 
+  disk {
+    volume_id = libvirt_volume.worker_iso.id
+  }
+
   network_interface {
     network_name = "default"
+  }
+
+  graphics {
+    type     = "vnc"
+    autoport = true
   }
 
   coreos_ignition = libvirt_ignition.worker_ign.id
