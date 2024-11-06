@@ -346,3 +346,5 @@ sudo find . -name "*.tf" -exec cat {} +
 
 sudo setenforce 0
 sudo systemctl restart libvirtd
+
+sudo git pull
