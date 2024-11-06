@@ -1,23 +1,4 @@
 # modules/domain/main.tf
-
-terraform {
-  required_providers {
-    ignition = {
-      source  = "community-terraform-providers/ignition"
-      version = "2.1.0"
-    }
-    libvirt = {
-      source  = "dmacvicar/libvirt"
-      version = "0.8.1"
-    }
-  }
-}
-
-provider "libvirt" {
-  uri = "qemu:///system"
-}
-
-# Bootstrap Node Definition
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
@@ -46,10 +27,10 @@ resource "libvirt_domain" "okd_bootstrap" {
     autoport = true
   }
 
-  depends_on = [libvirt_volume.okd_bootstrap]
+  # Updated depends_on to reference the output of the volumes module
+  depends_on = [module.volumes.okd_bootstrap_id]
 }
 
-# Control Plane Node 1 Definition
 resource "libvirt_domain" "okd_controlplane_1" {
   name       = var.controlplane_1.name
   memory     = var.controlplane_1.memory * 1024
@@ -78,10 +59,9 @@ resource "libvirt_domain" "okd_controlplane_1" {
     autoport = true
   }
 
-  depends_on = [libvirt_volume.okd_controlplane_1]
+  depends_on = [module.volumes.okd_controlplane_1_id]
 }
 
-# Control Plane Node 2 Definition
 resource "libvirt_domain" "okd_controlplane_2" {
   name       = var.controlplane_2.name
   memory     = var.controlplane_2.memory * 1024
@@ -110,10 +90,9 @@ resource "libvirt_domain" "okd_controlplane_2" {
     autoport = true
   }
 
-  depends_on = [libvirt_volume.okd_controlplane_2]
+  depends_on = [module.volumes.okd_controlplane_2_id]
 }
 
-# Control Plane Node 3 Definition
 resource "libvirt_domain" "okd_controlplane_3" {
   name       = var.controlplane_3.name
   memory     = var.controlplane_3.memory * 1024
@@ -142,6 +121,5 @@ resource "libvirt_domain" "okd_controlplane_3" {
     autoport = true
   }
 
-  depends_on = [libvirt_volume.okd_controlplane_3]
+  depends_on = [module.volumes.okd_controlplane_3_id]
 }
-
