@@ -70,7 +70,6 @@ output "bootstrap_ignition_content" {
 }
 
 
-
 output "worker_ignition_content" {
   value = libvirt_volume.worker_ignition.id
 }
