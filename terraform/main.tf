@@ -168,6 +168,7 @@ module "volumes" {
   controlplane_1             = var.controlplane_1
   controlplane_2             = var.controlplane_2
   controlplane_3             = var.controlplane_3
+  worker                     = var.worker
 }
 
 data "template_file" "docker_images_mount" {
@@ -205,13 +206,15 @@ module "domain" {
     controlplane_1 = module.volumes.controlplane_1_volume_id
     controlplane_2 = module.volumes.controlplane_2_volume_id
     controlplane_3 = module.volumes.controlplane_3_volume_id
+    worker = module.volumes.worker_volume_id
   }
   bootstrap      = var.bootstrap
   controlplane_1 = var.controlplane_1
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
+  worker         = var.worker
   bootstrap_ignition = module.ignition.bootstrap_ignition_content
   master_ignition    = module.ignition.master_ignition_content
-  
+  worker_ignition    = module.ignition.worker_ignition_content
 }
 
