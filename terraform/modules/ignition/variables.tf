@@ -20,6 +20,11 @@ variable "controlplane_3" {
   description = "Configuration map for control plane node 3"
 }
 
+variable "worker" {
+  type = map(string)
+  description = "Configuration map for worker nodes"
+}
+
 variable "bootstrap_volume_id" {
   type        = string
   description = "Volume ID for the bootstrap node"
@@ -38,6 +43,11 @@ variable "controlplane_2_volume_id" {
 variable "controlplane_3_volume_id" {
   type        = string
   description = "Volume ID for control plane node 3"
+}
+
+variable "worker_volume_id" {
+  type        = string
+  description = "Volume ID for worker nodes"
 }
 
 variable "network_id" {

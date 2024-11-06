@@ -184,6 +184,23 @@ data "template_file" "qemu_agent_service" {
 # Módulo de Configuración Ignition
 module "ignition" {
   source = "./modules/ignition"
+
+  bootstrap               = var.bootstrap
+  controlplane_1          = var.controlplane_1
+  controlplane_2          = var.controlplane_2
+  controlplane_3          = var.controlplane_3
+  worker                  = var.worker
+  bootstrap_volume_id     = module.volumes.libvirt_volume.bootstrap.id
+  controlplane_1_volume_id = module.volumes.libvirt_volume.controlplane_1.id
+  controlplane_2_volume_id = module.volumes.libvirt_volume.controlplane_2.id
+  controlplane_3_volume_id = module.volumes.libvirt_volume.controlplane_3.id
+  worker_volume_id        = module.volumes.libvirt_volume.worker.id
+  network_id              = module.network.okd_network_id
+  hosts                   = var.hosts
+  hostname_prefix         = var.hostname_prefix
+  core_user_password_hash = var.core_user_password_hash
+  qemu_agent_content      = data.template_file.qemu_agent_service.rendered
+  mount_images_content    = data.template_file.docker_images_mount.rendered
 }
 
 # Módulo para Dominios (Máquinas Virtuales)
@@ -195,7 +212,7 @@ module "domain" {
     controlplane_1 = module.volumes.libvirt_volume.controlplane_1.id
     controlplane_2 = module.volumes.libvirt_volume.controlplane_2.id
     controlplane_3 = module.volumes.libvirt_volume.controlplane_3.id
-    worker         = module.volumes.worker_volume_id
+    worker         = module.volumes.libvirt_volume.worker.id
   }
   bootstrap          = var.bootstrap
   controlplane_1     = var.controlplane_1
