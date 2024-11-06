@@ -3,7 +3,7 @@ terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "~> 0.8.1"
+      version = "0.8.1"
     }
   }
 }
@@ -12,7 +12,7 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Bootstrap node
+# Recurso para el nodo bootstrap
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
@@ -40,9 +40,12 @@ resource "libvirt_domain" "okd_bootstrap" {
     type     = "vnc"
     autoport = true
   }
+
+  # Dependencia explícita del módulo de volúmenes
+  depends_on = [module.volumes]
 }
 
-# Control plane node 1
+# Recurso para el nodo de control plane 1
 resource "libvirt_domain" "okd_controlplane_1" {
   name       = var.controlplane_1.name
   memory     = var.controlplane_1.memory * 1024
@@ -70,9 +73,11 @@ resource "libvirt_domain" "okd_controlplane_1" {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [module.volumes]
 }
 
-# Control plane node 2
+# Recurso para el nodo de control plane 2
 resource "libvirt_domain" "okd_controlplane_2" {
   name       = var.controlplane_2.name
   memory     = var.controlplane_2.memory * 1024
@@ -100,9 +105,11 @@ resource "libvirt_domain" "okd_controlplane_2" {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [module.volumes]
 }
 
-# Control plane node 3
+# Recurso para el nodo de control plane 3
 resource "libvirt_domain" "okd_controlplane_3" {
   name       = var.controlplane_3.name
   memory     = var.controlplane_3.memory * 1024
@@ -130,4 +137,6 @@ resource "libvirt_domain" "okd_controlplane_3" {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [module.volumes]
 }
