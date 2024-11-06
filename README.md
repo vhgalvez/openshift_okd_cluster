@@ -345,3 +345,8 @@ sudo virsh list --all
 
 
 sudo find . -name "*.tf" -exec cat {} +
+
+
+
+sudo setenforce 0
+sudo systemctl restart libvirtd
