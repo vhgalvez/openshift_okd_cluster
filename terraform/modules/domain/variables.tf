@@ -45,3 +45,15 @@ variable "controlplane_2" {
 variable "controlplane_3" {
   type = map(any)
 }
+variable "okd_bootstrap_id" {
+  type = string
+}
+variable "okd_controlplane_1_id" {
+  type = string
+}
+variable "okd_controlplane_2_id" {
+  type = string
+}
+variable "okd_controlplane_3_id" {
+  type = string
+}

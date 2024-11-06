@@ -1,9 +1,14 @@
 # modules/domain/main.tf
+
 terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "~> 0.8.1"
+      version = "0.8.1"
+    }
+    ignition = {
+      source  = "community-terraform-providers/ignition"
+      version = "2.1.0"
     }
   }
 }
@@ -11,6 +16,7 @@ terraform {
 provider "libvirt" {
   uri = "qemu:///system"
 }
+
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
