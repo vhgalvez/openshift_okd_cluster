@@ -13,6 +13,78 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
+resource "libvirt_volume" "bootstrap" {
+  name   = "bootstrap"
+  pool   = "default"
+  source = "/path/to/bootstrap.ign"
+  format = "raw"
+}
+
+resource "libvirt_volume" "master" {
+  name   = "master"
+  pool   = "default"
+  source = "/path/to/master.ign"
+  format = "raw"
+}
+
+resource "libvirt_volume" "worker" {
+  name   = "worker"
+  pool   = "default"
+  source = "/path/to/worker.ign"
+  format = "raw"
+}
+
+resource "libvirt_domain" "bootstrap" {
+  name       = "bootstrap"
+  memory     = "2048"
+  vcpu       = 2
+  qemu_agent = true
+
+  disk {
+    volume_id = libvirt_volume.bootstrap.id
+  }
+
+  network_interface {
+    network_name = "default"
+  }
+
+  cloudinit = "/path/to/bootstrap.ign"
+}
+
+resource "libvirt_domain" "master" {
+  name       = "master"
+  memory     = "4096"
+  vcpu       = 4
+  qemu_agent = true
+
+  disk {
+    volume_id = libvirt_volume.master.id
+  }
+
+  network_interface {
+    network_name = "default"
+  }
+
+  cloudinit = "/path/to/master.ign"
+}
+
+resource "libvirt_domain" "worker" {
+  name       = "worker"
+  memory     = "4096"
+  vcpu       = 4
+  qemu_agent = true
+
+  disk {
+    volume_id = libvirt_volume.worker.id
+  }
+
+  network_interface {
+    network_name = "default"
+  }
+
+  cloudinit = "/path/to/worker.ign"
+}
+
 # Módulo para la Red
 module "network" {
   source         = "./modules/network"
