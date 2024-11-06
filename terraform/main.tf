@@ -74,5 +74,6 @@ module "domain" {
   controlplane_3 = var.controlplane_3
   bootstrap_ignition = module.ignition.bootstrap_ignition_content
   master_ignition    = module.ignition.master_ignition_content
+  
 }
 
