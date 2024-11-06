@@ -16,21 +16,21 @@ provider "libvirt" {
 resource "libvirt_volume" "bootstrap" {
   name   = "bootstrap"
   pool   = "default"
-  source = "/path/to/bootstrap.ign"
+  source = "/mnt/lv_data/bootstrap.ign" // Update this path if necessary
   format = "raw"
 }
 
 resource "libvirt_volume" "master" {
   name   = "master"
   pool   = "default"
-  source = "/path/to/master.ign"
+  source = "/mnt/lv_data/master.ign" // Update this path if necessary
   format = "raw"
 }
 
 resource "libvirt_volume" "worker" {
   name   = "worker"
   pool   = "default"
-  source = "/path/to/worker.ign"
+  source = "/mnt/lv_data/worker.ign" // Update this path if necessary
   format = "raw"
 }
 
@@ -48,7 +48,7 @@ resource "libvirt_domain" "bootstrap" {
     network_name = "default"
   }
 
-  cloudinit = "/path/to/bootstrap.ign"
+  cloudinit = "/mnt/lv_data/bootstrap.ign" // Update this path if necessary
 }
 
 resource "libvirt_domain" "master" {
@@ -65,7 +65,7 @@ resource "libvirt_domain" "master" {
     network_name = "default"
   }
 
-  cloudinit = "/path/to/master.ign"
+  cloudinit = "/mnt/lv_data/master.ign" // Update this path if necessary
 }
 
 resource "libvirt_domain" "worker" {
@@ -82,7 +82,7 @@ resource "libvirt_domain" "worker" {
     network_name = "default"
   }
 
-  cloudinit = "/path/to/worker.ign"
+  cloudinit = "/mnt/lv_data/worker.ign" // Update this path if necessary
 }
 
 # Módulo para la Red

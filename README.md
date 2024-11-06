@@ -303,8 +303,6 @@ date
 
 
 
-sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/bootstrap.ign
-sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/master.ign
 
 
 sudo virsh undefine okd-bootstrap --remove-all-storage
@@ -340,11 +338,25 @@ sudo virsh undefine okd-controlplane-3
 sudo virsh list --all
 
 
+
+sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/bootstrap.ign
+sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/master.ign
+
+sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/worker.ign
+
+sudo git pull
+sudo TF_LOG=DEBUG terraform init --upgrade
+sudo TF_LOG=DEBUG terraform plan
+sudo TF_LOG=DEBUG terraform apply -auto-approve
+
+sudo TF_LOG=DEBUG terraform destroy -auto-approve
+
+
+sudo TF_LOG=DEBUG terraform destroy 
+
 sudo find . -name "*.tf" -exec cat {} +
 
 
 
 sudo setenforce 0
 sudo systemctl restart libvirtd
-
-sudo git pull
