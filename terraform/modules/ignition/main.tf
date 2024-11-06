@@ -18,7 +18,7 @@ provider "libvirt" {
 }
 
 # Copy Ignition files to target directory
-resource "null_resource" "copy_ignition_files_alternative" {
+resource "null_resource" "prepare_ignition_files" {
   provisioner "local-exec" {
     command = <<EOT
       mkdir -p /mnt/lv_data/ignition_alternativo
@@ -36,18 +36,18 @@ resource "null_resource" "copy_ignition_files_alternative" {
 
 # Define data sources for Ignition files in the new directory
 data "local_file" "bootstrap_ignition" {
-  filename = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  filename   = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "master_ignition" {
-  filename = "/mnt/lv_data/ignition_alternativo/master.iso"
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  filename   = "/mnt/lv_data/ignition_alternativo/master.iso"
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "worker_ignition" {
-  filename = "/mnt/lv_data/ignition_alternativo/worker.iso"
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  filename   = "/mnt/lv_data/ignition_alternativo/worker.iso"
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 # Create libvirt volumes for Ignition configurations from the new directory

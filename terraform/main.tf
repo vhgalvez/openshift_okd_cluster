@@ -14,7 +14,7 @@ provider "libvirt" {
 }
 
 # Create the new directory if it does not exist and copy Ignition files to this alternative directory
-resource "null_resource" "copy_ignition_files_alternative" {
+resource "null_resource" "prepare_ignition_files" {
   provisioner "local-exec" {
     command = <<EOT
       mkdir -p /mnt/lv_data/ignition_alternativo
@@ -24,7 +24,6 @@ resource "null_resource" "copy_ignition_files_alternative" {
     EOT
   }
 
-  # Use triggers to ensure this action always runs
   triggers = {
     always_run = timestamp()
   }
@@ -39,23 +38,23 @@ resource "null_resource" "clean_up_existing_volumes" {
       virsh vol-list --pool default | grep 'worker.ign' && virsh vol-delete --pool default worker.ign || true
     EOT
   }
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 # Define data sources for Ignition files in the new directory
 data "local_file" "bootstrap_ignition" {
-  filename = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  filename   = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "master_ignition" {
-  filename = "/mnt/lv_data/ignition_alternativo/master.iso"
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  filename   = "/mnt/lv_data/ignition_alternativo/master.iso"
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "worker_ignition" {
-  filename = "/mnt/lv_data/ignition_alternativo/worker.iso"
-  depends_on = [null_resource.copy_ignition_files_alternative]
+  filename   = "/mnt/lv_data/ignition_alternativo/worker.iso"
+  depends_on = [null_resource.prepare_ignition_files]
 }
 
 # Create libvirt volumes for Ignition configurations from the new directory
