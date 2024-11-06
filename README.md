@@ -363,3 +363,5 @@ sudo find . -name "*.tf" -exec cat {} +
 
 sudo setenforce 0
 sudo systemctl restart libvirtd
+
+sudo mkdir -p /mnt/lv_data/ignition

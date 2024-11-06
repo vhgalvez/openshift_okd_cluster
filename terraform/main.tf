@@ -37,21 +37,21 @@ resource "libvirt_volume" "worker" {
 resource "libvirt_volume" "bootstrap_iso" {
   name   = "bootstrap-iso"
   pool   = "default"
-  source = "/mnt/lv_data/bootstrap.iso"
+  source = "/mnt/lv_data/ignition/bootstrap.iso"
   format = "iso"
 }
 
 resource "libvirt_volume" "master_iso" {
   name   = "master-iso"
   pool   = "default"
-  source = "/mnt/lv_data/master.iso"
+  source = "/mnt/lv_data/ignition/master.iso"
   format = "iso"
 }
 
 resource "libvirt_volume" "worker_iso" {
   name   = "worker-iso"
   pool   = "default"
-  source = "/mnt/lv_data/worker.iso"
+  source = "/mnt/lv_data/ignition/worker.iso"
   format = "iso"
 }
 
