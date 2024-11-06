@@ -13,7 +13,7 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Network module
+# Módulo para la Red
 module "network" {
   source         = "./modules/network"
   bootstrap      = var.bootstrap
@@ -22,7 +22,7 @@ module "network" {
   controlplane_3 = var.controlplane_3
 }
 
-# Volumes module
+# Módulo para Volúmenes
 module "volumes" {
   source                     = "./modules/volumes"
   coreos_image               = var.coreos_image
@@ -37,7 +37,7 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
-# Ignition module with all required arguments
+# Módulo de Configuración Ignition
 module "ignition" {
   source                   = "./modules/ignition"
   bootstrap                = var.bootstrap
@@ -56,7 +56,7 @@ module "ignition" {
   qemu_agent_content       = file("./qemu-agent/qemu-agent.service")
 }
 
-# Domain module with Ignition content passed as variables
+# Módulo para Dominios (Máquinas Virtuales)
 module "domain" {
   source                   = "./modules/domain"
   network_id               = module.network.okd_network_id
@@ -65,13 +65,13 @@ module "domain" {
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
-  # Pass the required volume IDs from volumes module outputs
+  # IDs de los volúmenes desde el módulo de volúmenes
   okd_bootstrap_id         = module.volumes.okd_bootstrap_id
   okd_controlplane_1_id    = module.volumes.okd_controlplane_1_id
   okd_controlplane_2_id    = module.volumes.okd_controlplane_2_id
   okd_controlplane_3_id    = module.volumes.okd_controlplane_3_id
 
-  # Pass the Ignition content from the ignition module
+  # Contenido Ignition desde el módulo de ignition
   bootstrap_ignition = module.ignition.bootstrap_ignition_content
   master_ignition    = module.ignition.master_ignition_content
 
@@ -80,3 +80,4 @@ module "domain" {
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
 }
+
