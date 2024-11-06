@@ -37,6 +37,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
+  # Use the Ignition content passed as a variable
   coreos_ignition = var.bootstrap_ignition
 
   graphics {
