@@ -303,6 +303,7 @@ date
 
 
 
+sudo TF_LOG=DEBUG terraform destroy -auto-approve
 
 
 sudo virsh undefine okd-bootstrap --remove-all-storage
@@ -334,10 +335,7 @@ sudo virsh undefine okd-controlplane-2
 sudo virsh destroy okd-controlplane-3
 sudo virsh undefine okd-controlplane-3
 
-
 sudo virsh list --all
-
-
 
 sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/bootstrap.ign
 sudo cp -r /home/victory/openshift_okd_cluster/terraform/ignition_configs/bootstrap.ign /mnt/lv_data/master.ign
@@ -349,7 +347,10 @@ sudo TF_LOG=DEBUG terraform init --upgrade
 sudo TF_LOG=DEBUG terraform plan
 sudo TF_LOG=DEBUG terraform apply -auto-approve
 
+sudo virsh list --all
 
+
+sudo TF_LOG=DEBUG terraform destroy -auto-approve
 
 
 

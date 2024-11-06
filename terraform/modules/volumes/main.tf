@@ -40,3 +40,10 @@ resource "libvirt_volume" "controlplane_3" {
   source = var.coreos_image
   format = "qcow2"
 }
+
+resource "libvirt_volume" "worker" {
+  name   = var.worker["name"]
+  pool   = "default"
+  source = var.coreos_image
+  format = "qcow2"
+}
