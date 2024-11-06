@@ -18,35 +18,42 @@ provider "libvirt" {
 }
 
 # Copy Ignition files to target directory
-resource "null_resource" "copy_ignition_files" {
+resource "null_resource" "copy_ignition_files_alternative" {
   provisioner "local-exec" {
-    command = "cp -r ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition_clonados/ && cp -r ./ignition_configs/master.ign /mnt/lv_data/ignition_clonados/ && cp -r ./ignition_configs/worker.ign /mnt/lv_data/ignition_clonados/"
+    command = <<EOT
+      mkdir -p /mnt/lv_data/ignition_alternativo
+      cp ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition_alternativo/bootstrap.iso
+      cp ./ignition_configs/master.ign /mnt/lv_data/ignition_alternativo/master.iso
+      cp ./ignition_configs/worker.ign /mnt/lv_data/ignition_alternativo/worker.iso
+    EOT
   }
 
+  # Use triggers to ensure this action always runs
   triggers = {
     always_run = timestamp()
   }
 }
 
-# Define data sources for Ignition files
+# Define data sources for Ignition files in the new directory
 data "local_file" "bootstrap_ignition" {
-  filename = "/mnt/lv_data/ignition_clonados/bootstrap.ign"
+  filename = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
 }
 
 data "local_file" "master_ignition" {
-  filename = "/mnt/lv_data/ignition_clonados/master.ign"
+  filename = "/mnt/lv_data/ignition_alternativo/master.iso"
 }
 
 data "local_file" "worker_ignition" {
-  filename = "/mnt/lv_data/ignition_clonados/worker.ign"
+  filename = "/mnt/lv_data/ignition_alternativo/worker.iso"
 }
 
-# Create libvirt volumes for Ignition configurations
+# Create libvirt volumes for Ignition configurations from the new directory
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
   source = data.local_file.bootstrap_ignition.filename
   format = "raw"
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
 resource "libvirt_volume" "master_ignition" {
@@ -54,6 +61,7 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = data.local_file.master_ignition.filename
   format = "raw"
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
 resource "libvirt_volume" "worker_ignition" {
@@ -61,6 +69,7 @@ resource "libvirt_volume" "worker_ignition" {
   pool   = "default"
   source = data.local_file.worker_ignition.filename
   format = "raw"
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
 # Output the IDs of the Ignition volumes

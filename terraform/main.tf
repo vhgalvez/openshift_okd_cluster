@@ -13,16 +13,18 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Copy Ignition files only if they do not exist
-resource "null_resource" "copy_ignition_files" {
+# Create the new directory if it does not exist and copy Ignition files to this alternative directory
+resource "null_resource" "copy_ignition_files_alternative" {
   provisioner "local-exec" {
     command = <<EOT
-      [ -f /mnt/lv_data/ignition_clonados/bootstrap.ign ] || cp ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition_clonados/
-      [ -f /mnt/lv_data/ignition_clonados/master.ign ] || cp ./ignition_configs/master.ign /mnt/lv_data/ignition_clonados/
-      [ -f /mnt/lv_data/ignition_clonados/worker.ign ] || cp ./ignition_configs/worker.ign /mnt/lv_data/ignition_clonados/
+      mkdir -p /mnt/lv_data/ignition_alternativo
+      cp ./ignition_configs/bootstrap.ign /mnt/lv_data/ignition_alternativo/bootstrap.iso
+      cp ./ignition_configs/master.ign /mnt/lv_data/ignition_alternativo/master.iso
+      cp ./ignition_configs/worker.ign /mnt/lv_data/ignition_alternativo/worker.iso
     EOT
   }
 
+  # Use triggers to ensure this action always runs
   triggers = {
     always_run = timestamp()
   }
@@ -37,23 +39,23 @@ resource "null_resource" "clean_up_existing_volumes" {
       virsh vol-list --pool default | grep 'worker.ign' && virsh vol-delete --pool default worker.ign || true
     EOT
   }
-  depends_on = [null_resource.copy_ignition_files]
+  depends_on = [null_resource.copy_ignition_files_alternative]
 }
 
-# Define data sources for Ignition files
+# Define data sources for Ignition files in the new directory
 data "local_file" "bootstrap_ignition" {
-  filename = "/mnt/lv_data/ignition_clonados/bootstrap.ign"
+  filename = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
 }
 
 data "local_file" "master_ignition" {
-  filename = "/mnt/lv_data/ignition_clonados/master.ign"
+  filename = "/mnt/lv_data/ignition_alternativo/master.iso"
 }
 
 data "local_file" "worker_ignition" {
-  filename = "/mnt/lv_data/ignition_clonados/worker.ign"
+  filename = "/mnt/lv_data/ignition_alternativo/worker.iso"
 }
 
-# Create libvirt volumes for Ignition configurations
+# Create libvirt volumes for Ignition configurations from the new directory
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
   pool   = "default"
@@ -102,21 +104,21 @@ resource "libvirt_volume" "worker" {
 resource "libvirt_volume" "bootstrap_iso" {
   name   = "bootstrap-iso"
   pool   = "default"
-  source = "/mnt/lv_data/ignition_clonados/bootstrap.iso"
+  source = "/mnt/lv_data/ignition_alternativo/bootstrap.iso"
   format = "iso"
 }
 
 resource "libvirt_volume" "master_iso" {
   name   = "master-iso"
   pool   = "default"
-  source = "/mnt/lv_data/ignition_clonados/master.iso"
+  source = "/mnt/lv_data/ignition_alternativo/master.iso"
   format = "iso"
 }
 
 resource "libvirt_volume" "worker_iso" {
   name   = "worker-iso"
   pool   = "default"
-  source = "/mnt/lv_data/ignition_clonados/worker.iso"
+  source = "/mnt/lv_data/ignition_alternativo/worker.iso"
   format = "iso"
 }
 
