@@ -15,3 +15,7 @@ output "controlplane_2_volume_id" {
 output "controlplane_3_volume_id" {
   value = libvirt_volume.controlplane_3.id
 }
+
+output "worker_volume_id" {
+  value = libvirt_volume.worker.id
+}
