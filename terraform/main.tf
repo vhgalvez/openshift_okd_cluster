@@ -190,11 +190,11 @@ module "ignition" {
   controlplane_2          = var.controlplane_2
   controlplane_3          = var.controlplane_3
   worker                  = var.worker
-  bootstrap_volume_id     = module.volumes.libvirt_volume.bootstrap.id
-  controlplane_1_volume_id = module.volumes.libvirt_volume.controlplane_1.id
-  controlplane_2_volume_id = module.volumes.libvirt_volume.controlplane_2.id
-  controlplane_3_volume_id = module.volumes.libvirt_volume.controlplane_3.id
-  worker_volume_id        = module.volumes.libvirt_volume.worker.id
+  bootstrap_volume_id     = module.volumes.bootstrap_volume_id
+  controlplane_1_volume_id = module.volumes.controlplane_1_volume_id
+  controlplane_2_volume_id = module.volumes.controlplane_2_volume_id
+  controlplane_3_volume_id = module.volumes.controlplane_3_volume_id
+  worker_volume_id        = module.volumes.worker_volume_id
   network_id              = module.network.okd_network_id
   hosts                   = var.hosts
   hostname_prefix         = var.hostname_prefix
@@ -208,11 +208,11 @@ module "domain" {
   source = "./modules/domain"
 
   volumes = {
-    bootstrap      = module.volumes.libvirt_volume.bootstrap.id
-    controlplane_1 = module.volumes.libvirt_volume.controlplane_1.id
-    controlplane_2 = module.volumes.libvirt_volume.controlplane_2.id
-    controlplane_3 = module.volumes.libvirt_volume.controlplane_3.id
-    worker         = module.volumes.libvirt_volume.worker.id
+    bootstrap      = module.volumes.bootstrap_volume_id
+    controlplane_1 = module.volumes.controlplane_1_volume_id
+    controlplane_2 = module.volumes.controlplane_2_volume_id
+    controlplane_3 = module.volumes.controlplane_3_volume_id
+    worker         = module.volumes.worker_volume_id
   }
   bootstrap          = var.bootstrap
   controlplane_1     = var.controlplane_1
