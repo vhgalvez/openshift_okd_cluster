@@ -1,10 +1,9 @@
-# main.tf
-
 terraform {
+  required_version = ">= 0.13"
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "~> 0.8.1"
+      version = "0.8.1"
     }
   }
 }
@@ -13,149 +12,44 @@ provider "libvirt" {
   uri = "qemu:///system"
 }
 
-# Create a unique temporary directory and copy Ignition files to this directory
-resource "null_resource" "prepare_ignition_files" {
-  provisioner "local-exec" {
-    command = <<EOT
-      TEMP_DIR=$(mktemp -d)
-      mkdir -p $TEMP_DIR
-      cp ./ignition_configs/bootstrap.ign $TEMP_DIR/bootstrap.iso
-      cp ./ignition_configs/master.ign $TEMP_DIR/master.iso
-      cp ./ignition_configs/worker.ign $TEMP_DIR/worker.iso
-      echo $TEMP_DIR > /tmp/ignition_dir
-    EOT
-  }
-
-  triggers = {
-    always_run = timestamp()
-  }
+variable "libvirt_pool" {
+  default = "default"  // Change this if your storage pool has a different name
 }
 
-# Remove existing volumes if they are in conflict
-resource "null_resource" "clean_up_existing_volumes" {
-  provisioner "local-exec" {
-    command = <<EOT
-      virsh vol-list --pool default | grep 'bootstrap.ign' && virsh vol-delete --pool default bootstrap.ign || true
-      virsh vol-list --pool default | grep 'master.ign' && virsh vol-delete --pool default master.ign || true
-      virsh vol-list --pool default | grep 'worker.ign' && virsh vol-delete --pool default worker.ign || true
-    EOT
-  }
-  depends_on = [null_resource.prepare_ignition_files]
+variable "bootstrap_memory" {
+  default = 4096  // Adjust as needed
 }
 
-# Define data sources for Ignition files in the temporary directory
-data "local_file" "bootstrap_ignition" {
-  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/bootstrap.iso
-  depends_on = [null_resource.prepare_ignition_files]
+variable "bootstrap_vcpu" {
+  default = 2
 }
 
-data "local_file" "master_ignition" {
-  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/master.iso
-  depends_on = [null_resource.prepare_ignition_files]
+variable "master_memory" {
+  default = 8192  // Adjust as needed
 }
 
-data "local_file" "worker_ignition" {
-  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/worker.iso
-  depends_on = [null_resource.prepare_ignition_files]
+variable "master_vcpu" {
+  default = 4
 }
 
-# Create libvirt volumes for Ignition configurations from the temporary directory
-resource "libvirt_volume" "bootstrap_ignition" {
-  name   = "bootstrap.ign"
-  pool   = "default"
-  source = data.local_file.bootstrap_ignition.filename
-  format = "raw"
-  depends_on = [null_resource.clean_up_existing_volumes]
+variable "worker_memory" {
+  default = 8192  // Adjust as needed
 }
 
-resource "libvirt_volume" "master_ignition" {
-  name   = "master.ign"
-  pool   = "default"
-  source = data.local_file.master_ignition.filename
-  format = "raw"
-  depends_on = [null_resource.clean_up_existing_volumes]
+variable "worker_vcpu" {
+  default = 4
 }
 
-resource "libvirt_volume" "worker_ignition" {
-  name   = "worker.ign"
-  pool   = "default"
-  source = data.local_file.worker_ignition.filename
-  format = "raw"
-  depends_on = [null_resource.clean_up_existing_volumes]
-}
-
-resource "libvirt_volume" "bootstrap" {
-  name   = "bootstrap"
-  pool   = "default"
-  source = var.coreos_image
-  format = "qcow2"
-}
-
-resource "libvirt_volume" "master" {
-  name   = "master"
-  pool   = "default"
-  source = var.coreos_image
-  format = "qcow2"
-}
-
-resource "libvirt_volume" "worker" {
-  name   = "worker"
-  pool   = "default"
-  source = var.coreos_image
-  format = "qcow2"
-}
-
-resource "libvirt_volume" "bootstrap_iso" {
-  name   = "bootstrap-iso"
-  pool   = "default"
-  source = data.local_file.bootstrap_ignition.filename
-  format = "iso"
-}
-
-resource "libvirt_volume" "master_iso" {
-  name   = "master-iso"
-  pool   = "default"
-  source = data.local_file.master_ignition.filename
-  format = "iso"
-}
-
-resource "libvirt_volume" "worker_iso" {
-  name   = "worker-iso"
-  pool   = "default"
-  source = data.local_file.worker_ignition.filename
-  format = "iso"
-}
-
-resource "libvirt_ignition" "bootstrap_ign" {
-  name    = "bootstrap.ign"
-  pool    = "default"
-  content = file("/mnt/lv_data/bootstrap.ign")
-}
-
-resource "libvirt_ignition" "master_ign" {
-  name    = "master.ign"
-  pool    = "default"
-  content = file("/mnt/lv_data/master.ign")
-}
-
-resource "libvirt_ignition" "worker_ign" {
-  name    = "worker.ign"
-  pool    = "default"
-  content = file("/mnt/lv_data/worker.ign")
-}
-
+# Bootstrap node
 resource "libvirt_domain" "bootstrap" {
-  name       = "bootstrap"
-  memory     = "2048"
-  vcpu       = 2
-  qemu_agent = true
+  name   = "bootstrap"
+  memory = var.bootstrap_memory
+  vcpu   = var.bootstrap_vcpu
+
+  coreos_ignition = file("/path/to/ignitions/bootstrap.ign")  // Path to your Ignition file
 
   disk {
-    volume_id = libvirt_volume.bootstrap.id
-  }
-
-  disk {
-    volume_id = libvirt_volume.bootstrap_iso.id
+    volume_id = libvirt_volume.bootstrap_disk.id
   }
 
   network_interface {
@@ -163,25 +57,28 @@ resource "libvirt_domain" "bootstrap" {
   }
 
   graphics {
-    type     = "vnc"
-    autoport = true
+    listen_type = "none"
   }
-
-  coreos_ignition = libvirt_ignition.bootstrap_ign.id
 }
 
+resource "libvirt_volume" "bootstrap_disk" {
+  name   = "bootstrap.qcow2"
+  pool   = var.libvirt_pool
+  source = "/path/to/fedora-coreos.qcow2"  // Path to the Fedora CoreOS base image
+  format = "qcow2"
+}
+
+# Master nodes
 resource "libvirt_domain" "master" {
-  name       = "master"
-  memory     = "4096"
-  vcpu       = 4
-  qemu_agent = true
+  count  = 3  // Change this number according to the number of master nodes you need
+  name   = "master-${count.index + 1}"
+  memory = var.master_memory
+  vcpu   = var.master_vcpu
+
+  coreos_ignition = file("/path/to/ignitions/master.ign")
 
   disk {
-    volume_id = libvirt_volume.master.id
-  }
-
-  disk {
-    volume_id = libvirt_volume.master_iso.id
+    volume_id = libvirt_volume.master_disk[count.index].id
   }
 
   network_interface {
@@ -189,25 +86,29 @@ resource "libvirt_domain" "master" {
   }
 
   graphics {
-    type     = "vnc"
-    autoport = true
+    listen_type = "none"
   }
-
-  coreos_ignition = libvirt_ignition.master_ign.id
 }
 
+resource "libvirt_volume" "master_disk" {
+  count  = 3
+  name   = "master-${count.index + 1}.qcow2"
+  pool   = var.libvirt_pool
+  source = "/path/to/fedora-coreos.qcow2"
+  format = "qcow2"
+}
+
+# Worker nodes
 resource "libvirt_domain" "worker" {
-  name       = "worker"
-  memory     = "4096"
-  vcpu       = 4
-  qemu_agent = true
+  count  = 2  // Change this number according to the number of worker nodes you need
+  name   = "worker-${count.index + 1}"
+  memory = var.worker_memory
+  vcpu   = var.worker_vcpu
+
+  coreos_ignition = file("/path/to/ignitions/worker.ign")
 
   disk {
-    volume_id = libvirt_volume.worker.id
-  }
-
-  disk {
-    volume_id = libvirt_volume.worker_iso.id
+    volume_id = libvirt_volume.worker_disk[count.index].id
   }
 
   network_interface {
@@ -215,91 +116,28 @@ resource "libvirt_domain" "worker" {
   }
 
   graphics {
-    type     = "vnc"
-    autoport = true
+    listen_type = "none"
   }
-
-  coreos_ignition = libvirt_ignition.worker_ign.id
 }
 
-# Módulo para la Red
-module "network" {
-  source = "./modules/network"
-
-  bootstrap      = var.bootstrap
-  controlplane_1 = var.controlplane_1
-  controlplane_2 = var.controlplane_2
-  controlplane_3 = var.controlplane_3
+resource "libvirt_volume" "worker_disk" {
+  count  = 2
+  name   = "worker-${count.index + 1}.qcow2"
+  pool   = var.libvirt_pool
+  source = "/path/to/fedora-coreos.qcow2"
+  format = "qcow2"
 }
 
-# Módulo para Volúmenes
-module "volumes" {
-  source = "./modules/volumes"
-
-  coreos_image    = var.coreos_image
-  bootstrap       = var.bootstrap
-  controlplane_1  = var.controlplane_1
-  controlplane_2  = var.controlplane_2
-  controlplane_3  = var.controlplane_3
-  worker          = var.worker
+# Output the IPs of the nodes
+output "bootstrap_ip" {
+  value = libvirt_domain.bootstrap.network_interface.0.addresses
 }
 
-data "template_file" "docker_images_mount" {
-  template = file("${path.module}/qemu-agent/docker-images.mount")
+output "master_ips" {
+  value = libvirt_domain.master[*].network_interface.0.addresses
 }
 
-data "template_file" "qemu_agent_service" {
-  template = file("${path.module}/qemu-agent/qemu-agent.service")
-}
-
-# Módulo de Configuración Ignition
-module "ignition" {
-  source = "./modules/ignition"
-
-  bootstrap               = var.bootstrap
-  controlplane_1          = var.controlplane_1
-  controlplane_2          = var.controlplane_2
-  controlplane_3          = var.controlplane_3
-  worker                  = var.worker
-  bootstrap_volume_id     = module.volumes.bootstrap_volume_id
-  controlplane_1_volume_id = module.volumes.controlplane_1_volume_id
-  controlplane_2_volume_id = module.volumes.controlplane_2_volume_id
-  controlplane_3_volume_id = module.volumes.controlplane_3_volume_id
-  worker_volume_id        = module.volumes.worker_volume_id
-  network_id              = module.network.okd_network_id
-  hosts                   = var.hosts
-  hostname_prefix         = var.hostname_prefix
-  core_user_password_hash = var.core_user_password_hash
-  qemu_agent_content      = data.template_file.qemu_agent_service.rendered
-  mount_images_content    = data.template_file.docker_images_mount.rendered
-}
-
-# Módulo para Dominios (Máquinas Virtuales)
-module "domain" {
-  source = "./modules/domain"
-
-  volumes = {
-    bootstrap      = module.volumes.bootstrap_volume_id
-    controlplane_1 = module.volumes.controlplane_1_volume_id
-    controlplane_2 = module.volumes.controlplane_2_volume_id
-    controlplane_3 = module.volumes.controlplane_3_volume_id
-    worker         = module.volumes.worker_volume_id
-  }
-  bootstrap          = var.bootstrap
-  controlplane_1     = var.controlplane_1
-  controlplane_2     = var.controlplane_2
-  controlplane_3     = var.controlplane_3
-  worker             = var.worker
-  bootstrap_ignition = libvirt_volume.bootstrap_iso.id
-  master_ignition    = libvirt_volume.master_iso.id
-  worker_ignition    = libvirt_volume.worker_iso.id
-}
-
-# Clean up the temporary directory
-resource "null_resource" "cleanup_temp_directory" {
-  provisioner "local-exec" {
-    command = "rm -rf $(cat /tmp/ignition_dir)"
-  }
-  depends_on = [libvirt_volume.bootstrap_ignition, libvirt_volume.master_ignition, libvirt_volume.worker_ignition]
+output "worker_ips" {
+  value = libvirt_domain.worker[*].network_interface.0.addresses
 }
 

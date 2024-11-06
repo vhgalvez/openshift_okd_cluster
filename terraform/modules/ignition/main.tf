@@ -38,17 +38,17 @@ resource "null_resource" "prepare_ignition_files" {
 
 # Define data sources for Ignition files in the temporary directory
 data "local_file" "bootstrap_ignition" {
-  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/bootstrap.iso
+  filename   = "${trimspace(file("/tmp/ignition_dir"))}/bootstrap.iso"
   depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "master_ignition" {
-  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/master.iso
+  filename   = "${trimspace(file("/tmp/ignition_dir"))}/master.iso"
   depends_on = [null_resource.prepare_ignition_files]
 }
 
 data "local_file" "worker_ignition" {
-  filename   = "${file(trimspace(file("/tmp/ignition_dir")))}"/worker.iso
+  filename   = "${trimspace(file("/tmp/ignition_dir"))}/worker.iso"
   depends_on = [null_resource.prepare_ignition_files]
 }
 
