@@ -32,6 +32,14 @@ module "volumes" {
   controlplane_3             = var.controlplane_3
 }
 
+data "template_file" "docker_images_mount" {
+  template = file("${path.module}/qemu-agent/docker-images.mount")
+}
+
+data "template_file" "qemu_agent_service" {
+  template = file("${path.module}/qemu-agent/qemu-agent.service")
+}
+
 # Módulo de Configuración Ignition
 module "ignition" {
   source = "./modules/ignition"
@@ -39,10 +47,10 @@ module "ignition" {
   controlplane_1 = var.controlplane_1
   controlplane_2 = var.controlplane_2
   controlplane_3 = var.controlplane_3
-  bootstrap_volume_id = module.volumes.bootstrap.id
-  controlplane_1_volume_id = module.volumes.controlplane_1.id
-  controlplane_2_volume_id = module.volumes.controlplane_2.id
-  controlplane_3_volume_id = module.volumes.controlplane_3.id
+  bootstrap_volume_id = module.volumes.bootstrap_volume_id
+  controlplane_1_volume_id = module.volumes.controlplane_1_volume_id
+  controlplane_2_volume_id = module.volumes.controlplane_2_volume_id
+  controlplane_3_volume_id = module.volumes.controlplane_3_volume_id
   network_id = module.network.okd_network_id
   core_user_password_hash = var.core_user_password_hash
   hostname_prefix = var.hostname_prefix
@@ -55,10 +63,10 @@ module "ignition" {
 module "domain" {
   source                   = "./modules/domain"
   volumes = {
-    bootstrap = module.volumes.bootstrap.id
-    controlplane_1 = module.volumes.controlplane_1.id
-    controlplane_2 = module.volumes.controlplane_2.id
-    controlplane_3 = module.volumes.controlplane_3.id
+    bootstrap = module.volumes.bootstrap_volume_id
+    controlplane_1 = module.volumes.controlplane_1_volume_id
+    controlplane_2 = module.volumes.controlplane_2_volume_id
+    controlplane_3 = module.volumes.controlplane_3_volume_id
   }
   bootstrap      = var.bootstrap
   controlplane_1 = var.controlplane_1
