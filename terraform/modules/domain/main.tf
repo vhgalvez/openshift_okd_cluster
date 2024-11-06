@@ -12,10 +12,12 @@ terraform {
     }
   }
 }
+
 provider "libvirt" {
   uri = "qemu:///system"
 }
 
+# Bootstrap Node Definition
 resource "libvirt_domain" "okd_bootstrap" {
   name       = var.bootstrap.name
   memory     = var.bootstrap.memory * 1024
@@ -37,15 +39,17 @@ resource "libvirt_domain" "okd_bootstrap" {
     template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
-  # Use the Ignition content passed as a variable
   coreos_ignition = var.bootstrap_ignition
 
   graphics {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [libvirt_volume.okd_bootstrap]
 }
 
+# Control Plane Node 1 Definition
 resource "libvirt_domain" "okd_controlplane_1" {
   name       = var.controlplane_1.name
   memory     = var.controlplane_1.memory * 1024
@@ -73,8 +77,11 @@ resource "libvirt_domain" "okd_controlplane_1" {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [libvirt_volume.okd_controlplane_1]
 }
 
+# Control Plane Node 2 Definition
 resource "libvirt_domain" "okd_controlplane_2" {
   name       = var.controlplane_2.name
   memory     = var.controlplane_2.memory * 1024
@@ -102,8 +109,11 @@ resource "libvirt_domain" "okd_controlplane_2" {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [libvirt_volume.okd_controlplane_2]
 }
 
+# Control Plane Node 3 Definition
 resource "libvirt_domain" "okd_controlplane_3" {
   name       = var.controlplane_3.name
   memory     = var.controlplane_3.memory * 1024
@@ -131,4 +141,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     type     = "vnc"
     autoport = true
   }
+
+  depends_on = [libvirt_volume.okd_controlplane_3]
 }
+
