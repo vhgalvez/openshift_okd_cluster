@@ -29,7 +29,7 @@ resource "libvirt_domain" "okd_bootstrap" {
     mac          = var.bootstrap["mac"]
   }
 
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap["name"])
     template = "/usr/share/OVMF/OVMF_VARS.fd"
@@ -60,7 +60,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
     mac          = var.controlplane_1["mac"]
   }
 
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1["name"])
     template = "/usr/share/OVMF/OVMF_VARS.fd"
@@ -91,7 +91,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
     mac          = var.controlplane_2["mac"]
   }
 
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2["name"])
     template = "/usr/share/OVMF/OVMF_VARS.fd"
@@ -122,7 +122,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
     mac          = var.controlplane_3["mac"]
   }
 
-  firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+  firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3["name"])
     template = "/usr/share/OVMF/OVMF_VARS.fd"
