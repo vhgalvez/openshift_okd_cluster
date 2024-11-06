@@ -46,7 +46,7 @@ resource "libvirt_domain" "bootstrap" {
   memory = var.bootstrap_memory
   vcpu   = var.bootstrap_vcpu
 
-  coreos_ignition = file("/path/to/ignitions/bootstrap.ign")  // Path to your Ignition file
+  coreos_ignition = file("${path.module}/ignition_configs/bootstrap.ign")  // Path to your Ignition file
 
   disk {
     volume_id = libvirt_volume.bootstrap_disk.id
@@ -64,7 +64,7 @@ resource "libvirt_domain" "bootstrap" {
 resource "libvirt_volume" "bootstrap_disk" {
   name   = "bootstrap.qcow2"
   pool   = var.libvirt_pool
-  source = "/path/to/fedora-coreos.qcow2"  // Path to the Fedora CoreOS base image
+  source = var.coreos_image  // Path to the Fedora CoreOS base image
   format = "qcow2"
 }
 
@@ -75,7 +75,7 @@ resource "libvirt_domain" "master" {
   memory = var.master_memory
   vcpu   = var.master_vcpu
 
-  coreos_ignition = file("/path/to/ignitions/master.ign")
+  coreos_ignition = file("${path.module}/ignition_configs/master.ign")
 
   disk {
     volume_id = libvirt_volume.master_disk[count.index].id
@@ -94,7 +94,7 @@ resource "libvirt_volume" "master_disk" {
   count  = 3
   name   = "master-${count.index + 1}.qcow2"
   pool   = var.libvirt_pool
-  source = "/path/to/fedora-coreos.qcow2"
+  source = var.coreos_image
   format = "qcow2"
 }
 
@@ -105,7 +105,7 @@ resource "libvirt_domain" "worker" {
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
 
-  coreos_ignition = file("/path/to/ignitions/worker.ign")
+  coreos_ignition = file("${path.module}/ignition_configs/worker.ign")
 
   disk {
     volume_id = libvirt_volume.worker_disk[count.index].id
@@ -124,7 +124,7 @@ resource "libvirt_volume" "worker_disk" {
   count  = 2
   name   = "worker-${count.index + 1}.qcow2"
   pool   = var.libvirt_pool
-  source = "/path/to/fedora-coreos.qcow2"
+  source = var.coreos_image
   format = "qcow2"
 }
 
