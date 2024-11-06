@@ -349,9 +349,11 @@ sudo TF_LOG=DEBUG terraform init --upgrade
 sudo TF_LOG=DEBUG terraform plan
 sudo TF_LOG=DEBUG terraform apply -auto-approve
 
+
+
+
+
 sudo TF_LOG=DEBUG terraform destroy -auto-approve
-
-
 sudo TF_LOG=DEBUG terraform destroy 
 
 sudo find . -name "*.tf" -exec cat {} +

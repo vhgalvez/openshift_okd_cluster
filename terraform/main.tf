@@ -48,7 +48,7 @@ resource "libvirt_domain" "bootstrap" {
     network_name = "default"
   }
 
-  cloudinit = "/mnt/lv_data/bootstrap.ign" // Update this path if necessary
+  coreos_ignition = "/mnt/lv_data/bootstrap.ign" // Update this path if necessary
 }
 
 resource "libvirt_domain" "master" {
@@ -65,7 +65,7 @@ resource "libvirt_domain" "master" {
     network_name = "default"
   }
 
-  cloudinit = "/mnt/lv_data/master.ign" // Update this path if necessary
+  coreos_ignition = "/mnt/lv_data/master.ign" // Update this path if necessary
 }
 
 resource "libvirt_domain" "worker" {
@@ -82,7 +82,7 @@ resource "libvirt_domain" "worker" {
     network_name = "default"
   }
 
-  cloudinit = "/mnt/lv_data/worker.ign" // Update this path if necessary
+  coreos_ignition = "/mnt/lv_data/worker.ign" // Update this path if necessary
 }
 
 # Módulo para la Red
