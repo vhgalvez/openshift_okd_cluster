@@ -32,7 +32,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.bootstrap["name"])
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.bootstrap_ignition
@@ -63,7 +63,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_1["name"])
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition
@@ -94,7 +94,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2["name"])
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition
@@ -125,7 +125,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3["name"])
-    template = "/usr/share/OVMF/OVMF_VARS.fd"
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition
