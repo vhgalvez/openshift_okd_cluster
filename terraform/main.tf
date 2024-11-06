@@ -65,6 +65,12 @@ module "domain" {
   controlplane_2_volume_id = module.volumes.okd_controlplane_2_id
   controlplane_3_volume_id = module.volumes.okd_controlplane_3_id
 
+  # Pass the required volume IDs from volumes module outputs
+  okd_bootstrap_id         = module.volumes.okd_bootstrap_id
+  okd_controlplane_1_id    = module.volumes.okd_controlplane_1_id
+  okd_controlplane_2_id    = module.volumes.okd_controlplane_2_id
+  okd_controlplane_3_id    = module.volumes.okd_controlplane_3_id
+
   # Pass the Ignition content from the ignition module
   bootstrap_ignition = module.ignition.bootstrap_ignition_content
   master_ignition    = module.ignition.master_ignition_content

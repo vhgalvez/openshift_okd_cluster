@@ -1,5 +1,4 @@
 # modules/domain/main.tf
-
 terraform {
   required_providers {
     libvirt = {
