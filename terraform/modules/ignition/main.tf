@@ -23,9 +23,9 @@ resource "null_resource" "prepare_ignition_files" {
     command = <<EOT
       TEMP_DIR=$(mktemp -d)
       mkdir -p $TEMP_DIR
-      cp ./ignition_configs/bootstrap.ign $TEMP_DIR/bootstrap.iso
-      cp ./ignition_configs/master.ign $TEMP_DIR/master.iso
-      cp ./ignition_configs/worker.ign $TEMP_DIR/worker.iso
+      cp /mnt/lv_data/bootstrap.ign $TEMP_DIR/bootstrap.iso
+      cp /mnt/lv_data/master.ign $TEMP_DIR/master.iso
+      cp /mnt/lv_data/worker.ign $TEMP_DIR/worker.iso
       echo $TEMP_DIR > /tmp/ignition_dir
     EOT
   }
@@ -58,6 +58,10 @@ resource "libvirt_volume" "bootstrap_ignition" {
   pool   = "default"
   source = data.local_file.bootstrap_ignition.filename
   format = "raw"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "libvirt_volume" "master_ignition" {
@@ -65,6 +69,10 @@ resource "libvirt_volume" "master_ignition" {
   pool   = "default"
   source = data.local_file.master_ignition.filename
   format = "raw"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "libvirt_volume" "worker_ignition" {
@@ -72,6 +80,10 @@ resource "libvirt_volume" "worker_ignition" {
   pool   = "default"
   source = data.local_file.worker_ignition.filename
   format = "raw"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Output the IDs of the Ignition volumes

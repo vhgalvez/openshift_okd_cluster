@@ -46,7 +46,7 @@ resource "libvirt_domain" "bootstrap" {
   memory = var.bootstrap_memory
   vcpu   = var.bootstrap_vcpu
 
-  coreos_ignition = file("${path.module}/ignition_configs/bootstrap.ign")  // Path to your Ignition file
+  coreos_ignition = file("/mnt/lv_data/bootstrap.ign")  // Path to your Ignition file
 
   disk {
     volume_id = libvirt_volume.bootstrap_disk.id
@@ -75,7 +75,7 @@ resource "libvirt_domain" "master" {
   memory = var.master_memory
   vcpu   = var.master_vcpu
 
-  coreos_ignition = file("${path.module}/ignition_configs/master.ign")
+  coreos_ignition = file("/mnt/lv_data/master.ign")
 
   disk {
     volume_id = libvirt_volume.master_disk[count.index].id
@@ -105,7 +105,7 @@ resource "libvirt_domain" "worker" {
   memory = var.worker_memory
   vcpu   = var.worker_vcpu
 
-  coreos_ignition = file("${path.module}/ignition_configs/worker.ign")
+  coreos_ignition = file("/mnt/lv_data/worker.ign")
 
   disk {
     volume_id = libvirt_volume.worker_disk[count.index].id
