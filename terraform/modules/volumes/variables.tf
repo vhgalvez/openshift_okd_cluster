@@ -23,3 +23,8 @@ variable "controlplane_3" {
 variable "worker" {
   type = map(string)
 }
+
+variable "hostname_format" {
+  type    = string
+  default = "coreos%02d"
+}

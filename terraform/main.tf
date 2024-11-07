@@ -51,7 +51,7 @@ variable "hostname_format" {
 resource "libvirt_volume" "coreos-disk" {
   name             = "${format(var.hostname_format, count.index + 1)}.qcow2"
   count            = 3
-  base_volume_name = "coreos_production_qemu"
+  source           = "/mnt/lv_data/organized_storage/images/fedora-coreos-40.20240906.3.0-qemu.x86_64.qcow2"  // Correct path to the CoreOS image
   pool             = "default"
   format           = "qcow2"
 }

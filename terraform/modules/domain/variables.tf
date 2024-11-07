@@ -38,3 +38,8 @@ variable "worker_ignition" {
   description = "Ignition configuration for the worker nodes"
   type        = string
 }
+
+variable "hostname_format" {
+  type    = string
+  default = "coreos%02d"
+}

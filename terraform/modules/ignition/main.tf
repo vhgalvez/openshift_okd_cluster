@@ -52,6 +52,50 @@ data "local_file" "worker_ignition" {
   depends_on = [null_resource.prepare_ignition_files]
 }
 
+data "ignition_systemd_unit" "mount-images" {
+  name    = "var-mnt-images.mount"
+  enabled = true
+  content = file("${path.module}/qemu-agent/docker-images.mount")
+}
+
+data "ignition_systemd_unit" "qemu-agent" {
+  name    = "qemu-agent.service"
+  enabled = true
+  content = file("${path.module}/qemu-agent/qemu-agent.service")
+}
+
+data "ignition_config" "startup" {
+  users = [
+    data.ignition_user.core.rendered,
+  ]
+
+  files = [
+    element(data.ignition_file.hostname.*.rendered, count.index),
+  ]
+
+  systemd = [
+    data.ignition_systemd_unit.mount-images.rendered,
+    data.ignition_systemd_unit.qemu-agent.rendered
+  ]
+  count = var.hosts
+}
+
+data "ignition_file" "hostname" {
+  path    = "/etc/hostname"
+  mode    = 420  # decimal 0644
+
+  content {
+    content = format(var.hostname_format, count.index + 1)
+  }
+  count = var.hosts
+}
+
+data "ignition_user" "core" {
+  name = "core"
+  password_hash = "$5$XMoeOXG6$8WZoUCLhh8L/KYhsJN2pIRb3asZ2Xos3rJla.FA1TI7"
+  // ssh_authorized_keys = list()
+}
+
 # Create libvirt volumes for Ignition configurations from the temporary directory
 resource "libvirt_volume" "bootstrap_ignition" {
   name   = "bootstrap.ign"
