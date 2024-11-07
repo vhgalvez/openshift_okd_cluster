@@ -23,7 +23,7 @@ resource "libvirt_domain" "okd_bootstrap" {
   }
 
   network_interface {
-    network_name = "okd_network"
+    network_name = libvirt_network.okd_network.name
     addresses    = [var.bootstrap["address"]]
     mac          = var.bootstrap["mac"]
   }
@@ -54,7 +54,7 @@ resource "libvirt_domain" "okd_controlplane_1" {
   }
 
   network_interface {
-    network_name = "okd_network"
+    network_name = libvirt_network.okd_network.name
     addresses    = [var.controlplane_1["address"]]
     mac          = var.controlplane_1["mac"]
   }
@@ -85,7 +85,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   }
 
   network_interface {
-    network_name = "okd_network"
+    network_name = libvirt_network.okd_network.name
     addresses    = [var.controlplane_2["address"]]
     mac          = var.controlplane_2["mac"]
   }
@@ -93,7 +93,7 @@ resource "libvirt_domain" "okd_controlplane_2" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_2["name"])
-    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"]
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition
@@ -116,7 +116,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   }
 
   network_interface {
-    network_name = "okd_network"
+    network_name = libvirt_network.okd_network.name
     addresses    = [var.controlplane_3["address"]]
     mac          = var.controlplane_3["mac"]
   }
@@ -124,7 +124,7 @@ resource "libvirt_domain" "okd_controlplane_3" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.controlplane_3["name"])
-    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"]
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.master_ignition
@@ -147,7 +147,7 @@ resource "libvirt_domain" "okd_worker" {
   }
 
   network_interface {
-    network_name = "okd_network"
+    network_name = libvirt_network.okd_network.name
     addresses    = [var.worker["address"]]
     mac          = var.worker["mac"]
   }
@@ -155,7 +155,7 @@ resource "libvirt_domain" "okd_worker" {
   firmware = "/usr/share/edk2/ovmf/OVMF_CODE.fd"
   nvram {
     file     = format("/var/lib/libvirt/qemu/nvram/%s_VARS.fd", var.worker["name"])
-    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"]
+    template = "/usr/share/edk2/ovmf/OVMF_VARS.fd"
   }
 
   coreos_ignition = var.worker_ignition
