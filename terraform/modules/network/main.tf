@@ -148,6 +148,16 @@ resource "libvirt_network" "okd_network" {
       option_value = "/console-openshift-console.apps.local.okd.lab/${var.controlplane_3.address}"
     }
 
+    // worker
+    options {
+      option_name  = "address"
+      option_value = "/okd-worker.local.okd.lab/${var.worker.address}"
+    }
+    options {
+      option_name  = "host-record"
+      option_value = "okd-worker.local.okd.lab,${var.worker.address}"
+    }
+
     // etcd
     options {
       option_name  = "address"
@@ -175,7 +185,6 @@ resource "libvirt_network" "okd_network" {
     }
   }
 }
-
 
 output "okd_network_id" {
   value = libvirt_network.okd_network.id

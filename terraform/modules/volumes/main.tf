@@ -62,7 +62,7 @@ resource "libvirt_domain" "coreos_machine" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = libvirt_network.okd_network.name
     wait_for_lease = true
   }
 

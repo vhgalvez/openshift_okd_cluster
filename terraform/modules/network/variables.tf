@@ -13,3 +13,7 @@ variable "controlplane_2" {
 variable "controlplane_3" {
   type = map(string)
 }
+
+variable "worker" {
+  type = map(string)
+}
