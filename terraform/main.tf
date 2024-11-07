@@ -3,7 +3,10 @@ terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "0.8.1"
+      version = "0.6.12"
+    }
+    ignition = {
+      source = "community-terraform-providers/ignition"
     }
   }
 }
@@ -40,104 +43,60 @@ variable "worker_vcpu" {
   default = 4
 }
 
-# Bootstrap node
-resource "libvirt_domain" "bootstrap" {
-  name   = "bootstrap"
-  memory = var.bootstrap_memory
-  vcpu   = var.bootstrap_vcpu
-
-  coreos_ignition = file("/mnt/lv_data/bootstrap.ign")  // Path to your Ignition file
-
-  disk {
-    volume_id = libvirt_volume.bootstrap_disk.id
-  }
-
-  network_interface {
-    network_name = "okd_network"  // Ensure this matches the network defined in the network module
-  }
-
-  graphics {
-    listen_type = "none"
-  }
+variable "hostname_format" {
+  type    = string
+  default = "coreos%02d"
 }
 
-resource "libvirt_volume" "bootstrap_disk" {
-  name   = "bootstrap.qcow2"
-  pool   = var.libvirt_pool
-  source = var.coreos_image  // Path to the Fedora CoreOS base image
-  format = "qcow2"
+resource "libvirt_volume" "coreos-disk" {
+  name             = "${format(var.hostname_format, count.index + 1)}.qcow2"
+  count            = 3
+  base_volume_name = "coreos_production_qemu"
+  pool             = "default"
+  format           = "qcow2"
 }
 
-# Master nodes
-resource "libvirt_domain" "master" {
-  count  = 3  // Change this number according to the number of master nodes you need
-  name   = "master-${count.index + 1}"
-  memory = var.master_memory
-  vcpu   = var.master_vcpu
-
-  coreos_ignition = file("/mnt/lv_data/master.ign")
-
-  disk {
-    volume_id = libvirt_volume.master_disk[count.index].id
-  }
-
-  network_interface {
-    network_name = "okd_network"  // Ensure this matches the network defined in the network module
-  }
-
-  graphics {
-    listen_type = "none"
-  }
+resource "libvirt_ignition" "ignition_bootstrap" {
+  name    = "bootstrap-ignition"
+  pool    = "default"
+  content = file("/mnt/lv_data/bootstrap.ign")
 }
 
-resource "libvirt_volume" "master_disk" {
+resource "libvirt_ignition" "ignition_master" {
+  name    = "master-ignition"
+  pool    = "default"
+  content = file("/mnt/lv_data/master.ign")
+}
+
+resource "libvirt_ignition" "ignition_worker" {
+  name    = "worker-ignition"
+  pool    = "default"
+  content = file("/mnt/lv_data/worker.ign")
+}
+
+resource "libvirt_domain" "coreos_machine" {
   count  = 3
-  name   = "master-${count.index + 1}.qcow2"
-  pool   = var.libvirt_pool
-  source = var.coreos_image
-  format = "qcow2"
-}
+  name   = format(var.hostname_format, count.index + 1)
+  vcpu   = "2"
+  memory = "4096"
 
-# Worker nodes
-resource "libvirt_domain" "worker" {
-  count  = 2  // Change this number according to the number of worker nodes you need
-  name   = "worker-${count.index + 1}"
-  memory = var.worker_memory
-  vcpu   = var.worker_vcpu
-
-  coreos_ignition = file("/mnt/lv_data/worker.ign")
+  coreos_ignition = element([libvirt_ignition.ignition_bootstrap.id, libvirt_ignition.ignition_master.id, libvirt_ignition.ignition_worker.id], count.index)
 
   disk {
-    volume_id = libvirt_volume.worker_disk[count.index].id
+    volume_id = element(libvirt_volume.coreos-disk.*.id, count.index)
   }
 
   network_interface {
-    network_name = "okd_network"  // Ensure this matches the network defined in the network module
+    network_name = "default"
+    wait_for_lease = true
   }
 
   graphics {
-    listen_type = "none"
+    listen_type = "address"
   }
 }
 
-resource "libvirt_volume" "worker_disk" {
-  count  = 2
-  name   = "worker-${count.index + 1}.qcow2"
-  pool   = var.libvirt_pool
-  source = var.coreos_image
-  format = "qcow2"
-}
-
-# Output the IPs of the nodes
-output "bootstrap_ip" {
-  value = libvirt_domain.bootstrap.network_interface.0.addresses
-}
-
-output "master_ips" {
-  value = libvirt_domain.master[*].network_interface.0.addresses
-}
-
-output "worker_ips" {
-  value = libvirt_domain.worker[*].network_interface.0.addresses
+output "ipv4" {
+  value = libvirt_domain.coreos_machine.*.network_interface.0.addresses
 }
 
