@@ -53,7 +53,7 @@ resource "libvirt_domain" "bootstrap" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network"  // Ensure this matches the network defined in the network module
   }
 
   graphics {
@@ -82,7 +82,7 @@ resource "libvirt_domain" "master" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network"  // Ensure this matches the network defined in the network module
   }
 
   graphics {
@@ -112,7 +112,7 @@ resource "libvirt_domain" "worker" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "okd_network"  // Ensure this matches the network defined in the network module
   }
 
   graphics {
